@@ -21,7 +21,7 @@
     },
     "filterOptions": {
       "type": "json",
-      "required": true
+      "required": false
     },
     "products": {
       "via": "category",
