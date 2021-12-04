@@ -4,4 +4,6 @@
  * See: https://www.gatsbyjs.com/docs/ssr-apis/
  */
 
-// You can delete this file if you're not using it
+// To make sure SSR has the right theme
+import RootWrapper from "./src/components/ui/root-wrapper"
+export const wrapRootElement = RootWrapper
