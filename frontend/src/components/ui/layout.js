@@ -6,17 +6,17 @@
  */
 
 import * as React from "react"
-import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 
 import Header from "./header"
 
 const Layout = ({ children }) => {
 	const data = useStaticQuery(graphql`
-		query SiteTitleQuery {
-			site {
-				siteMetadata {
-					title
+		query GetCategories {
+			allStrapiCategory {
+				nodes {
+					name
+					strapiId
 				}
 			}
 		}
@@ -24,7 +24,7 @@ const Layout = ({ children }) => {
 
 	return (
 		<>
-			<Header />
+			<Header categories={data.allStrapiCategory.nodes} />
 			<div
 				style={{
 					margin: `0 auto`,
@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
 				}}
 			>
 				<main>{children}</main>
-				<footer
+				{/* <footer
 					style={{
 						marginTop: `2rem`,
 					}}
@@ -41,14 +41,10 @@ const Layout = ({ children }) => {
 					© {new Date().getFullYear()}, Built with
 					{` `}
 					<a href="https://www.gatsbyjs.com">Gatsby</a>
-				</footer>
+				</footer> */}
 			</div>
 		</>
 	)
-}
-
-Layout.propTypes = {
-	children: PropTypes.node.isRequired,
 }
 
 export default Layout
