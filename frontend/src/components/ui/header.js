@@ -64,11 +64,23 @@ export default function Header({ categories }) {
 
 	const routes = [
 		...categories,
+		// adding an "extra" route adheres to the categories's structure
 		{ name: "Contact Us", strapiId: "contact-us", path: "/contact" },
 	]
+	const activeIndex = () => {
+		const itemPos = routes.indexOf(
+			routes.filter(
+				({ name, path }) =>
+					(path || `/${name.toLowerCase()}`) ===
+					`/${window.location.pathname.split("/")[1]}`
+			)[0] // [0] to return the actual item (e.x: hats, hoodies, shirts)
+		)
+
+		return itemPos === -1 ? false : itemPos // {false} so that it points to homepage if we click on <VAR_X>
+	}
 	const tabs = ( // using parentheses as an implicit return
 		<Tabs
-			value={0}
+			value={activeIndex()} //not using () => activeIndex() to make sure it's executed immediately on every new render
 			classes={{
 				indicator: classes.coloredIndicator,
 				root: classes.tabs,
@@ -95,8 +107,15 @@ export default function Header({ categories }) {
 			classes={{ paper: classes.drawer }}
 		>
 			<List disablePadding>
-				{routes.map(route => (
-					<ListItem divider button key={route.strapiId}>
+				{routes.map((route, i) => (
+					<ListItem
+						selected={activeIndex() === i}
+						component={Link}
+						to={route.path || `/${route.name.toLowerCase()}`}
+						divider
+						button
+						key={route.strapiId}
+					>
 						<ListItemText
 							classes={{ primary: classes.listItemText }}
 							primary={route.name}
@@ -108,7 +127,12 @@ export default function Header({ categories }) {
 	)
 	const actions = [
 		// refractoring repetitive code
-		{ icon: search, alt: "search", visible: true },
+		{
+			icon: search,
+			alt: "search",
+			visible: true,
+			onClicked: () => console.log("search"),
+		},
 		{ icon: cart, alt: "cart", visible: true, path: "/cart" },
 		{
 			icon: account,
@@ -128,6 +152,8 @@ export default function Header({ categories }) {
 		<AppBar color="transparent" elevation={0}>
 			<Toolbar>
 				<Button
+					component={Link}
+					to="/" // to homepage
 					classes={{ root: classes.logoContainer }}
 					//https://mui.com/api/button/#css
 				>
@@ -140,15 +166,15 @@ export default function Header({ categories }) {
 					action.visible ? (
 						<IconButton
 							key={action.alt}
-							component={Link}
-							to={action.path}
+							component={action.onClicked ? undefined : Link}
+							to={action.onClicked ? undefined : action.path} // so that the {path} doesn't apply for the {menu}
+							onClick={action.onClicked}
+							// onClick={() => action.onClicked} wouldn't work because it returns a function, not a value
 						>
 							<img
 								className={classes.icon}
 								src={action.icon}
 								alt={action.alt}
-								onClick={action.onClicked}
-								// onClick={() => action.onClicked} wouldn't work because it returns a function, not a value
 							/>
 						</IconButton>
 					) : null
