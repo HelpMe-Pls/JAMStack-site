@@ -9,6 +9,7 @@ import * as React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 
 import Header from "./header"
+import Footer from "./footer"
 
 const Layout = ({ children }) => {
 	const data = useStaticQuery(graphql`
@@ -25,6 +26,7 @@ const Layout = ({ children }) => {
 	return (
 		<>
 			<Header categories={data.allStrapiCategory.nodes} />
+			<div style={{ marginBottom: "20rem" }}></div>
 			<div
 				style={{
 					margin: `0 auto`,
@@ -33,16 +35,8 @@ const Layout = ({ children }) => {
 				}}
 			>
 				<main>{children}</main>
-				{/* <footer
-					style={{
-						marginTop: `2rem`,
-					}}
-				>
-					© {new Date().getFullYear()}, Built with
-					{` `}
-					<a href="https://www.gatsbyjs.com">Gatsby</a>
-				</footer> */}
 			</div>
+			<Footer />
 		</>
 	)
 }

@@ -158,7 +158,7 @@ export default function Header({ categories }) {
 					//https://mui.com/api/button/#css
 				>
 					<Typography variant="h1">
-						<span className={classes.logoText}>VAR </span>X
+						<span className={classes.logoText}>LO</span>CO
 					</Typography>
 				</Button>
 				{matchesMD ? drawer : tabs}
