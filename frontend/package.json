@@ -23,7 +23,8 @@
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
         "react-helmet": "^6.1.0",
-        "react-lottie": "^1.2.3"
+        "react-lottie": "^1.2.3",
+        "react-spring-3d-carousel": "^1.2.1"
     },
     "devDependencies": {
         "prettier": "^2.4.1"
