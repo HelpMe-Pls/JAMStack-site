@@ -1,3 +1,5 @@
+require("dotenv").config()
+
 module.exports = {
 	siteMetadata: {
 		title: "My super blog",

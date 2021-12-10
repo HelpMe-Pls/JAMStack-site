@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	heading: {
 		[theme.breakpoints.down("xs")]: {
-			fontSize: "3.5rem",
+			fontSize: "3rem",
 		},
 	},
 }))
@@ -67,7 +67,7 @@ export default function HeroBlock() {
 						matchesXS
 							? "20rem"
 							: matchesMD
-							? "35rem"
+							? "25rem"
 							: matchesLG
 							? "30rem"
 							: "35rem"
