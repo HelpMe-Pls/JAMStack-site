@@ -78,6 +78,8 @@ export default function Footer() {
 	return (
 		<footer className={classes.footer}>
 			<Grid container justifyContent="space-between">
+				{/* direction="row" is omitted coz it's the default*/}
+
 				{/* for links */}
 				<Grid item classes={{ root: classes.linkContainer }}>
 					{/* {justify} only works for {item}, that's why we have to wrap the below {container} in this {item}*/}
@@ -130,7 +132,7 @@ export default function Footer() {
 
 				{/* for social media */}
 				<Grid item>
-					<Grid container item direction="column" alignItems="center">
+					<Grid item container direction="column" alignItems="center">
 						{socialMedia.map(platform => (
 							<Grid item key={platform.alt}>
 								<IconButton

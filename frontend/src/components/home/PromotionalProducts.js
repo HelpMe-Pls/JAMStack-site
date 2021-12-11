@@ -97,7 +97,7 @@ export default function PromotionalProducts() {
 			}
 		}
 	`)
-
+	//TODO: switch the red lightbulb hat to front
 	let slideItems = []
 	data.allStrapiProduct.nodes.map((product, i) =>
 		slideItems.push({
@@ -105,12 +105,13 @@ export default function PromotionalProducts() {
 			content: (
 				<Grid container direction="column" alignItems="center">
 					<Grid item>
+						{/* product's image */}
 						<IconButton
 							disableRipple
 							onClick={() => setSelectedSlide(i)}
 							classes={{
 								root: clsx(classes.iconButton, {
-									[classes.space]: selectedSlide !== i, // https://www.npmjs.com/package/clsx
+									[classes.space]: selectedSlide !== i, // to add conditional rendering for classes
 								}),
 							}}
 						>
@@ -125,6 +126,7 @@ export default function PromotionalProducts() {
 						</IconButton>
 					</Grid>
 					<Grid item>
+						{/* product's name */}
 						{selectedSlide === i ? (
 							<Typography
 								variant="h1"
