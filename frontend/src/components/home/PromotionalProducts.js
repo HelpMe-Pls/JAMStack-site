@@ -83,7 +83,10 @@ export default function PromotionalProducts() {
 	const [selectedSlide, setSelectedSlide] = useState(0)
 	const data = useStaticQuery(graphql`
 		query GetPromos {
-			allStrapiProduct(filter: { promo: { eq: true } }) {
+			allStrapiProduct(
+				filter: { promo: { eq: true } }
+				sort: { fields: category___name }
+			) {
 				nodes {
 					name
 					strapiId
@@ -97,7 +100,7 @@ export default function PromotionalProducts() {
 			}
 		}
 	`)
-	//TODO: switch the red lightbulb hat to front
+
 	let slideItems = []
 	data.allStrapiProduct.nodes.map((product, i) =>
 		slideItems.push({
@@ -115,14 +118,45 @@ export default function PromotionalProducts() {
 								}),
 							}}
 						>
-							<img
+							{
+								// extra toiling just to bring the red lightbulb hat to front =]]
+								i === 0 ? (
+									<img
+										src={
+											process.env.GATSBY_STRAPI_URL +
+											product.variants[4].images[0].url
+										}
+										alt={`product-${i}`}
+										className={classes.carouselImage}
+									/>
+								) : i === 1 ? (
+									<img
+										src={
+											process.env.GATSBY_STRAPI_URL +
+											product.variants[1].images[0].url
+										}
+										alt={`product-${i}`}
+										className={classes.carouselImage}
+									/>
+								) : i === 2 ? (
+									<img
+										src={
+											process.env.GATSBY_STRAPI_URL +
+											product.variants[0].images[0].url
+										}
+										alt={`product-${i}`}
+										className={classes.carouselImage}
+									/>
+								) : null
+							}
+							{/* <img
 								src={
 									process.env.GATSBY_STRAPI_URL +
 									product.variants[i + 2].images[0].url
 								}
 								alt={`product-${i}`}
 								className={classes.carouselImage}
-							/>
+							/> */}
 						</IconButton>
 					</Grid>
 					<Grid item>
