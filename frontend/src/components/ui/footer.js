@@ -136,7 +136,6 @@ export default function Footer() {
 						{socialMedia.map(platform => (
 							<Grid item key={platform.alt}>
 								<IconButton
-									//onClick={() => window.open(platform.link)}
 									classes={{ root: classes.icon }}
 									component="a"
 									disableRipple

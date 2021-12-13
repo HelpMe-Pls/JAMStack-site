@@ -119,7 +119,7 @@ export default function PromotionalProducts() {
 							}}
 						>
 							{
-								// extra toiling just to bring the red lightbulb hat to front =]]
+								// extra toiling just to bring the red lightbulb hat to the front.
 								i === 0 ? (
 									<img
 										src={
