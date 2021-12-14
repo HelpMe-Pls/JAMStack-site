@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
 import IconButton from "@material-ui/core/IconButton"
 import Carousel from "react-spring-3d-carousel"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
 import clsx from "clsx"
 import { useStaticQuery, graphql } from "gatsby"
 import { makeStyles } from "@material-ui/core/styles"
@@ -81,6 +82,8 @@ const useStyles = makeStyles(theme => ({
 export default function PromotionalProducts() {
 	const classes = useStyles()
 	const [selectedSlide, setSelectedSlide] = useState(0)
+	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
+
 	const data = useStaticQuery(graphql`
 		query GetPromos {
 			allStrapiProduct(
@@ -179,9 +182,10 @@ export default function PromotionalProducts() {
 	return (
 		<Grid
 			container
-			justifyContent="space-between"
+			justify={matchesMD ? "space-around" : "space-between"}
 			alignItems="center"
 			classes={{ root: classes.mainContainer }}
+			direction={matchesMD ? "column" : "row"}
 		>
 			<Grid item classes={{ root: classes.carouselContainer }}>
 				<Carousel slides={slideItems} goToSlide={selectedSlide} />

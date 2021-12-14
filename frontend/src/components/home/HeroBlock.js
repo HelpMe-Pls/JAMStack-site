@@ -10,12 +10,12 @@ import animationData from "../../images/data.json"
 const useStyles = makeStyles(theme => ({
 	textContainer: {
 		padding: "2rem",
-		[theme.breakpoints.down("xs")]: {
+		[theme.breakpoints.down("sm")]: {
 			padding: "1rem",
 		},
 	},
 	heading: {
-		[theme.breakpoints.down("xs")]: {
+		[theme.breakpoints.down("sm")]: {
 			fontSize: "3rem",
 		},
 	},
@@ -26,7 +26,7 @@ export default function HeroBlock() {
 
 	const matchesLG = useMediaQuery(theme => theme.breakpoints.down("lg"))
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
-	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
+	const matchesSM = useMediaQuery(theme => theme.breakpoints.down("sm"))
 
 	const defaultOptions = {
 		loop: true,
@@ -64,13 +64,13 @@ export default function HeroBlock() {
 				<Lottie
 					options={defaultOptions}
 					width={
-						matchesXS
+						matchesSM
 							? "20rem"
 							: matchesMD
-							? "25rem"
+							? "35rem"
 							: matchesLG
 							? "30rem"
-							: "35rem"
+							: "40rem" // XL
 					}
 				/>
 			</Grid>

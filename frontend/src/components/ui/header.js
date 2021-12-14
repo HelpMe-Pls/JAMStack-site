@@ -44,6 +44,10 @@ const useStyles = makeStyles(theme => ({
 	icon: {
 		height: "2.5rem",
 		width: "2.5rem",
+		[theme.breakpoints.down("xs")]: {
+			height: "2rem",
+			width: "2rem",
+		},
 	},
 	drawer: {
 		backgroundColor: theme.palette.primary.main,
