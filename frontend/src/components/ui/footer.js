@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 		padding: "2rem",
 	},
 	linkColumn: {
-		width: "25rem",
+		width: "20rem",
 	},
 	spacer: {
 		marginTop: "0.85rem",

@@ -2,7 +2,7 @@ import React from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
-//import useMediaQuery from "@material-ui/core/useMediaQuery"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 import { Link } from "gatsby"
 
@@ -26,27 +26,27 @@ const useStyles = makeStyles(theme => ({
 		marginBottom: "15rem",
 	},
 	buttonContainer: {
-		marginTop: "2rem",
+		marginTop: "3rem",
 	},
-	// headingContainer: {
-	// 	[theme.breakpoints.down("md")]: {
-	// 		padding: "0 1rem",
-	// 	},
-	// 	[theme.breakpoints.down("xs")]: {
-	// 		padding: "0",
-	// 	},
-	// },
-	// icon: {
-	// 	[theme.breakpoints.down("xs")]: {
-	// 		height: "18rem",
-	// 		width: "20rem",
-	// 	},
-	// },
+	headingContainer: {
+		[theme.breakpoints.down("md")]: {
+			padding: "0 1rem",
+		},
+		[theme.breakpoints.down("xs")]: {
+			padding: "0",
+		},
+	},
+	icon: {
+		[theme.breakpoints.down("xs")]: {
+			height: "18rem",
+			width: "20rem",
+		},
+	},
 }))
 
 export default function CallToAction() {
 	const classes = useStyles()
-	//const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
+	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
 	return (
 		<Grid
@@ -54,6 +54,7 @@ export default function CallToAction() {
 			justifyContent="space-around"
 			alignItems="center"
 			classes={{ root: classes.container }}
+			direction={matchesMD ? "column" : "row"}
 		>
 			<Grid item>
 				<img
@@ -64,13 +65,19 @@ export default function CallToAction() {
 			</Grid>
 			<Grid item>
 				<Grid container direction="column">
-					<Grid item>
-						<Typography variant="h1">
+					<Grid item classes={{ root: classes.headingContainer }}>
+						<Typography
+							align={matchesMD ? "center" : undefined}
+							variant="h1"
+						>
 							Committed to highest quality
 						</Typography>
 					</Grid>
 					<Grid item classes={{ root: classes.body }}>
-						<Typography variant="body1">
+						<Typography
+							variant="body1"
+							align={matchesMD ? "center" : undefined}
+						>
 							At LOCO our mission is to provide comfortable,
 							durable, premium, designer clothing and clothing
 							accessories to developers and technology
@@ -80,6 +87,7 @@ export default function CallToAction() {
 					<Grid
 						item
 						container
+						justify={matchesMD ? "center" : undefined}
 						classes={{ root: classes.buttonContainer }}
 					>
 						<Grid item>

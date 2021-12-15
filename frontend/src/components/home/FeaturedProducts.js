@@ -47,13 +47,13 @@ const useStyles = makeStyles(theme => ({
 		boxShadow: theme.shadows[10],
 		position: "absolute", // so that the info's slide will be hidden until the user clicks on the product
 		zIndex: 1, // higher {zIndex} will be put on top of lower {zIndex}s (like the stack structure)
-		// [theme.breakpoints.down("md")]: {
-		// 	height: "19.8rem",
-		// 	width: "20rem",
-		// },
+		[theme.breakpoints.down("md")]: {
+			height: "19.8rem",
+			width: "20rem",
+		},
 	},
 	productContainer: {
-		// to readjust the position of the product's image after adding its info's silde
+		// to re-adjust the position of the product's image after adding its info's silde
 		margin: "5rem 0",
 	},
 	exploreContainer: {
@@ -79,16 +79,19 @@ const useStyles = makeStyles(theme => ({
 		zIndex: 0,
 		transition: "transform 0.5s ease",
 		padding: "1rem 2rem", // so that the product's name will be fully visible
-		// [theme.breakpoints.down("md")]: {
-		// 	height: "15.2rem",
-		// 	width: "19.5rem",
-		// },
+		[theme.breakpoints.down("md")]: {
+			height: "15.2rem",
+			width: "19.5rem",
+		},
 	},
 	slideLeft: {
 		transform: "translate(-24.5rem, 0px)", // -24.5rem so that it won't surpass the product's frame
 	},
 	slideRight: {
 		transform: "translate(24.5rem, 0px)",
+	},
+	slideDown: {
+		transform: "translate(0px, 17rem)",
 	},
 }))
 
@@ -119,7 +122,7 @@ export default function FeaturedProducts() {
 		<Grid
 			container
 			direction="column"
-			justifyContent="center"
+			justifyContent={matchesMD ? "space-between" : "center"}
 			classes={{ root: classes.background }}
 		>
 			{data.allStrapiProduct.nodes.map((product, i) => {

@@ -21,26 +21,47 @@ const useStyles = makeStyles(theme => ({
 		"&:hover": {
 			transform: "scale(1.1)",
 		},
-		// [theme.breakpoints.down("lg")]: {
-		//   height: "40rem",
-		//   width: "40rem",
-		//   margin: "3rem",
-		// },
-		// [theme.breakpoints.down("sm")]: {
-		//   height: "30rem",
-		//   width: "30rem",
-		// },
-		// [theme.breakpoints.down("xs")]: {
-		//   height: "20rem",
-		//   width: "20rem",
-		//   margin: "2rem 0",
-		//   "&:hover": {
-		//     transform: "scale(1)",
-		//   },
-		// },
+		[theme.breakpoints.down("lg")]: {
+			height: "35rem",
+			width: "35rem",
+			margin: "3rem",
+		},
+		[theme.breakpoints.down("sm")]: {
+			height: "30rem",
+			width: "30rem",
+		},
+		[theme.breakpoints.down("xs")]: {
+			height: "20rem",
+			width: "20rem",
+			margin: "2rem 0",
+			"&:hover": {
+				transform: "scale(1)",
+			},
+		},
 	},
 	container: {
-		margin: "10rem 0",
+		margin: "5rem 0 10rem 0",
+	},
+	icon: {
+		[theme.breakpoints.down("sm")]: {
+			height: "8rem",
+			width: "8rem",
+		},
+		[theme.breakpoints.down("xs")]: {
+			height: "5rem",
+			width: "5rem",
+		},
+	},
+	label: {
+		[theme.breakpoints.down("xl")]: {
+			fontSize: "3rem",
+		},
+		[theme.breakpoints.down("sm")]: {
+			fontSize: "2.75rem",
+		},
+		[theme.breakpoints.down("xs")]: {
+			fontSize: "2.25rem",
+		},
 	},
 }))
 
@@ -75,10 +96,19 @@ export default function MarketingButtons() {
 						href={button.href ? button.href : undefined}
 					>
 						<Grid item>
-							<img src={button.icon} alt={button.label} />
+							<img
+								className={classes.icon}
+								src={button.icon}
+								alt={button.label}
+							/>
 						</Grid>
 						<Grid item>
-							<Typography>{button.label}</Typography>
+							<Typography
+								classes={{ root: classes.label }}
+								variant="h1"
+							>
+								{button.label}
+							</Typography>
 						</Grid>
 					</Grid>
 				</Grid>
