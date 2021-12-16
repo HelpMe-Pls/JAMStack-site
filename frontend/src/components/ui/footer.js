@@ -16,10 +16,15 @@ const useStyles = makeStyles(theme => ({
 	},
 	linkColumn: {
 		width: "20rem",
+		[theme.breakpoints.down("xs")]: {
+			//margin: "0.25rem 0 0.25rem 0",
+			width: "18rem",
+		},
 	},
 	spacer: {
-		marginTop: "0.85rem",
-		marginBottom: "0.85rem",
+		[theme.breakpoints.down("xs")]: {
+			overflow: "hidden",
+		},
 	},
 	link: {
 		color: "#fff",
@@ -28,6 +33,12 @@ const useStyles = makeStyles(theme => ({
 	linkContainer: {
 		[theme.breakpoints.down("md")]: {
 			marginBottom: "3rem",
+		},
+	},
+	linkTitle: {
+		[theme.breakpoints.down("xs")]: {
+			marginTop: "1.5rem",
+			width: "max-content",
 		},
 	},
 	icon: {
@@ -93,14 +104,21 @@ export default function Footer() {
 								classes={{ root: classes.linkColumn }}
 							>
 								<Grid item>
-									<Typography variant="h5">
+									<Typography
+										variant="h5"
+										classes={{ root: classes.linkTitle }}
+									>
 										{column}
 									</Typography>
 								</Grid>
 								{routes[column].map(
 									// routes[column] as the computed property of the object
 									row => (
-										<Grid item key={row.label}>
+										<Grid
+											item
+											key={row.label}
+											classes={{ root: classes.spacer }}
+										>
 											<Typography
 												component={
 													row.path ? Link : "a"

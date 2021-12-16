@@ -12,6 +12,9 @@ const useStyles = makeStyles(theme => ({
 	account: {
 		color: "#fff",
 		marginLeft: "2rem",
+		[theme.breakpoints.down("xs")]: {
+			marginLeft: "0.4rem",
+		},
 	},
 	body: {
 		maxWidth: "45rem",
@@ -22,11 +25,30 @@ const useStyles = makeStyles(theme => ({
 			padding: "0",
 		},
 	},
+	paragraph: {
+		[theme.breakpoints.down("xs")]: {
+			fontSize: "1.25rem",
+		},
+	},
 	container: {
 		marginBottom: "15rem",
 	},
+	button: {
+		[theme.breakpoints.down("xs")]: {
+			marginBottom: "1.5rem",
+		},
+	},
 	buttonContainer: {
 		marginTop: "3rem",
+		[theme.breakpoints.down("xs")]: {
+			marginTop: "2.5rem",
+		},
+	},
+	heading: {
+		[theme.breakpoints.down("xs")]: {
+			fontSize: "4rem",
+			padding: "0",
+		},
 	},
 	headingContainer: {
 		[theme.breakpoints.down("md")]: {
@@ -46,6 +68,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function CallToAction() {
 	const classes = useStyles()
+
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
 	return (
@@ -59,7 +82,7 @@ export default function CallToAction() {
 			<Grid item>
 				<img
 					src={cta}
-					alt="quality-committed"
+					alt="quality committed"
 					className={classes.icon}
 				/>
 			</Grid>
@@ -69,6 +92,7 @@ export default function CallToAction() {
 						<Typography
 							align={matchesMD ? "center" : undefined}
 							variant="h1"
+							classes={{ root: classes.heading }}
 						>
 							Committed to highest quality
 						</Typography>
@@ -77,8 +101,9 @@ export default function CallToAction() {
 						<Typography
 							variant="body1"
 							align={matchesMD ? "center" : undefined}
+							classes={{ root: classes.paragraph }}
 						>
-							At LOCO our mission is to provide comfortable,
+							At LOCO, our mission is to provide comfortable,
 							durable, premium, designer clothing and clothing
 							accessories to developers and technology
 							enthusiasts.
@@ -87,7 +112,7 @@ export default function CallToAction() {
 					<Grid
 						item
 						container
-						justify={matchesMD ? "center" : undefined}
+						justifyContent={matchesMD ? "center" : undefined}
 						classes={{ root: classes.buttonContainer }}
 					>
 						<Grid item>
@@ -96,6 +121,7 @@ export default function CallToAction() {
 								color="primary"
 								component={Link}
 								to="/contact"
+								classes={{ root: classes.button }}
 							>
 								Contact Us
 							</Button>

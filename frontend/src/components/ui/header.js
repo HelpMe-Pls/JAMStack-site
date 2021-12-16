@@ -25,6 +25,9 @@ const useStyles = makeStyles(theme => ({
 	coloredIndicator: {
 		backgroundColor: "red",
 	},
+	logo: {
+		fontSize: "3rem",
+	},
 	logoText: {
 		color: theme.palette.common.offBlack,
 	},
@@ -154,14 +157,14 @@ export default function Header({ categories }) {
 
 	return (
 		<AppBar color="transparent" elevation={0} position="static">
-			<Toolbar>
+			<Toolbar disableGutters>
 				<Button
 					component={Link}
 					to="/" // to homepage
 					classes={{ root: classes.logoContainer }}
 					//https://mui.com/api/button/#css
 				>
-					<Typography variant="h1">
+					<Typography variant="h1" classes={{ root: classes.logo }}>
 						<span className={classes.logoText}>LO</span>CO
 					</Typography>
 				</Button>
