@@ -15,9 +15,9 @@ import Layout from "../components/ui/layout"
 
 const useStyles = makeStyles(theme => ({
 	mainContainer: {
-		height: "45rem",
+		height: "35rem",
 		backgroundColor: theme.palette.primary.main,
-		marginBottom: "10rem",
+		margin: "10rem 0",
 		[theme.breakpoints.down("md")]: {
 			marginTop: "8rem",
 			height: "90rem",
@@ -59,11 +59,8 @@ const useStyles = makeStyles(theme => ({
 		textTransform: "none",
 		borderRadius: 0,
 		"&:hover": {
-			backgroundColor: theme.palette.secondary.light,
+			backgroundColor: theme.palette.secondary.dark,
 		},
-	},
-	sendButton: {
-		textTransform: "none",
 	},
 	sendIcon: {
 		marginLeft: "2rem",
@@ -75,12 +72,10 @@ const useStyles = makeStyles(theme => ({
 	contactIcon: {
 		height: "3rem",
 		width: "3rem",
-		marginRight: "2rem",
 	},
 	contactEmailIcon: {
 		height: "2.25rem",
 		width: "3rem",
-		marginRight: "2rem",
 	},
 	infoContainer: {
 		height: "21.25rem",
@@ -91,7 +86,18 @@ const useStyles = makeStyles(theme => ({
 	middleInfo: {
 		borderTop: "2px solid #fff",
 		borderBottom: "2px solid #fff",
-		padding: "1rem 0",
+	},
+	iconContainer: {
+		borderRight: "2px solid #fff",
+		height: "7rem",
+		width: "8rem",
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+		// [theme.breakpoints.down("xs")]: {
+		//   height: "5rem",
+		//   width: "6rem",
+		// },
 	},
 }))
 
@@ -132,6 +138,7 @@ const ContactPage = () => {
 						</Grid>
 						<Grid
 							item
+							component={Button}
 							classes={{
 								root: clsx(
 									classes.buttonContainer,
@@ -139,16 +146,12 @@ const ContactPage = () => {
 								),
 							}}
 						>
-							<Button classes={{ root: classes.sendButton }}>
-								<Typography variant="h4">
-									send message
-								</Typography>
-								<img
-									src={send}
-									className={classes.sendIcon}
-									alt="send message"
-								/>
-							</Button>
+							<Typography variant="h4">Send message</Typography>
+							<img
+								src={send}
+								className={classes.sendIcon}
+								alt="send message"
+							/>
 						</Grid>
 					</Grid>
 				</Grid>
@@ -162,7 +165,10 @@ const ContactPage = () => {
 						classes={{ root: classes.infoContainer }}
 					>
 						<Grid item container alignItems="center">
-							<Grid item>
+							<Grid
+								item
+								classes={{ root: classes.iconContainer }}
+							>
 								<img
 									src={address}
 									className={classes.contactIcon}
@@ -184,7 +190,10 @@ const ContactPage = () => {
 							alignItems="center"
 							classes={{ root: classes.middleInfo }}
 						>
-							<Grid item>
+							<Grid
+								item
+								classes={{ root: classes.iconContainer }}
+							>
 								<img
 									src={phone}
 									className={classes.contactIcon}
@@ -203,9 +212,11 @@ const ContactPage = () => {
 						<Grid item container alignItems="center">
 							<Grid
 								item
-								classes={{ root: classes.contactEmailIcon }}
+								classes={{ root: classes.iconContainer }}
 							>
-								<Email color="#fff" />
+								<div className={classes.contactEmailIcon}>
+									<Email color="#fff" />
+								</div>
 							</Grid>
 							<Grid item>
 								<Typography
