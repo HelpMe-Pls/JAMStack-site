@@ -118,6 +118,7 @@ export default function PromotionalProducts() {
 							classes={{
 								root: clsx(classes.iconButton, {
 									[classes.space]: selectedSlide !== i, // to add conditional rendering for classes
+									// using brackets notation because there's a dot (.) inside of the property's name
 								}),
 							}}
 						>
