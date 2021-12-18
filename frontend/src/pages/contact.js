@@ -2,15 +2,18 @@ import React, { useState } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
+import InputAdornment from "@material-ui/core/InputAdornment"
 import Button from "@material-ui/core/Button"
 import clsx from "clsx"
-import { makeStyles } from "@material-ui/core/styles"
+import { makeStyles, useTheme } from "@material-ui/core/styles"
 //import { Link } from "gatsby"
 
 import address from "../images/address.svg"
-import phone from "../images/phone-adornment.svg"
-import Email from "../images/EmailAdornment.js"
 import send from "../images/send.svg"
+import nameAdornment from "../images/name-adornment.svg"
+
+import Email from "../images/EmailAdornment.js"
+import Phone from "../images/PhoneAdornment.js"
 
 import Layout from "../components/ui/layout"
 
@@ -75,7 +78,7 @@ const useStyles = makeStyles(theme => ({
 		width: "3rem",
 	},
 	contactEmailIcon: {
-		height: "2.25rem", // the customized SVG icon couldn't be displayed (scaled) without having this set
+		height: "2.25rem",
 		width: "3rem",
 	},
 	infoContainer: {
@@ -109,6 +112,15 @@ const useStyles = makeStyles(theme => ({
 	input: {
 		color: "#fff",
 	},
+	emailAdornment: {
+		height: 17,
+		width: 22,
+		marginBottom: 10,
+	},
+	phoneAdornment: {
+		width: 25.173,
+		height: 25.122,
+	},
 	fieldContainer: {
 		marginBottom: "1rem",
 	},
@@ -119,7 +131,8 @@ const useStyles = makeStyles(theme => ({
 	// use Inspect Element with @global styling to apply styles for very specific elements
 	// that you may not be able to figure it out in your code
 	// these styles are always applied even if their classes aren't mentioned in the component
-	// well, in this case they're actually located in the <TextField> but it's abstracted away due to compound styling that are applied to the <TextField>'s {InputProp} (https://mui.com/api/text-field/#props),
+	// well, in this case they're actually located in the <TextField> but it's abstracted away
+	// due to compound styling that are applied to the <TextField>'s {InputProp} (https://mui.com/api/text-field/#props),
 	// therefore it's hard to track what specific CSS class it is >> using Inspect Element is a faster way to find it
 	"@global": {
 		// Inspect element (of the form's input) >> find the <div> where it says ::before && ::after
@@ -143,7 +156,7 @@ const useStyles = makeStyles(theme => ({
 
 const ContactPage = () => {
 	const classes = useStyles()
-	//const theme = useTheme()
+	const theme = useTheme()
 
 	const [name, setName] = useState("")
 	const [email, setEmail] = useState("")
@@ -194,6 +207,14 @@ const ContactPage = () => {
 										classes={{ root: classes.textField }}
 										InputProps={{
 											classes: { input: classes.input },
+											startAdornment: (
+												<InputAdornment position="start">
+													<img
+														src={nameAdornment}
+														alt="name"
+													/>
+												</InputAdornment>
+											),
 										}}
 									/>
 								</Grid>
@@ -208,6 +229,23 @@ const ContactPage = () => {
 										classes={{ root: classes.textField }}
 										InputProps={{
 											classes: { input: classes.input },
+											startAdornment: (
+												<InputAdornment position="start">
+													<div
+														className={
+															classes.emailAdornment
+														}
+													>
+														<Email
+															color={
+																theme.palette
+																	.secondary
+																	.main
+															}
+														/>
+													</div>
+												</InputAdornment>
+											),
 										}}
 									/>
 								</Grid>
@@ -224,6 +262,23 @@ const ContactPage = () => {
 										classes={{ root: classes.textField }}
 										InputProps={{
 											classes: { input: classes.input },
+											startAdornment: (
+												<InputAdornment position="start">
+													<div
+														className={
+															classes.phoneAdornment
+														}
+													>
+														<Phone
+															color={
+																theme.palette
+																	.secondary
+																	.main
+															}
+														/>
+													</div>
+												</InputAdornment>
+											),
 										}}
 									/>
 								</Grid>
@@ -308,11 +363,9 @@ const ContactPage = () => {
 								item
 								classes={{ root: classes.iconContainer }}
 							>
-								<img
-									src={phone}
-									className={classes.contactIcon}
-									alt="phone"
-								/>
+								<div className={classes.contactIcon}>
+									<Phone />
+								</div>
 							</Grid>
 							<Grid item>
 								<Typography
@@ -328,6 +381,8 @@ const ContactPage = () => {
 								item
 								classes={{ root: classes.iconContainer }}
 							>
+								{/* the customized SVG icon couldn't be displayed (scaled) without being
+								contained in a parent with set dimensions */}
 								<div className={classes.contactEmailIcon}>
 									<Email color="#fff" />
 								</div>
