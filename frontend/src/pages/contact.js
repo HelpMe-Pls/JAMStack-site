@@ -6,6 +6,7 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import Button from "@material-ui/core/Button"
 import clsx from "clsx"
 import { makeStyles, useTheme } from "@material-ui/core/styles"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
 //import { Link } from "gatsby"
 
 import address from "../images/address.svg"
@@ -28,15 +29,18 @@ const useStyles = makeStyles(theme => ({
 			height: "90rem",
 		},
 	},
+	formContainer: {
+		height: "100%",
+	},
 	formWrapper: {
 		height: "100%",
-		// [theme.breakpoints.down("md")]: {
-		//   height: "50%",
-		//   marginTop: "-8rem",
-		// },
-		// [theme.breakpoints.down("xs")]: {
-		//   width: "100%",
-		// },
+		[theme.breakpoints.down("md")]: {
+			height: "50%", // so that it can stack on top of the contactInfo
+			marginTop: "-8rem",
+		},
+		[theme.breakpoints.down("xs")]: {
+			width: "100%",
+		},
 	},
 	formContainer: {
 		height: "100%",
@@ -49,12 +53,12 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		// [theme.breakpoints.down("sm")]: {
-		//   width: "30rem",
-		// },
-		// [theme.breakpoints.down("xs")]: {
-		//   width: "100%",
-		// },
+		[theme.breakpoints.down("sm")]: {
+			width: "30rem",
+		},
+		[theme.breakpoints.down("xs")]: {
+			width: "100%",
+		},
 	},
 	titleContainer: {
 		marginTop: "-3rem",
@@ -99,16 +103,16 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		// [theme.breakpoints.down("xs")]: {
-		//   height: "5rem",
-		//   width: "6rem",
-		// },
+		[theme.breakpoints.down("xs")]: {
+			height: "5rem",
+			width: "6rem",
+		},
 	},
 	textField: {
 		width: "30rem",
-		// [theme.breakpoints.down("sm")]: {
-		//   width: "20rem",
-		// },
+		[theme.breakpoints.down("sm")]: {
+			width: "20rem",
+		},
 	},
 	input: {
 		color: "#fff",
@@ -139,11 +143,11 @@ const useStyles = makeStyles(theme => ({
 	buttonDisabled: {
 		backgroundColor: theme.palette.grey[500],
 	},
-	//   sendMessage: {
-	// 	[theme.breakpoints.down("xs")]: {
-	// 	  fontSize: "2.5rem",
-	// 	},
-	//   },
+	sendMessage: {
+		[theme.breakpoints.down("xs")]: {
+			fontSize: "2.5rem",
+		},
+	},
 	// use Inspect Element with @global styling to apply styles for very specific elements
 	// that you may not be able to figure it out in your code
 	// especially for components that have different styles for different effects (hover, onBlur...)
@@ -168,14 +172,14 @@ const ContactPage = () => {
 	const classes = useStyles()
 	const theme = useTheme()
 
+	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
+	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
+
 	const [name, setName] = useState("")
 	const [email, setEmail] = useState("")
 	const [phoneNumber, setPhoneNumber] = useState("")
 	const [message, setMessage] = useState("")
 	const [errors, setError] = useState({})
-
-	// const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
-	// const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
 	return (
 		<Layout>
@@ -183,6 +187,7 @@ const ContactPage = () => {
 				container
 				justifyContent="space-around"
 				alignItems="center"
+				direction={matchesMD ? "column" : "row"}
 				classes={{ root: classes.mainContainer }}
 			>
 				{/* Contact form */}
@@ -428,7 +433,12 @@ const ContactPage = () => {
 								),
 							}}
 						>
-							<Typography variant="h4">Send message</Typography>
+							<Typography
+								variant="h4"
+								classes={{ root: classes.sendMessage }}
+							>
+								Send message
+							</Typography>
 							<img
 								src={send}
 								className={classes.sendIcon}
@@ -462,7 +472,8 @@ const ContactPage = () => {
 									variant="h2"
 									classes={{ root: classes.contactInfo }}
 								>
-									6996 Random Street, RS 699669
+									6996 Random St {matchesXS ? <br /> : null}
+									HCMC, VN 69996
 								</Typography>
 							</Grid>
 						</Grid>
