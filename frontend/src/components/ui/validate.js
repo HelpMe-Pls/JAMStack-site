@@ -36,7 +36,7 @@ export default function validate(input) {
 	// ==> valid.email = true
 	// ==> valid = {email: true}
 	Object.keys(input).map(field => {
-		valid[field] = validators[field](input[field])
+		return (valid[field] = validators[field](input[field]))
 	})
 
 	return valid

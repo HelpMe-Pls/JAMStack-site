@@ -28,9 +28,10 @@ const useStyles = makeStyles(theme => ({
 			marginTop: "8rem",
 			height: "90rem",
 		},
-	},
-	formContainer: {
-		height: "100%",
+		[theme.breakpoints.down("xs")]: {
+			overflow: "hidden",
+			width: "100%",
+		},
 	},
 	formWrapper: {
 		height: "100%",
@@ -77,6 +78,9 @@ const useStyles = makeStyles(theme => ({
 	contactInfo: {
 		fontSize: "1.5rem",
 		marginLeft: "1rem",
+		[theme.breakpoints.down("xs")]: {
+			fontSize: "1.2rem",
+		},
 	},
 	contactIcon: {
 		height: "3rem",
@@ -89,7 +93,7 @@ const useStyles = makeStyles(theme => ({
 	infoContainer: {
 		height: "21.25rem",
 		[theme.breakpoints.down("xs")]: {
-			height: "15.25rem",
+			height: "12.3rem",
 		},
 	},
 	middleInfo: {
@@ -104,14 +108,17 @@ const useStyles = makeStyles(theme => ({
 		justifyContent: "center",
 		alignItems: "center",
 		[theme.breakpoints.down("xs")]: {
-			height: "5rem",
-			width: "6rem",
+			height: "4rem",
+			width: "5rem",
 		},
 	},
 	textField: {
 		width: "30rem",
-		[theme.breakpoints.down("sm")]: {
-			width: "20rem",
+		// [theme.breakpoints.down("sm")]: {
+		// 	width: "20rem",
+		// },
+		[theme.breakpoints.down("xs")]: {
+			width: "18rem",
 		},
 	},
 	input: {
@@ -145,7 +152,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	sendMessage: {
 		[theme.breakpoints.down("xs")]: {
-			fontSize: "2.5rem",
+			fontSize: "2.25rem",
 		},
 	},
 	// use Inspect Element with @global styling to apply styles for very specific elements
@@ -210,6 +217,8 @@ const ContactPage = () => {
 						>
 							<Typography variant="h4">Contact Us</Typography>
 						</Grid>
+
+						{/* Input form */}
 						<Grid item>
 							<Grid container direction="column">
 								<Grid
