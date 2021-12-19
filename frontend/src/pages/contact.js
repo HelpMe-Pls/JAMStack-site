@@ -16,10 +16,11 @@ import Email from "../images/EmailAdornment.js"
 import Phone from "../images/PhoneAdornment.js"
 
 import Layout from "../components/ui/layout"
+import validate from "../components/ui/validate"
 
 const useStyles = makeStyles(theme => ({
 	mainContainer: {
-		height: "35rem",
+		height: "40rem",
 		backgroundColor: theme.palette.primary.main,
 		margin: "10rem 0",
 		[theme.breakpoints.down("md")]: {
@@ -42,8 +43,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	blockContainer: {
 		backgroundColor: theme.palette.secondary.main,
-		height: "8rem",
-		width: "40rem",
+		height: "6rem",
+		width: "35rem",
 		// apply flex layout for the "Contact Us" and "send message"
 		display: "flex",
 		justifyContent: "center",
@@ -56,10 +57,10 @@ const useStyles = makeStyles(theme => ({
 		// },
 	},
 	titleContainer: {
-		marginTop: "-4rem",
+		marginTop: "-3rem",
 	},
 	buttonContainer: {
-		marginBottom: "-4rem",
+		marginBottom: "-3rem",
 		textTransform: "none",
 		borderRadius: 0,
 		"&:hover": {
@@ -127,9 +128,25 @@ const useStyles = makeStyles(theme => ({
 	multilineContainer: {
 		marginTop: "1rem",
 	},
-
+	multiline: {
+		border: "2px solid #fff",
+		borderRadius: 10,
+		padding: "1rem",
+	},
+	multilineError: {
+		border: `2px solid ${theme.palette.error.main}`,
+	},
+	buttonDisabled: {
+		backgroundColor: theme.palette.grey[500],
+	},
+	//   sendMessage: {
+	// 	[theme.breakpoints.down("xs")]: {
+	// 	  fontSize: "2.5rem",
+	// 	},
+	//   },
 	// use Inspect Element with @global styling to apply styles for very specific elements
 	// that you may not be able to figure it out in your code
+	// especially for components that have different styles for different effects (hover, onBlur...)
 	// these styles are always applied even if their classes aren't mentioned in the component
 	// well, in this case they're actually located in the <TextField> but it's abstracted away
 	// due to compound styling that are applied to the <TextField>'s {InputProp} (https://mui.com/api/text-field/#props),
@@ -144,13 +161,6 @@ const useStyles = makeStyles(theme => ({
 		".MuiInput-underline:after": {
 			borderBottom: `2px solid ${theme.palette.secondary.main}`,
 		},
-
-		// https://mui.com/api/input/#css
-		".MuiInput-multiline": {
-			border: "2px solid #fff",
-			borderRadius: 10,
-			padding: "1rem",
-		},
 	},
 }))
 
@@ -162,6 +172,7 @@ const ContactPage = () => {
 	const [email, setEmail] = useState("")
 	const [phoneNumber, setPhoneNumber] = useState("")
 	const [message, setMessage] = useState("")
+	const [errors, setError] = useState({})
 
 	// const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 	// const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
@@ -202,7 +213,30 @@ const ContactPage = () => {
 								>
 									<TextField
 										value={name}
-										onChange={e => setName(e.target.value)}
+										onChange={e => {
+											if (errors.name) {
+												const valid = validate({
+													name: e.target.value,
+												})
+												setError({
+													...errors,
+													name: !valid.name,
+												})
+											}
+											setName(e.target.value)
+										}}
+										// onBlur will be called when the user clicks away from the input
+										onBlur={e => {
+											const valid = validate({ name }) // from value={name}
+											setError({
+												...errors,
+												name: !valid.name,
+											})
+										}}
+										error={errors.name}
+										helperText={
+											errors.name && "Please enter a name"
+										}
 										placeholder="Name"
 										classes={{ root: classes.textField }}
 										InputProps={{
@@ -224,7 +258,29 @@ const ContactPage = () => {
 								>
 									<TextField
 										value={email}
-										onChange={e => setEmail(e.target.value)}
+										onChange={e => {
+											if (errors.email) {
+												const valid = validate({
+													email: e.target.value,
+												})
+												setError({
+													...errors,
+													email: !valid.email,
+												})
+											}
+											setEmail(e.target.value)
+										}}
+										onBlur={e => {
+											const valid = validate({ email }) // from value={name}
+											setError({
+												...errors,
+												email: !valid.email,
+											})
+										}}
+										error={errors.email}
+										helperText={
+											errors.email && "Invalid email"
+										}
 										placeholder="Email"
 										classes={{ root: classes.textField }}
 										InputProps={{
@@ -255,8 +311,32 @@ const ContactPage = () => {
 								>
 									<TextField
 										value={phoneNumber}
-										onChange={e =>
+										onChange={e => {
+											if (errors.phone) {
+												const valid = validate({
+													phone: e.target.value,
+												})
+												setError({
+													...errors,
+													phone: !valid.phone,
+												})
+											}
 											setPhoneNumber(e.target.value)
+										}}
+										onBlur={e => {
+											const valid = validate({
+												phone: phoneNumber,
+												// the object passed into validate() has a different field name (phone != phoneNumber)
+												// that's why there's no destructuring here
+											})
+											setError({
+												...errors,
+												phone: !valid.phone,
+											})
+										}}
+										error={errors.phone}
+										helperText={
+											errors.phone && "Invalid number"
 										}
 										placeholder="Phone Number"
 										classes={{ root: classes.textField }}
@@ -290,16 +370,41 @@ const ContactPage = () => {
 								>
 									<TextField
 										value={message}
-										onChange={e =>
+										onChange={e => {
+											if (errors.message) {
+												const valid = validate({
+													message: e.target.value,
+												})
+												setError({
+													...errors,
+													message: !valid.message,
+												})
+											}
 											setMessage(e.target.value)
+										}}
+										onBlur={e => {
+											const valid = validate({ message })
+											setError({
+												...errors,
+												message: !valid.message,
+											})
+										}}
+										error={errors.message}
+										helperText={
+											errors.message &&
+											"Please enter a message"
 										}
 										placeholder="Message"
 										classes={{ root: classes.textField }}
 										multiline
-										rows={8}
+										rows={6}
 										InputProps={{
 											disableUnderline: true,
-											classes: { input: classes.input },
+											classes: {
+												input: classes.input,
+												multiline: classes.multiline,
+												error: classes.multilineError,
+											},
 										}}
 									/>
 								</Grid>
@@ -308,10 +413,18 @@ const ContactPage = () => {
 						<Grid
 							item
 							component={Button}
+							disabled={Object.keys(errors).some(
+								field => errors[field] === true
+							)}
 							classes={{
 								root: clsx(
 									classes.buttonContainer,
-									classes.blockContainer
+									classes.blockContainer,
+									{
+										[classes.buttonDisabled]: Object.keys(
+											errors
+										).some(field => errors[field] === true),
+									}
 								),
 							}}
 						>
