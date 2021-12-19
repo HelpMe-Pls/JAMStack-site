@@ -182,11 +182,86 @@ const ContactPage = () => {
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
-	const [name, setName] = useState("")
-	const [email, setEmail] = useState("")
-	const [phoneNumber, setPhoneNumber] = useState("")
-	const [message, setMessage] = useState("")
-	const [errors, setError] = useState({})
+	const [values, setValues] = useState({
+		name: "",
+		email: "",
+		phone: "",
+		message: "",
+	})
+	const [errors, setErrors] = useState({})
+
+	// setting this structure as an object because we need unique field names
+	const fields = {
+		name: {
+			helperText: "Please enter your name",
+			placeholder: "Name",
+			adornment: <img src={nameAdornment} alt="name" />,
+		},
+		email: {
+			helperText: "Invalid email",
+			placeholder: "Email",
+			adornment: (
+				<div className={classes.emailAdornment}>
+					<Email color={theme.palette.secondary.main} />
+				</div>
+			),
+		},
+		phone: {
+			helperText: "Invalid phone number",
+			placeholder: "Phone Number",
+			adornment: (
+				<div className={classes.phoneAdornment}>
+					<Phone color={theme.palette.secondary.main} />
+				</div>
+			),
+		},
+		message: {
+			helperText: "Please enter a message",
+			placeholder: "Message",
+			inputClasses: {
+				multiline: classes.multiline,
+				error: classes.multilineError,
+			},
+		},
+	}
+
+	const info = [
+		{
+			label: (
+				<span>
+					6996 Random St {matchesXS ? <br /> : null}
+					HCMC, VN 69996
+				</span>
+			),
+			icon: (
+				<img
+					className={classes.contactIcon}
+					src={address}
+					alt="address"
+				/>
+			),
+		},
+		{
+			label: "(+84) 369 149 942",
+			icon: (
+				<div className={classes.contactIcon}>
+					<Phone />
+				</div>
+			),
+		},
+		{
+			label: "khoile5399@gmail.com",
+			icon: (
+				<div className={classes.contactEmailIcon}>
+					<Email color="#fff" />
+				</div>
+			),
+		},
+	]
+
+	const disabled =
+		Object.keys(errors).some(error => errors[error] === true) ||
+		Object.keys(errors).length < 4 // to disable the "send message" button if there's any empty input
 
 	return (
 		<Layout>
@@ -218,226 +293,99 @@ const ContactPage = () => {
 							<Typography variant="h4">Contact Us</Typography>
 						</Grid>
 
-						{/* Input form */}
+						{/* Input fields */}
 						<Grid item>
 							<Grid container direction="column">
-								<Grid
-									item
-									classes={{ root: classes.fieldContainer }}
-								>
-									<TextField
-										value={name}
-										onChange={e => {
-											if (errors.name) {
-												const valid = validate({
-													name: e.target.value,
-												})
-												setError({
-													...errors,
-													name: !valid.name,
-												})
-											}
-											setName(e.target.value)
-										}}
-										// onBlur will be called when the user clicks away from the input
-										onBlur={e => {
-											const valid = validate({ name }) // from value={name}
-											setError({
-												...errors,
-												name: !valid.name,
-											})
-										}}
-										error={errors.name}
-										helperText={
-											errors.name && "Please enter a name"
-										}
-										placeholder="Name"
-										classes={{ root: classes.textField }}
-										InputProps={{
-											classes: { input: classes.input },
-											startAdornment: (
-												<InputAdornment position="start">
-													<img
-														src={nameAdornment}
-														alt="name"
-													/>
-												</InputAdornment>
-											),
-										}}
-									/>
-								</Grid>
-								<Grid
-									item
-									classes={{ root: classes.fieldContainer }}
-								>
-									<TextField
-										value={email}
-										onChange={e => {
-											if (errors.email) {
-												const valid = validate({
-													email: e.target.value,
-												})
-												setError({
-													...errors,
-													email: !valid.email,
-												})
-											}
-											setEmail(e.target.value)
-										}}
-										onBlur={e => {
-											const valid = validate({ email }) // from value={name}
-											setError({
-												...errors,
-												email: !valid.email,
-											})
-										}}
-										error={errors.email}
-										helperText={
-											errors.email && "Invalid email"
-										}
-										placeholder="Email"
-										classes={{ root: classes.textField }}
-										InputProps={{
-											classes: { input: classes.input },
-											startAdornment: (
-												<InputAdornment position="start">
-													<div
-														className={
-															classes.emailAdornment
-														}
-													>
-														<Email
-															color={
-																theme.palette
-																	.secondary
-																	.main
-															}
-														/>
-													</div>
-												</InputAdornment>
-											),
-										}}
-									/>
-								</Grid>
-								<Grid
-									item
-									classes={{ root: classes.fieldContainer }}
-								>
-									<TextField
-										value={phoneNumber}
-										onChange={e => {
-											if (errors.phone) {
-												const valid = validate({
-													phone: e.target.value,
-												})
-												setError({
-													...errors,
-													phone: !valid.phone,
-												})
-											}
-											setPhoneNumber(e.target.value)
-										}}
-										onBlur={e => {
-											const valid = validate({
-												phone: phoneNumber,
-												// the object passed into validate() has a different field name (phone != phoneNumber)
-												// that's why there's no destructuring here
-											})
-											setError({
-												...errors,
-												phone: !valid.phone,
-											})
-										}}
-										error={errors.phone}
-										helperText={
-											errors.phone && "Invalid number"
-										}
-										placeholder="Phone Number"
-										classes={{ root: classes.textField }}
-										InputProps={{
-											classes: { input: classes.input },
-											startAdornment: (
-												<InputAdornment position="start">
-													<div
-														className={
-															classes.phoneAdornment
-														}
-													>
-														<Phone
-															color={
-																theme.palette
-																	.secondary
-																	.main
-															}
-														/>
-													</div>
-												</InputAdornment>
-											),
-										}}
-									/>
-								</Grid>
-								<Grid
-									item
-									classes={{
-										root: classes.multilineContainer,
-									}}
-								>
-									<TextField
-										value={message}
-										onChange={e => {
-											if (errors.message) {
-												const valid = validate({
-													message: e.target.value,
-												})
-												setError({
-													...errors,
-													message: !valid.message,
-												})
-											}
-											setMessage(e.target.value)
-										}}
-										onBlur={e => {
-											const valid = validate({ message })
-											setError({
-												...errors,
-												message: !valid.message,
-											})
-										}}
-										error={errors.message}
-										helperText={
-											errors.message &&
-											"Please enter a message"
-										}
-										placeholder="Message"
-										classes={{ root: classes.textField }}
-										multiline
-										rows={6}
-										InputProps={{
-											disableUnderline: true,
-											classes: {
-												input: classes.input,
-												multiline: classes.multiline,
-												error: classes.multilineError,
-											},
-										}}
-									/>
-								</Grid>
+								{Object.keys(fields).map(field => {
+									const validateHelper = event => {
+										const valid = validate({
+											[field]: event.target.value,
+										})
+										setErrors({
+											...errors,
+											[field]: !valid[field],
+										})
+									}
+									return (
+										<Grid
+											item
+											key={field}
+											classes={{
+												root:
+													field === "message"
+														? classes.multilineContainer
+														: classes.fieldContainer,
+											}}
+										>
+											<TextField
+												value={values[field]}
+												onChange={e => {
+													if (errors[field]) {
+														validateHelper(e)
+													}
+													// not using ternary operator here because {setValues} has to be called everytime, not just in "no errors field" cases
+													setValues({
+														...values,
+														[field]: e.target.value,
+													})
+												}}
+												// onBlur will be called when the user clicks away from the input
+												onBlur={e => validateHelper(e)}
+												error={errors[field]}
+												helperText={
+													errors[field] &&
+													fields[field].helperText
+												}
+												placeholder={
+													fields[field].placeholder
+												}
+												classes={{
+													root: classes.textField,
+												}}
+												multiline={field === "message"}
+												rows={
+													field === "message"
+														? 6
+														: undefined
+												}
+												InputProps={{
+													classes: {
+														input: classes.input,
+														// only applied for the {message}, the rest of them will have the above {classes.input}
+														// used spread operator because {inputClasses} has 2 fields, and we wanna take all of it
+														...fields[field]
+															.inputClasses,
+													},
+													disableUnderline:
+														field === "message",
+													startAdornment:
+														field ===
+														"message" ? undefined : (
+															<InputAdornment position="start">
+																{
+																	fields[
+																		field
+																	].adornment
+																}
+															</InputAdornment>
+														),
+												}}
+											/>
+										</Grid>
+									)
+								})}
 							</Grid>
 						</Grid>
 						<Grid
 							item
 							component={Button}
-							disabled={Object.keys(errors).some(
-								field => errors[field] === true
-							)}
+							disabled={disabled}
 							classes={{
 								root: clsx(
 									classes.buttonContainer,
 									classes.blockContainer,
 									{
-										[classes.buttonDisabled]: Object.keys(
-											errors
-										).some(field => errors[field] === true),
+										[classes.buttonDisabled]: disabled,
 									}
 								),
 							}}
@@ -465,70 +413,35 @@ const ContactPage = () => {
 						justifyContent="space-between"
 						classes={{ root: classes.infoContainer }}
 					>
-						<Grid item container alignItems="center">
+						{info.map((section, i) => (
 							<Grid
 								item
-								classes={{ root: classes.iconContainer }}
+								key={section.label}
+								container
+								alignItems="center"
+								classes={{
+									root:
+										i === 1
+											? classes.middleInfo
+											: undefined,
+								}}
 							>
-								<img
-									src={address}
-									className={classes.contactIcon}
-									alt="address"
-								/>
-							</Grid>
-							<Grid item>
-								<Typography
-									variant="h2"
-									classes={{ root: classes.contactInfo }}
+								<Grid
+									item
+									classes={{ root: classes.iconContainer }}
 								>
-									6996 Random St {matchesXS ? <br /> : null}
-									HCMC, VN 69996
-								</Typography>
+									{section.icon}
+								</Grid>
+								<Grid item>
+									<Typography
+										variant="h2"
+										classes={{ root: classes.contactInfo }}
+									>
+										{section.label}
+									</Typography>
+								</Grid>
 							</Grid>
-						</Grid>
-						<Grid
-							item
-							container
-							alignItems="center"
-							classes={{ root: classes.middleInfo }}
-						>
-							<Grid
-								item
-								classes={{ root: classes.iconContainer }}
-							>
-								<div className={classes.contactIcon}>
-									<Phone />
-								</div>
-							</Grid>
-							<Grid item>
-								<Typography
-									variant="h2"
-									classes={{ root: classes.contactInfo }}
-								>
-									(+84) 369 149 942
-								</Typography>
-							</Grid>
-						</Grid>
-						<Grid item container alignItems="center">
-							<Grid
-								item
-								classes={{ root: classes.iconContainer }}
-							>
-								{/* the customized SVG icon couldn't be displayed (scaled) without being
-								contained in a parent with set dimensions */}
-								<div className={classes.contactEmailIcon}>
-									<Email color="#fff" />
-								</div>
-							</Grid>
-							<Grid item>
-								<Typography
-									variant="h2"
-									classes={{ root: classes.contactInfo }}
-								>
-									khoile5399@gmail.com
-								</Typography>
-							</Grid>
-						</Grid>
+						))}
 					</Grid>
 				</Grid>
 			</Grid>
