@@ -1,9 +1,10 @@
 import React, { useState } from "react"
 import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
+// import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 
 import FunctionContainer from "./FunctionContainer"
+import DescriptionContainer from "./DescriptionContainer"
 
 const useStyles = makeStyles(theme => ({
 	toolbar: {
@@ -15,8 +16,9 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function DynamicToolbar({ filterOptions }) {
+export default function DynamicToolbar({ filterOptions, name, description }) {
 	const classes = useStyles()
+	const [option, setOption] = useState(null)
 
 	return (
 		<Grid
@@ -25,7 +27,14 @@ export default function DynamicToolbar({ filterOptions }) {
 			direction="column"
 			classes={{ root: classes.toolbar }}
 		>
-			<FunctionContainer filterOptions={filterOptions} />
+			<FunctionContainer
+				option={option}
+				setOption={setOption}
+				filterOptions={filterOptions}
+			/>
+			{option === null && (
+				<DescriptionContainer name={name} description={description} />
+			)}
 		</Grid>
 	)
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import Grid from "@material-ui/core/Grid"
 //import Typography from "@material-ui/core/Typography"
 import IconButton from "@material-ui/core/IconButton"
@@ -15,14 +15,19 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.primary.main,
 		minHeight: "6rem",
 		height: "auto", //extends as far as it needs to cover up the checkboxes
-		borderRadius: ({ option }) =>
-			option !== null ? "10px" : "10px 10px 0px 0px",
+		borderRadius: (
+			{ option } // conditionally applies style based on the component's props (passed in as useStyles's param)
+		) => (option !== null ? "10px" : "10px 10px 0px 0px"),
 	},
 }))
 
-export default function FunctionContainer({ filterOptions }) {
-	const classes = useStyles()
-	const [option, setOption] = useState(null)
+export default function FunctionContainer({
+	filterOptions,
+	option, // lifted state to be passed down to from its parent <DynamicToolbar>
+	setOption,
+}) {
+	const classes = useStyles({ option }) // same as useStyles({ option:option }) with the latter is the component's prop,
+	// and the former is the actual prop that you'll use in makeStyles()
 
 	const content = () => {
 		switch (option) {
