@@ -17,6 +17,20 @@ exports.createPages = async ({ graphql, actions }) => {
 					name
 					strapiId
 					description
+					filterOptions {
+						Size {
+							checked
+							label
+						}
+						Style {
+							checked
+							label
+						}
+						Color {
+							checked
+							label
+						}
+					}
 				}
 			}
 		}
@@ -31,9 +45,9 @@ exports.createPages = async ({ graphql, actions }) => {
 
 	products.forEach(product => {
 		createPage({
-			path: `/${product.category.name.toLowerCase()}/${encodeURIComponent(
+			path: `/${product.category.name.toLowerCase()}/${
 				product.name.split(" ")[0]
-			)}`,
+			}`,
 			component: require.resolve("./src/templates/ProductDetail.js"),
 			context: {
 				name: product.name,
@@ -51,6 +65,7 @@ exports.createPages = async ({ graphql, actions }) => {
 				name: category.name,
 				id: category.strapiId,
 				description: category.description,
+				filterOptions: category.filterOptions,
 			},
 		})
 	})
