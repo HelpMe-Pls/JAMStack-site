@@ -18,15 +18,15 @@ const useStyles = makeStyles(theme => ({
 	descriptionContainer: {
 		backgroundColor: theme.palette.primary.main,
 		height: "15rem",
-		width: "60%", //60rem
+		width: "60%",
 		borderRadius: 25,
 		padding: "1rem",
-		[theme.breakpoints.down("md")]: {
-			width: "100%",
-		},
-		[theme.breakpoints.down("sm")]: {
-			borderRadius: 0,
-		},
+		// [theme.breakpoints.down("md")]: {
+		// 	width: "100%",
+		// },
+		// [theme.breakpoints.down("sm")]: {
+		// 	borderRadius: 0,
+		// },
 	},
 	mainContainer: {
 		padding: "3rem",
@@ -35,9 +35,9 @@ const useStyles = makeStyles(theme => ({
 		backgroundPosition: "center",
 		backgroundRepeat: "no-repeat",
 		position: "relative", // so that it keeps the <ButtonGroup> within its border
-		[theme.breakpoints.down("sm")]: {
-			padding: "3rem 0",
-		},
+		// [theme.breakpoints.down("sm")]: {
+		// 	padding: "3rem 0",
+		// },
 	},
 	button: {
 		border: `2px solid ${theme.palette.primary.main}`,
@@ -61,17 +61,17 @@ const useStyles = makeStyles(theme => ({
 		bottom: 0,
 		marginRight: "3rem",
 		marginBottom: "3rem",
-		[theme.breakpoints.down("md")]: {
-			position: "relative",
-			display: "flex",
-			alignSelf: "flex-end",
-			marginRight: 0,
-			marginBottom: 0,
-			marginTop: "3rem",
-		},
-		[theme.breakpoints.down("sm")]: {
-			marginRight: "1.5rem",
-		},
+		// [theme.breakpoints.down("md")]: {
+		// 	position: "relative",
+		// 	display: "flex",
+		// 	alignSelf: "flex-end",
+		// 	marginRight: 0,
+		// 	marginBottom: 0,
+		// 	marginTop: "3rem",
+		// },
+		// [theme.breakpoints.down("sm")]: {
+		// 	marginRight: "1.5rem",
+		// },
 	},
 }))
 

@@ -12,8 +12,8 @@ const useStyles = makeStyles({
 	},
 })
 
-export default function Rating({ number, size }) {
-	const empStar = 5 - Math.ceil(number) // get the empty stars (rounded up as whole)
+export default function Rating({ star, size }) {
+	const empStar = 5 - Math.ceil(star) // get the empty stars (rounded up as whole)
 	const classes = useStyles({ size })
 
 	return (
@@ -21,7 +21,7 @@ export default function Rating({ number, size }) {
 			{
 				// get fullStars rounded down as whole (3.5 => 3)
 				// use spreading so that it gets the array's structure, not just the number
-				[...Array(Math.floor(number))].map(
+				[...Array(Math.floor(star))].map(
 					(
 						ele,
 						i // {ele} is there just to make sure the {i} is the star's index, according to map()'s definition
@@ -37,7 +37,7 @@ export default function Rating({ number, size }) {
 			}
 			{
 				// there can only ONE half star for each rating so there's no need to map
-				number % 1 !== 0 ? <img src={halfStar} alt="half-star" /> : null
+				star % 1 !== 0 ? <img src={halfStar} alt="half-star" /> : null
 			}
 			{[...Array(empStar)].map((ele, i) => (
 				<img src={emptyStar} alt="empty-star" key={`${i}-empty`} />

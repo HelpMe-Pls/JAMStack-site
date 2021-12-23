@@ -4,10 +4,11 @@ import { graphql } from "gatsby"
 
 import Layout from "../components/ui/layout"
 import DynamicToolbar from "../components/product-list/DynamicToolbar"
+import ListOfProducts from "../components/product-list/ListOfProducts"
 
 export const query = graphql`
 	query GetCategorizedProducts($id: String!) {
-		# $id is retrieved from the pageContext
+		# $id is retrieved from the {pageContext}
 		allStrapiProduct(filter: { category: { id: { eq: $id } } }) {
 			nodes {
 				name
@@ -28,7 +29,12 @@ export const query = graphql`
 `
 
 export default function ProductList({
-	pageContext: { filterOptions, name, description }, // nested destructuring
+	// nested destructuring:
+	pageContext: { filterOptions, name, description },
+	data: {
+		// data.allStrapiProduct.nodes ==> data.allStrapiProduct.products
+		allStrapiProduct: { nodes: products },
+	},
 }) {
 	return (
 		<Layout>
@@ -38,6 +44,7 @@ export default function ProductList({
 					name={name}
 					description={description}
 				/>
+				<ListOfProducts products={products} />
 			</Grid>
 		</Layout>
 	)

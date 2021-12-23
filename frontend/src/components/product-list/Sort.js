@@ -11,13 +11,13 @@ import sort from "../../images/sort.svg"
 import close from "../../images/close-outline.svg"
 
 const useStyles = makeStyles(theme => ({
-	chipRoot: {
-		backgroundColor: theme.palette.secondary.main,
+	chipContainer: {
+		[theme.breakpoints.down("md")]: {
+			margin: "0.5rem",
+		},
 	},
-	chipLabel: {
-		...theme.typography.body1,
-		color: "#fff",
-		fontWeight: "500",
+	notActive: {
+		backgroundColor: theme.palette.primary.main,
 	},
 }))
 
@@ -45,13 +45,7 @@ export default function Sort({ setOption }) {
 				<Grid container justifyContent="space-around">
 					{sortOptions.map(option => (
 						<Grid item key={option.label}>
-							<Chip
-								label={option.label}
-								classes={{
-									root: classes.chipRoot,
-									label: classes.chipLabel,
-								}}
-							/>
+							<Chip label={option.label} />
 						</Grid>
 					))}
 				</Grid>

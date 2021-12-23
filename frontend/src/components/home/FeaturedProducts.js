@@ -191,7 +191,7 @@ export default function FeaturedProducts() {
 								</Typography>
 							</Grid>
 							<Grid item>
-								<Rating number={4} />
+								<Rating star={4} />
 							</Grid>
 							<Grid item>
 								<Chip
