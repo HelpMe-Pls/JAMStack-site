@@ -38,6 +38,7 @@ const useStyles = makeStyles(theme => ({
 		// [theme.breakpoints.down("sm")]: {
 		// 	padding: "3rem 0",
 		// },
+
 	},
 	button: {
 		border: `2px solid ${theme.palette.primary.main}`,
@@ -72,6 +73,7 @@ const useStyles = makeStyles(theme => ({
 		// [theme.breakpoints.down("sm")]: {
 		// 	marginRight: "1.5rem",
 		// },
+
 	},
 }))
 
