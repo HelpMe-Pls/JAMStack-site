@@ -10,7 +10,7 @@ import { Link } from "gatsby"
 
 import Rating from "../home/Rating"
 import Sizes from "./Sizes"
-// import Swatches from "./Swatches"
+import Swatches from "./Swatches"
 // import QtyButton from "./QtyButton"
 // import { getStockDisplay } from "../product-detail/ProductInfo"
 
@@ -92,9 +92,13 @@ export default function QuickView({
 	const classes = useStyles()
 
 	const [selectedSize, setSelectedSize] = useState(null)
+	const [selectedColor, setSelectedColor] = useState(null)
 
+	let colors = []
 	let sizes = []
-	product.variants.map(variant => sizes.push(variant.size))
+	product.variants.map(variant => {
+		return sizes.push(variant.size), colors.push(variant.color)
+	})
 
 	return (
 		<Dialog
@@ -161,12 +165,17 @@ export default function QuickView({
 								classes={{ root: classes.chipRoot }}
 							/>
 						</Grid>
-						<Grid item container direction="column">
-							<Grid item>
+						<Grid item>
+							<Grid container direction="column">
 								<Sizes
 									sizes={sizes}
 									selectedSize={selectedSize}
 									setSelectedSize={setSelectedSize}
+								/>
+								<Swatches
+									selectedColor={selectedColor}
+									setSelectedColor={setSelectedColor}
+									colors={colors}
 								/>
 							</Grid>
 						</Grid>
