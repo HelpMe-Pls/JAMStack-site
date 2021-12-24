@@ -114,9 +114,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	textField: {
 		width: "30rem",
-		// [theme.breakpoints.down("sm")]: {
-		// 	width: "20rem",
-		// },
 		[theme.breakpoints.down("xs")]: {
 			width: "18rem",
 		},
