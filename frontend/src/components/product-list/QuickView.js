@@ -11,7 +11,7 @@ import { Link } from "gatsby"
 import Rating from "../home/Rating"
 import Sizes from "./Sizes"
 import Swatches from "./Swatches"
-// import QtyButton from "./QtyButton"
+import QtyButton from "./QtyButton"
 // import { getStockDisplay } from "../product-detail/ProductInfo"
 
 import frame from "../../images/selected-frame.svg"
@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.primary.main,
 		height: "13rem",
 		marginTop: "2rem",
-		padding: "0.5rem 1rem",
+		padding: "0.5rem 1.5rem",
 		position: "relative",
 	},
 	stock: {
@@ -66,6 +66,8 @@ const useStyles = makeStyles(theme => ({
 	chipContainer: {
 		display: "flex",
 		alignItems: "center",
+		justifyContent: "center",
+		marginLeft: "-6.69rem",
 	},
 	qtyContainer: {
 		marginTop: "2.25rem",
@@ -96,8 +98,9 @@ export default function QuickView({
 
 	let colors = []
 	let sizes = []
-	product.variants.map(variant => {
-		return sizes.push(variant.size), colors.push(variant.color)
+	product.variants.forEach(variant => {
+		sizes.push(variant.size)
+		colors.push(variant.color)
 	})
 
 	return (
@@ -177,6 +180,7 @@ export default function QuickView({
 									setSelectedColor={setSelectedColor}
 									colors={colors}
 								/>
+								<QtyButton />
 							</Grid>
 						</Grid>
 					</Grid>
