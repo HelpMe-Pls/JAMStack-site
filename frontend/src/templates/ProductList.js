@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react"
 import Fab from "@material-ui/core/Fab"
-//import Pagination from "@material-ui/lab/Pagination"
+import Pagination from "@material-ui/lab/Pagination"
 import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/core/styles"
 import { graphql } from "gatsby"
@@ -22,8 +22,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	pagination: {
 		alignSelf: "flex-end",
-		marginRight: "2%",
-		marginTop: "-3rem",
+		marginRight: "1.69%",
+		marginTop: "-2rem",
 		marginBottom: "4rem",
 		[theme.breakpoints.only("md")]: {
 			marginTop: "1rem",
@@ -75,11 +75,18 @@ export default function ProductList({
 	const classes = useStyles()
 
 	const [layout, setLayout] = useState("grid")
+	const [page, setPage] = useState(1)
 	const scrollRef = useRef(null)
 
 	const scrollToTop = () => {
 		scrollRef.current.scrollIntoView({ behavior: "smooth" })
 	}
+
+	const productsPerPage = layout === "list" ? 6 : 15
+	let totalVariants = 0
+
+	products.map(product => (totalVariants += product.variants.length))
+	const totalPages = Math.ceil(totalVariants / productsPerPage)
 
 	return (
 		<Layout>
@@ -91,8 +98,21 @@ export default function ProductList({
 					description={description}
 					layout={layout}
 					setLayout={setLayout}
+					setPage={setPage}
 				/>
-				<ListOfProducts layout={layout} products={products} />
+				<ListOfProducts
+					page={page}
+					productsPerPage={productsPerPage}
+					layout={layout}
+					products={products}
+				/>
+				<Pagination
+					count={totalPages}
+					page={page}
+					onChange={(e, newPage) => setPage(newPage)}
+					color="primary"
+					classes={{ root: classes.pagination }}
+				/>
 				<Fab
 					onClick={scrollToTop}
 					color="primary"

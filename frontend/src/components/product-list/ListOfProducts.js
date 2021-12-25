@@ -70,7 +70,12 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function ListOfProducts({ products, layout }) {
+export default function ListOfProducts({
+	products,
+	layout,
+	page,
+	productsPerPage,
+}) {
 	const classes = useStyles({ layout })
 
 	const FrameHelper = ({ Frame, product, variant }) => {
@@ -97,22 +102,33 @@ export default function ListOfProducts({ products, layout }) {
 		)
 	}
 
+	let content = []
+	products.map(
+		(
+			product,
+			temp // adding {temp} as a buffer to actually have a field called {product} in the object of {content.push}
+		) =>
+			product.variants.map(variant =>
+				content.push({ product: temp, variant })
+			)
+	)
+
 	return (
 		<Grid item container classes={{ root: classes.productContainer }}>
-			{products.map(product =>
-				product.variants.map(variant => (
+			{content
+				.slice((page - 1) * productsPerPage, page * productsPerPage)
+				.map(item => (
 					<FrameHelper
 						Frame={
 							layout === "grid"
 								? ProductFrameGrid
 								: ProductFrameList
 						}
-						key={variant.id}
-						product={product}
-						variant={variant}
+						key={item.variant.id}
+						product={products[item.product]}
+						variant={item.variant}
 					/>
-				))
-			)}
+				))}
 		</Grid>
 	)
 }
