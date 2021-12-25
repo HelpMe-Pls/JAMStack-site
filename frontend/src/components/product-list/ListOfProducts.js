@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles"
 // import { GET_DETAILS } from "../../apollo/queries"
 
 import ProductFrameGrid from "./ProductFrameGrid"
+import ProductFrameList from "./ProductFrameList"
 
 const useStyles = makeStyles(theme => ({
 	productContainer: {
@@ -18,10 +19,11 @@ const useStyles = makeStyles(theme => ({
 			// 25rem * 4: get the space that 4 products take up (no space in between them)
 			// 100% - (25rem * 4): to get the space remained after rendering out 4 products
 			// Ans/3: we want the space in between the 4 products to be evenly divided by 3
-			marginRight: "calc((100% - (25rem * 4)) / 3)",
+			marginRight: ({ layout }) =>
+				layout === "grid" ? "calc((100% - (25rem * 4)) / 3)" : 0,
 			marginBottom: "5rem",
 		},
-		// & > :nth-child(4n): apply this style for every last child (4n === 4ths) in this container
+		// & > :nth-child(4n): apply this style for EVERY 4th child (4n === 4ths) in this container
 		"& > :nth-child(4n)": {
 			marginRight: 0, // so that the last child will not be pushed down to the next row
 		},
@@ -68,17 +70,46 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function ListOfProducts({ products }) {
-	const classes = useStyles()
+export default function ListOfProducts({ products, layout }) {
+	const classes = useStyles({ layout })
+
+	const FrameHelper = ({ Frame, product, variant }) => {
+		const [selectedSize, setSelectedSize] = useState(null)
+		const [selectedColor, setSelectedColor] = useState(null)
+
+		let colors = []
+		let sizes = []
+		product.variants.forEach(variant => {
+			sizes.push(variant.size)
+			colors.push(variant.color)
+		})
+		return (
+			<Frame
+				sizes={sizes}
+				selectedSize={selectedSize}
+				setSelectedSize={setSelectedSize}
+				colors={colors}
+				selectedColor={selectedColor}
+				setSelectedColor={setSelectedColor}
+				product={product}
+				variant={variant}
+			></Frame>
+		)
+	}
 
 	return (
 		<Grid item container classes={{ root: classes.productContainer }}>
 			{products.map(product =>
 				product.variants.map(variant => (
-					<ProductFrameGrid
+					<FrameHelper
+						Frame={
+							layout === "grid"
+								? ProductFrameGrid
+								: ProductFrameList
+						}
 						key={variant.id}
-						variant={variant}
 						product={product}
+						variant={variant}
 					/>
 				))
 			)}

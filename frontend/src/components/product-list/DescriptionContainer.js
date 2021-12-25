@@ -38,7 +38,6 @@ const useStyles = makeStyles(theme => ({
 		// [theme.breakpoints.down("sm")]: {
 		// 	padding: "3rem 0",
 		// },
-
 	},
 	button: {
 		border: `2px solid ${theme.palette.primary.main}`,
@@ -73,13 +72,16 @@ const useStyles = makeStyles(theme => ({
 		// [theme.breakpoints.down("sm")]: {
 		// 	marginRight: "1.5rem",
 		// },
-
 	},
 }))
 
-export default function DescriptionContainer({ name, description }) {
+export default function DescriptionContainer({
+	name,
+	description,
+	layout,
+	setLayout,
+}) {
 	const classes = useStyles()
-	const [layout, setLayout] = useState("grid")
 
 	return (
 		<Grid

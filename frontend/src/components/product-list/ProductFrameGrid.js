@@ -67,7 +67,16 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function ProductFrameGrid({ product, variant }) {
+export default function ProductFrameGrid({
+	product,
+	variant,
+	sizes,
+	selectedSize,
+	setSelectedSize,
+	colors,
+	selectedColor,
+	setSelectedColor,
+}) {
 	const classes = useStyles()
 
 	const [openDialog, setOpenDialog] = useState(false)
@@ -94,6 +103,12 @@ export default function ProductFrameGrid({ product, variant }) {
 				</Grid>
 			</Grid>
 			<QuickView
+				sizes={sizes}
+				selectedSize={selectedSize}
+				setSelectedSize={setSelectedSize}
+				colors={colors}
+				selectedColor={selectedColor}
+				setSelectedColor={setSelectedColor}
 				open={openDialog}
 				setOpen={setOpenDialog}
 				url={imgURL}

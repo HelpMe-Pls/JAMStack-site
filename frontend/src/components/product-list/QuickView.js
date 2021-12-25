@@ -86,22 +86,17 @@ const useStyles = makeStyles(theme => ({
 export default function QuickView({
 	open,
 	setOpen,
-	product,
 	url,
 	name,
 	price,
+	sizes,
+	selectedSize,
+	setSelectedSize,
+	colors,
+	selectedColor,
+	setSelectedColor,
 }) {
 	const classes = useStyles()
-
-	const [selectedSize, setSelectedSize] = useState(null)
-	const [selectedColor, setSelectedColor] = useState(null)
-
-	let colors = []
-	let sizes = []
-	product.variants.forEach(variant => {
-		sizes.push(variant.size)
-		colors.push(variant.color)
-	})
 
 	return (
 		<Dialog
@@ -176,11 +171,13 @@ export default function QuickView({
 									setSelectedSize={setSelectedSize}
 								/>
 								<Swatches
+									colors={colors}
 									selectedColor={selectedColor}
 									setSelectedColor={setSelectedColor}
-									colors={colors}
 								/>
-								<QtyButton />
+								<span className={classes.qtyContainer}>
+									<QtyButton />
+								</span>
 							</Grid>
 						</Grid>
 					</Grid>
