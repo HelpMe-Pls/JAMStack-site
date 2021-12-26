@@ -94,16 +94,16 @@ const useStyles = makeStyles(theme => ({
 // Using product.variants.indexOf({ color: "#E84A5F" }) doesn't work because indexOf() implemented strict equality comparison
 // Therefore, the reference of { color: "#E84A5F" } could never be found
 
-// export const colorIndex = (product, color) => {
-// 	return product.variants.indexOf(
-// 		product.variants.filter(variant => variant.color === color)[0]
-// 	)
-// }
+// if there's no {style}, we could use:
+// export const colorIndex = (product, color) => product.variants.findIndex(item => item.color === color)
 
-// slicker way to do the above:
-export const colorIndex = (product, color) =>
-	product.variants.findIndex(variant => variant.color === color)
-
+export const colorIndex = (product, variant, color) => {
+	return product.variants.indexOf(
+		product.variants.filter(
+			item => item.color === color && variant.style === item.style
+		)[0]
+	)
+}
 export default function ProductFrameGrid({
 	product,
 	variant,
@@ -118,7 +118,7 @@ export default function ProductFrameGrid({
 
 	const [openDialog, setOpenDialog] = useState(false)
 
-	const imageIndex = colorIndex(product, selectedColor)
+	const imageIndex = colorIndex(product, variant, selectedColor)
 
 	const imgURL =
 		process.env.GATSBY_STRAPI_URL +
@@ -131,7 +131,9 @@ export default function ProductFrameGrid({
 		<Grid
 			item
 			classes={{
-				root: clsx({ [classes.invisibility]: openDialog === true }),
+				root: clsx(classes.frameContainer, {
+					[classes.invisibility]: openDialog === true,
+				}),
 			}}
 		>
 			<Grid

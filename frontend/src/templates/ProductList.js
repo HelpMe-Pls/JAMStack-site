@@ -48,6 +48,9 @@ export const query = graphql`
 			nodes {
 				name
 				strapiId
+				category {
+					name
+				}
 				variants {
 					id
 					color

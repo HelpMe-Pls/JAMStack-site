@@ -65,7 +65,7 @@ export default function ProductFrameList({
 }) {
 	const classes = useStyles()
 
-	const imageIndex = colorIndex(product, selectedColor)
+	const imageIndex = colorIndex(product, variant, selectedColor)
 
 	const images =
 		imageIndex !== -1 ? product.variants[imageIndex].images : variant.images
@@ -81,7 +81,14 @@ export default function ProductFrameList({
 				classes={{ root: classes.frame }}
 			>
 				{images.map(image => (
-					<Grid item key={image.name}>
+					<Grid
+						item
+						key={image.name}
+						component={Link}
+						to={`/${product.category.name.toLowerCase()}/${product.name
+							.split(" ")[0]
+							.toLowerCase()}`}
+					>
 						<img
 							src={process.env.GATSBY_STRAPI_URL + image.url}
 							alt={image.name}
@@ -98,7 +105,15 @@ export default function ProductFrameList({
 				justify="space-between"
 				classes={{ root: classes.info }}
 			>
-				<Grid item container direction="column">
+				<Grid
+					item
+					container
+					direction="column"
+					component={Link}
+					to={`/${product.category.name.toLowerCase()}/${product.name
+						.split(" ")[0]
+						.toLowerCase()}`}
+				>
 					<Grid item>
 						<Typography variant="h4">
 							{product.name.split(" ")[0]}

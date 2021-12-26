@@ -88,6 +88,7 @@ const useStyles = makeStyles(theme => ({
 export default function QuickView({
 	open,
 	setOpen,
+	product,
 	url,
 	name,
 	price,
@@ -108,7 +109,13 @@ export default function QuickView({
 		>
 			<DialogContent classes={{ root: classes.selectedFrame }}>
 				<Grid container direction="column" alignItems="center">
-					<Grid item>
+					<Grid
+						item
+						component={Link}
+						to={`/${product.category.name.toLowerCase()}/${product.name
+							.split(" ")[0]
+							.toLowerCase()}`}
+					>
 						<img
 							src={url}
 							alt="product quick view"
@@ -127,6 +134,10 @@ export default function QuickView({
 								direction="column"
 								justifyContent="space-between"
 								classes={{ root: classes.infoContainer }}
+								component={Link}
+								to={`/${product.category.name.toLowerCase()}/${product.name
+									.split(" ")[0]
+									.toLowerCase()}`}
 							>
 								<Grid item>
 									<Typography variant="h4">{name}</Typography>

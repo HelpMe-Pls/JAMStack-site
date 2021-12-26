@@ -86,7 +86,9 @@ export default function ListOfProducts({
 		let sizes = []
 		product.variants.forEach(variant => {
 			sizes.push(variant.size)
-			colors.push(variant.color)
+
+			// fix duplicate color swatches in "shirt" category
+			if (!colors.includes(variant.color)) colors.push(variant.color)
 		})
 		return (
 			<Frame
