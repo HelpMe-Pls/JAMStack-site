@@ -21,26 +21,26 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		// [theme.breakpoints.down("xs")]: {
-		// 	height: "20rem",
-		// 	width: "20rem",
-		// },
-		// [theme.breakpoints.up("xs")]: {
-		// 	height: ({ small }) => (small ? "15rem" : undefined),
-		// 	width: ({ small }) => (small ? "15rem" : undefined),
-		// },
+		[theme.breakpoints.down("xs")]: {
+			height: "20rem",
+			width: "20rem",
+		},
+		[theme.breakpoints.up("xs")]: {
+			height: ({ small }) => (small ? "15rem" : undefined),
+			width: ({ small }) => (small ? "15rem" : undefined),
+		},
 	},
 	product: {
 		height: "20rem",
 		width: "20rem",
-		// [theme.breakpoints.down("xs")]: {
-		// 	height: "15rem",
-		// 	width: "15rem",
-		// },
-		// [theme.breakpoints.up("xs")]: {
-		// 	height: ({ small }) => (small ? "12rem" : undefined),
-		// 	width: ({ small }) => (small ? "12rem" : undefined),
-		// },
+		[theme.breakpoints.down("xs")]: {
+			height: "15rem",
+			width: "15rem",
+		},
+		[theme.breakpoints.up("xs")]: {
+			height: ({ small }) => (small ? "12rem" : undefined),
+			width: ({ small }) => (small ? "12rem" : undefined),
+		},
 	},
 	title: {
 		backgroundColor: theme.palette.primary.main,
@@ -50,12 +50,12 @@ const useStyles = makeStyles(theme => ({
 		justifyContent: "center",
 		alignItems: "center",
 		marginTop: "-0.1rem",
-		// [theme.breakpoints.down("xs")]: {
-		// 	width: "20rem",
-		// },
-		// [theme.breakpoints.up("xs")]: {
-		// 	width: ({ small }) => (small ? "15rem" : undefined),
-		// },
+		[theme.breakpoints.down("xs")]: {
+			width: "20rem",
+		},
+		[theme.breakpoints.up("xs")]: {
+			width: ({ small }) => (small ? "15rem" : undefined),
+		},
 	},
 	invisibility: {
 		visibility: "hidden",
@@ -118,6 +118,11 @@ export default function ProductFrameGrid({
 
 	const [openDialog, setOpenDialog] = useState(false)
 
+	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
+	if (matchesMD && openDialog) {
+		setOpenDialog(false)
+	}
+
 	const imageIndex = colorIndex(product, variant, selectedColor)
 
 	const imgURL =
@@ -139,7 +144,15 @@ export default function ProductFrameGrid({
 			<Grid
 				container
 				direction="column"
-				onClick={() => setOpenDialog(true)}
+				onClick={() =>
+					matchesMD
+						? navigate(
+								`/${product.category.name.toLowerCase()}/${
+									product.name.split(" ")[0]
+								}`
+						  )
+						: setOpenDialog(true)
+				}
 			>
 				<Grid item classes={{ root: classes.frame }}>
 					<img

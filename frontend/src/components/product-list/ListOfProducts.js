@@ -13,60 +13,56 @@ import ProductFrameList from "./ProductFrameList"
 const useStyles = makeStyles(theme => ({
 	productContainer: {
 		width: "95%",
-		// & > *: apply these styles for every child in this container
-		"& > *": {
-			// 25rem is the frame's width from <ProductFrameGrid>
-			// 25rem * 4: get the space that 4 products take up (no space in between them)
-			// 100% - (25rem * 4): to get the space remained after rendering out 4 products
-			// Ans/3: we want the space in between the 4 products to be evenly divided by 3
-			marginRight: ({ layout }) =>
-				layout === "grid" ? "calc((100% - (25rem * 4)) / 3)" : 0,
-			marginBottom: "5rem",
-		},
-		// & > :nth-child(4n): apply this style for EVERY 4th child (4n === 4ths) in this container
-		"& > :nth-child(4n)": {
-			marginRight: 0, // so that the last child will not be pushed down to the next row
-		},
+		// ## & > *: apply these styles for every child in this container
+		// "& > *": {
+		// 	 25rem is the frame's width from <ProductFrameGrid>
+		// 	 25rem * 4: get the space that 4 products take up (no space in between them)
+		// 	 100% - (25rem * 4): to get the space remained after rendering out 4 products
+		// 	 Ans/3: we want the space in between the 4 products to be evenly divided by 3
+		// 	marginRight: ({ layout }) =>
+		// 		layout === "grid" ? "calc((100% - (25rem * 4)) / 3)" : 0,
+		// 	marginBottom: "5rem",
+		// },
+		// ## & > :nth-child(4n): apply this style for EVERY 4th child (4n === 4ths) in this container
+		// "& > :nth-child(4n)": {
+		// 	marginRight: 0, // so that the last child will not be pushed down to the next row
+		// },
 
-		// [theme.breakpoints.only("xl")]: {
-		// 	"& > *": { // apply these styles for every child in this container
-		// // 25rem is the frame's width from <ProductFrameGrid>
-		// // 25rem * 4: we want 4 products per row
-		// // 100% - (25rem * 4): to get the space remained after rendering out 4 products
-		// // Ans/3: we want the space in between the 4 products to be evenly divided by 3
-		// 		marginRight: ({ layout }) =>
-		// 			layout === "grid" ? "calc((100% - (25rem * 4)) / 3)" : 0,
-		// 		marginBottom: "5rem",
-		// 	},
-		// 	"& > :nth-child(4n)": {
-		// 		marginRight: 0,
-		// 	},
-		// },
-		// [theme.breakpoints.only("lg")]: {
-		// 	"& > *": {
-		// 		marginRight: ({ layout }) =>
-		// 			layout === "grid" ? "calc((100% - (25rem * 3)) / 2)" : 0,
-		// 		marginBottom: "5rem",
-		// 	},
-		// 	"& > :nth-child(3n)": {
-		// 		marginRight: 0,
-		// 	},
-		// },
-		// [theme.breakpoints.only("md")]: {
-		// 	"& > *": {
-		// 		marginRight: ({ layout }) =>
-		// 			layout === "grid" ? "calc(100% - (25rem * 2))" : 0,
-		// 		marginBottom: "5rem",
-		// 	},
-		// 	"& > :nth-child(2n)": {
-		// 		marginRight: 0,
-		// 	},
-		// },
-		// [theme.breakpoints.down("sm")]: {
-		// 	"& > *": {
-		// 		marginBottom: "5rem",
-		// 	},
-		// },
+		[theme.breakpoints.only("xl")]: {
+			"& > *": {
+				marginRight: ({ layout }) =>
+					layout === "grid" ? "calc((100% - (25rem * 4)) / 3)" : 0,
+				marginBottom: "5rem",
+			},
+			"& > :nth-child(4n)": {
+				marginRight: 0,
+			},
+		},
+		[theme.breakpoints.only("lg")]: {
+			"& > *": {
+				marginRight: ({ layout }) =>
+					layout === "grid" ? "calc((100% - (25rem * 3)) / 2)" : 0,
+				marginBottom: "5rem",
+			},
+			"& > :nth-child(3n)": {
+				marginRight: 0,
+			},
+		},
+		[theme.breakpoints.only("md")]: {
+			"& > *": {
+				marginRight: ({ layout }) =>
+					layout === "grid" ? "calc(100% - (25rem * 2))" : 0,
+				marginBottom: "5rem",
+			},
+			"& > :nth-child(2n)": {
+				marginRight: 0,
+			},
+		},
+		[theme.breakpoints.down("sm")]: {
+			"& > *": {
+				marginBottom: "5rem",
+			},
+		},
 	},
 }))
 
@@ -77,6 +73,7 @@ export default function ListOfProducts({
 	productsPerPage,
 }) {
 	const classes = useStyles({ layout })
+	const matchesSM = useMediaQuery(theme => theme.breakpoints.down("sm"))
 
 	const FrameHelper = ({ Frame, product, variant }) => {
 		const [selectedSize, setSelectedSize] = useState(null)
@@ -116,7 +113,13 @@ export default function ListOfProducts({
 	)
 
 	return (
-		<Grid item container classes={{ root: classes.productContainer }}>
+		<Grid
+			item
+			container
+			direction={matchesSM ? "column" : "row"}
+			alignItems={matchesSM ? "center" : undefined}
+			classes={{ root: classes.productContainer }}
+		>
 			{content
 				.slice((page - 1) * productsPerPage, page * productsPerPage)
 				.map(item => (

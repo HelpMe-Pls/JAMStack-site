@@ -45,7 +45,11 @@ export default function Filter({ setOption, filterOptions }) {
 				</IconButton>
 			</Grid>
 			<Grid item xs>
-				<Grid container justifyContent="space-around">
+				<Grid
+					container
+					justifyContent="space-around"
+					classes={{ root: classes.optionsContainer }}
+				>
 					{Object.keys(filterOptions)
 						.filter(option => filterOptions[option] !== null)
 						.map(option => (
