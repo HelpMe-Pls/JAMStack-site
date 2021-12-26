@@ -65,6 +65,11 @@ export default function ProductFrameList({
 }) {
 	const classes = useStyles()
 
+	const imageIndex = colorIndex(product, selectedColor)
+
+	const images =
+		imageIndex !== -1 ? product.variants[imageIndex].images : variant.images
+
 	return (
 		<Grid item container>
 			<Grid
@@ -75,7 +80,7 @@ export default function ProductFrameList({
 				alignItems="center"
 				classes={{ root: classes.frame }}
 			>
-				{variant.images.map(image => (
+				{images.map(image => (
 					<Grid item key={image.name}>
 						<img
 							src={process.env.GATSBY_STRAPI_URL + image.url}
@@ -103,7 +108,10 @@ export default function ProductFrameList({
 						<Rating star={3.5} />
 					</Grid>
 					<Grid item>
-						<Chip label={`$${variant.price}`} />
+						<Chip
+							label={`$${variant.price}`}
+							classes={{ label: classes.chipLabel }}
+						/>
 					</Grid>
 					<Grid item>
 						<Typography

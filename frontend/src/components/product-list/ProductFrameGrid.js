@@ -67,6 +67,43 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+// e.g. get colorIndex of the "red lightbulb - hat" :
+// const product = {
+// 	"variants": [
+// 	{
+// 		"color": "#FFF"
+// 	},
+// 	{
+// 		"color": "#2A363B"
+// 	},
+// 	{
+// 		"color": "#99B898"
+// 	},
+// 	{
+// 		"color": "#FECEA8"
+// 	},
+// 	{
+// 		"color": "#E84A5F"
+// 	}
+// 	]
+// };
+// product.variants.filter(variant => variant.color === "#E84A5F") returns the array [{ color: "#E84A5F" }]
+// [{ color: "#E84A5F" }][0] returns the object { color: "#E84A5F" }
+// product.variants.indexOf({ color: "#E84A5F" }) returns 4
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf#description
+// Using product.variants.indexOf({ color: "#E84A5F" }) doesn't work because indexOf() implemented strict equality comparison
+// Therefore, the reference of { color: "#E84A5F" } could never be found
+
+// export const colorIndex = (product, color) => {
+// 	return product.variants.indexOf(
+// 		product.variants.filter(variant => variant.color === color)[0]
+// 	)
+// }
+
+// slicker way to do the above:
+export const colorIndex = (product, color) =>
+	product.variants.findIndex(variant => variant.color === color)
+
 export default function ProductFrameGrid({
 	product,
 	variant,
@@ -81,11 +118,22 @@ export default function ProductFrameGrid({
 
 	const [openDialog, setOpenDialog] = useState(false)
 
-	const imgURL = process.env.GATSBY_STRAPI_URL + variant.images[0].url
+	const imageIndex = colorIndex(product, selectedColor)
+
+	const imgURL =
+		process.env.GATSBY_STRAPI_URL +
+		(imageIndex !== -1
+			? product.variants[imageIndex].images[0].url
+			: variant.images[0].url)
 	const productName = product.name.split(" ")[0]
 
 	return (
-		<Grid item>
+		<Grid
+			item
+			classes={{
+				root: clsx({ [classes.invisibility]: openDialog === true }),
+			}}
+		>
 			<Grid
 				container
 				direction="column"

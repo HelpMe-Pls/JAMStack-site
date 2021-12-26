@@ -67,19 +67,21 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		alignItems: "center",
 		justifyContent: "center",
-		marginLeft: "-6.69rem",
+		// use {position} prop from the <toolbar>, <infoItem>, <actionsItem>
+		// to fix this instead of hard coding in
+		// marginLeft: "-6.69rem",
 	},
 	qtyContainer: {
 		marginTop: "2.25rem",
 	},
 	infoItem: {
 		position: "absolute",
-		left: "1rem",
+		left: "1.69rem",
 		height: "calc(100% - 1rem)",
 	},
 	actionsItem: {
 		position: "absolute",
-		right: "1rem",
+		right: "1.69rem",
 	},
 }))
 
@@ -117,9 +119,9 @@ export default function QuickView({
 						item
 						container
 						classes={{ root: classes.toolbar }}
-						justifyContent="space-between"
+						justifyContent="center" // only applies to the <Chip/>
 					>
-						<Grid item>
+						<Grid item classes={{ root: classes.infoItem }}>
 							<Grid
 								container
 								direction="column"
@@ -163,7 +165,7 @@ export default function QuickView({
 								classes={{ root: classes.chipRoot }}
 							/>
 						</Grid>
-						<Grid item>
+						<Grid item classes={{ root: classes.actionsItem }}>
 							<Grid container direction="column">
 								<Sizes
 									sizes={sizes}
