@@ -113,8 +113,9 @@ export default function ProductFrameGrid({
 	colors,
 	selectedColor,
 	setSelectedColor,
+	small,
 }) {
-	const classes = useStyles()
+	const classes = useStyles({ small })
 
 	const [openDialog, setOpenDialog] = useState(false)
 

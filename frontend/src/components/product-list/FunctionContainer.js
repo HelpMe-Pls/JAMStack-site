@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function FunctionContainer({
 	filterOptions,
+	setFilterOptions,
 	option, // lifted state to be passed down to from its parent <DynamicToolbar>
 	setOption,
 }) {
@@ -38,6 +39,7 @@ export default function FunctionContainer({
 					<Filter
 						setOption={setOption}
 						filterOptions={filterOptions}
+						setFilterOptions={setFilterOptions}
 					/>
 				)
 			default:

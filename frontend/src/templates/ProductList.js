@@ -69,7 +69,7 @@ export const query = graphql`
 
 export default function ProductList({
 	// nested destructuring:
-	pageContext: { filterOptions, name, description },
+	pageContext: { filterOptions: options, name, description },
 	data: {
 		// data.allStrapiProduct.nodes ==> data.allStrapiProduct.products
 		allStrapiProduct: { nodes: products },
@@ -79,6 +79,7 @@ export default function ProductList({
 
 	const [layout, setLayout] = useState("grid")
 	const [page, setPage] = useState(1)
+	const [filterOptions, setFilterOptions] = useState(options)
 	const scrollRef = useRef(null)
 
 	const scrollToTop = () => {
@@ -97,6 +98,7 @@ export default function ProductList({
 				<div ref={scrollRef} />
 				<DynamicToolbar
 					filterOptions={filterOptions}
+					setFilterOptions={setFilterOptions}
 					name={name}
 					description={description}
 					layout={layout}
@@ -105,6 +107,7 @@ export default function ProductList({
 				/>
 				<ListOfProducts
 					page={page}
+					filterOptions={filterOptions}
 					productsPerPage={productsPerPage}
 					layout={layout}
 					products={products}

@@ -28,9 +28,27 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function Filter({ setOption, filterOptions }) {
+export default function Filter({ setOption, filterOptions, setFilterOptions }) {
 	const classes = useStyles()
 
+	// e.g. we want to get the state of the Medium size:
+	// filterOptions = {
+	// 	Size : [
+	// 		{ label: "S", checked: false },
+	// 		{ label: "M", checked: true },
+	// 		{ label: "L", checked: false },
+	// 	]
+	// 	Style: ...
+	// }
+	// filterOptions.Size[1].checked ==> generalized into: filterOptions.[option][i].checked
+
+	const handleFilter = (option, i) => {
+		const newFilter = { ...filterOptions } // state's immutability reason
+
+		// to toggle the checkbox whenever the user clicks on it
+		newFilter[option][i].checked = !newFilter[option][i].checked
+		setFilterOptions(newFilter)
+	}
 	return (
 		<Grid
 			item
@@ -51,6 +69,7 @@ export default function Filter({ setOption, filterOptions }) {
 					classes={{ root: classes.optionsContainer }}
 				>
 					{Object.keys(filterOptions)
+						// e.g. hats don't have style ==> hats.style === null ==> don't display style option for hats
 						.filter(option => filterOptions[option] !== null)
 						.map(option => (
 							<Grid item key={option}>
@@ -62,7 +81,7 @@ export default function Filter({ setOption, filterOptions }) {
 										<FormControl component="fieldset">
 											<FormGroup>
 												{filterOptions[option].map(
-													({ label, checked }) => (
+													({ label, checked }, i) => (
 														<FormControlLabel
 															key={label}
 															label={label}
@@ -78,6 +97,12 @@ export default function Filter({ setOption, filterOptions }) {
 																	classes={{
 																		root: classes.checkbox,
 																	}}
+																	onChange={() =>
+																		handleFilter(
+																			option,
+																			i
+																		)
+																	}
 																/>
 															}
 														></FormControlLabel>

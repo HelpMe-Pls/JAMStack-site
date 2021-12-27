@@ -71,6 +71,7 @@ export default function ListOfProducts({
 	layout,
 	page,
 	productsPerPage,
+	filterOptions,
 }) {
 	const classes = useStyles({ layout })
 	const matchesSM = useMediaQuery(theme => theme.breakpoints.down("sm"))
@@ -111,6 +112,28 @@ export default function ListOfProducts({
 				content.push({ product: temp, variant })
 			)
 	)
+
+	let isFiltered = false
+	let filteredProducts = content.filter(item => {
+		let valid
+		Object.keys(filterOptions)
+			.filter(option => filterOptions[option] !== null)
+			.map(option => {
+				filterOptions[option].forEach(value => {
+					if (value.checked) {
+						isFiltered = true
+						if (
+							item.variant[option.toLowerCase()] === value.label
+						) {
+							valid = item
+						}
+					}
+				})
+			})
+		return valid
+	})
+
+	if (isFiltered) content = filteredProducts
 
 	return (
 		<Grid
