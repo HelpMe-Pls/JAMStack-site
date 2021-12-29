@@ -87,11 +87,102 @@ export default function ProductList({
 		scrollRef.current.scrollIntoView({ behavior: "smooth" })
 	}
 
-	const productsPerPage = layout === "list" ? 6 : 15
-	let totalVariants = 0
+	useEffect(() => {
+		setPage(1)
+	}, [filterOptions, layout])
 
-	products.map(product => (totalVariants += product.variants.length))
-	const totalPages = Math.ceil(totalVariants / productsPerPage)
+	const productsPerPage = layout === "list" ? 6 : 15
+
+	// e.g:
+	// content = [
+	// 	{
+	// 		product: "lightbulb - hat",
+	// 		variant: [{five}, {different}, {colors}, {of}, {this_variant}]
+	// 	},
+	//  {every}, {kind}, {of}, {product}, {we}, {have}...
+	// ]
+	let content = []
+	products.map(
+		(
+			product,
+			temp // adding {temp} as a buffer to actually have a field called {product} in the object of {content.push}
+		) =>
+			product.variants.map(variant =>
+				content.push({ product: temp, variant })
+			)
+	)
+
+	// detailed explanation @5:32--lecture 157
+	let isFiltered = false
+
+	// for combining multiple filters e.g:
+	// filters = {
+	// 	Size: [
+	// 		{ checked: true, label: "S" },
+	// 		{ checked: true, label: "M" },
+	// 	],
+	// 	Style: [{ checked: true, label: "Male" }],
+	// }
+	let filters = {}
+	let filteredProducts = []
+
+	// After this we have a list of our ACTIVE filters
+	// and we the list of all filtered products but they're NOT YET attached to their corresponding filter
+	// meaning that selecting the filters won't render out the desired products YET.
+	Object.keys(filterOptions)
+		.filter(option => filterOptions[option] !== null)
+		.map(option => {
+			filterOptions[option].forEach(value => {
+				// [option] is {Style} || {Size} || {Color}
+				if (value.checked) {
+					isFiltered = true
+					if (filters[option] === undefined) filters[option] = []
+					if (!filters[option].includes(value))
+						filters[option].push(value)
+					content.forEach(item => {
+						if (option === "Color") {
+							if (
+								// because we want the {colorLabel}, not the hexadecimal format of it, so we have to separate this case from the generalized case below
+								item.variant.colorLabel === value.label &&
+								!filteredProducts.includes(item) //TODO: seems irrelevant here, try to omit it then see what happens
+							)
+								filteredProducts.push(item)
+						} else if (
+							item.variant[option.toLowerCase()] ===
+								value.label &&
+							!filteredProducts.includes(item) //e.g. we selected "Male" option, it'll have all the sizes, then we select "S", we don't want to render "S" twice
+						)
+							filteredProducts.push(item)
+					})
+				}
+			})
+		})
+
+	// After this we have a list of ACTIVE filters ATTACHED to their corresponding products.
+	Object.keys(filters).forEach(filter => {
+		filteredProducts = filteredProducts.filter(item => {
+			let valid
+			filters[filter].some(value => {
+				// e.g. in the list of filteredProducts we have small and medium sizes, and in the {filters}, we also
+				// have S, M {value.label}, so what we want is to assign the product to its corresponding {value.label}
+				// i.e. small product assigned to {value.label === "S"}, and using <some> is because we want to pair
+				// all of the small sizes with the {value.label === "S"}
+				// Same logic goes for the following iterations
+				if (filter === "Color") {
+					if (item.variant.colorLabel === value.label) {
+						valid = item // supposed to be {value = item}, but we want the {item} to be accessed from the outer scope, hence the {valid} variable
+					}
+				} else if (item.variant[filter.toLowerCase()] === value.label) {
+					valid = item
+				}
+			})
+			return valid
+		})
+	})
+
+	if (isFiltered) content = filteredProducts
+
+	const totalPages = Math.ceil(content.length / productsPerPage)
 
 	return (
 		<Layout>
@@ -104,7 +195,6 @@ export default function ProductList({
 					description={description}
 					layout={layout}
 					setLayout={setLayout}
-					setPage={setPage}
 				/>
 				<ListOfProducts
 					page={page}
@@ -112,6 +202,7 @@ export default function ProductList({
 					productsPerPage={productsPerPage}
 					layout={layout}
 					products={products}
+					content={content}
 				/>
 				<Pagination
 					count={totalPages}
