@@ -28,7 +28,6 @@ const useStyles = makeStyles(theme => ({
 			borderRadius: 0,
 			height: "18rem",
 		},
-
 	},
 	mainContainer: {
 		border: `5px solid ${theme.palette.primary.main}`,
@@ -42,7 +41,6 @@ const useStyles = makeStyles(theme => ({
 		[theme.breakpoints.down("sm")]: {
 			padding: "3rem 0",
 		},
-
 	},
 	button: {
 		border: `2px solid ${theme.palette.primary.main}`,
@@ -80,7 +78,6 @@ const useStyles = makeStyles(theme => ({
 			alignSelf: "center",
 			marginRight: "1.5rem",
 		},
-
 	},
 }))
 
@@ -89,13 +86,11 @@ export default function DescriptionContainer({
 	description,
 	layout,
 	setLayout,
-	setPage,
 }) {
 	const classes = useStyles()
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
 	const changeLayout = option => {
-		setPage(1)
 		setLayout(option)
 	}
 

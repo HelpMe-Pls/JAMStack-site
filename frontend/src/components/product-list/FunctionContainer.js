@@ -26,6 +26,8 @@ export default function FunctionContainer({
 	setFilterOptions,
 	option, // lifted state to be passed down to from its parent <DynamicToolbar>
 	setOption,
+	sortOptions,
+	setSortOptions,
 }) {
 	const classes = useStyles({ option }) // same as useStyles({ option:option }) with the latter is the component's prop,
 	// and the former is the actual prop that you'll use in makeStyles()
@@ -33,7 +35,13 @@ export default function FunctionContainer({
 	const content = () => {
 		switch (option) {
 			case "sort":
-				return <Sort setOption={setOption} />
+				return (
+					<Sort
+						setOption={setOption}
+						sortOptions={sortOptions}
+						setSortOptions={setSortOptions}
+					/>
+				)
 			case "filter":
 				return (
 					<Filter
