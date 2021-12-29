@@ -15,7 +15,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	mainGroup: {
 		height: "3rem",
-		marginTop: "2.25rem",
 	},
 	editButtons: {
 		height: "1.525rem",
@@ -56,7 +55,7 @@ const useStyles = makeStyles(theme => ({
 export default function QtyButton() {
 	const classes = useStyles()
 
-	const [qty, setQty] = useState(1)
+	const [qty, setQty] = useState(1) //TODO: add condition to set minimum qty no less than 0
 
 	return (
 		<Grid item>

@@ -5,7 +5,7 @@ import IconButton from "@material-ui/core/IconButton"
 import Chip from "@material-ui/core/Chip"
 //import clsx from "clsx"
 import { makeStyles } from "@material-ui/core/styles"
-//import useMediaQuery from "@material-ui/core/useMediaQuery"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
 
 import sort from "../../images/sort.svg"
 import close from "../../images/close-outline.svg"
@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Sort({ setOption }) {
 	const classes = useStyles()
+	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
 	const sortOptions = [
 		{ label: "A-Z" },
@@ -42,9 +43,18 @@ export default function Sort({ setOption }) {
 				</IconButton>
 			</Grid>
 			<Grid item xs>
-				<Grid container justifyContent="space-around">
+				<Grid
+					container
+					justifyContent="space-around"
+					alignItems={matchesXS ? "center" : undefined}
+					direction={matchesXS ? "column" : "row"}
+				>
 					{sortOptions.map(option => (
-						<Grid item key={option.label}>
+						<Grid
+							item
+							key={option.label}
+							classes={{ root: classes.chipContainer }}
+						>
 							<Chip label={option.label} />
 						</Grid>
 					))}

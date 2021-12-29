@@ -17,12 +17,13 @@ const useStyles = makeStyles(theme => ({
 		height: "auto", //extends as far as it needs to cover up the checkboxes
 		borderRadius: (
 			{ option } // conditionally applies style based on the component's props (passed in as useStyles's param)
-		) => (option !== null ? "10px" : "10px 10px 0px 0px"),
+		) => (option !== null ? "25px" : "25px 25px 0px 0px"),
 	},
 }))
 
 export default function FunctionContainer({
 	filterOptions,
+	setFilterOptions,
 	option, // lifted state to be passed down to from its parent <DynamicToolbar>
 	setOption,
 }) {
@@ -38,6 +39,7 @@ export default function FunctionContainer({
 					<Filter
 						setOption={setOption}
 						filterOptions={filterOptions}
+						setFilterOptions={setFilterOptions}
 					/>
 				)
 			default:

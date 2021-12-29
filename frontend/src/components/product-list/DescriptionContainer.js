@@ -4,7 +4,7 @@ import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import ButtonGroup from "@material-ui/core/ButtonGroup"
 import Button from "@material-ui/core/Button"
-//import useMediaQuery from "@material-ui/core/useMediaQuery"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 
 import background from "../../images/toolbar-background.svg"
@@ -18,26 +18,30 @@ const useStyles = makeStyles(theme => ({
 	descriptionContainer: {
 		backgroundColor: theme.palette.primary.main,
 		height: "15rem",
-		width: "60%",
+		width: "60%", // % that its size is based on the screen size
 		borderRadius: 25,
 		padding: "1rem",
-		// [theme.breakpoints.down("md")]: {
-		// 	width: "100%",
-		// },
-		// [theme.breakpoints.down("sm")]: {
-		// 	borderRadius: 0,
-		// },
+		[theme.breakpoints.down("md")]: {
+			width: "100%",
+		},
+		[theme.breakpoints.down("sm")]: {
+			borderRadius: 0,
+			height: "18rem",
+		},
+
 	},
 	mainContainer: {
+		border: `5px solid ${theme.palette.primary.main}`,
+		borderRadius: "0px 0px 25px 25px",
 		padding: "3rem",
 		backgroundImage: `url(${background})`,
 		backgroundSize: "cover",
 		backgroundPosition: "center",
 		backgroundRepeat: "no-repeat",
 		position: "relative", // so that it keeps the <ButtonGroup> within its border
-		// [theme.breakpoints.down("sm")]: {
-		// 	padding: "3rem 0",
-		// },
+		[theme.breakpoints.down("sm")]: {
+			padding: "3rem 0",
+		},
 
 	},
 	button: {
@@ -62,34 +66,50 @@ const useStyles = makeStyles(theme => ({
 		bottom: 0,
 		marginRight: "3rem",
 		marginBottom: "3rem",
-		// [theme.breakpoints.down("md")]: {
-		// 	position: "relative",
-		// 	display: "flex",
-		// 	alignSelf: "flex-end",
-		// 	marginRight: 0,
-		// 	marginBottom: 0,
-		// 	marginTop: "3rem",
-		// },
-		// [theme.breakpoints.down("sm")]: {
-		// 	marginRight: "1.5rem",
-		// },
+		[theme.breakpoints.down("md")]: {
+			position: "relative",
+			display: "flex",
+			alignSelf: "flex-end",
+			marginRight: 0,
+			marginBottom: 0,
+			marginTop: "3rem",
+		},
+		[theme.breakpoints.down("sm")]: {
+			position: "relative",
+			display: "flex",
+			alignSelf: "center",
+			marginRight: "1.5rem",
+		},
 
 	},
 }))
 
-export default function DescriptionContainer({ name, description }) {
+export default function DescriptionContainer({
+	name,
+	description,
+	layout,
+	setLayout,
+	setPage,
+}) {
 	const classes = useStyles()
-	const [layout, setLayout] = useState("grid")
+	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
+
+	const changeLayout = option => {
+		setPage(1)
+		setLayout(option)
+	}
 
 	return (
 		<Grid
 			item
 			container
-			classes={{ root: classes.mainContainer }}
+			direction={matchesMD ? "column" : "row"}
+			alignItems={matchesMD ? "center" : undefined}
 			justifyContent="center"
+			classes={{ root: classes.mainContainer }}
 		>
 			<Grid item classes={{ root: classes.descriptionContainer }}>
-				<Typography align="center" variant="h4" paragraph gutterBottom>
+				<Typography align="center" variant="h4">
 					{name}
 				</Typography>
 				<Typography
@@ -103,7 +123,7 @@ export default function DescriptionContainer({ name, description }) {
 			<Grid item classes={{ root: classes.buttonGroup }}>
 				<ButtonGroup>
 					<Button
-						onClick={() => setLayout("list")}
+						onClick={() => changeLayout("list")}
 						classes={{
 							outlined: clsx(classes.button, {
 								[classes.selected]: layout === "list",
@@ -115,7 +135,7 @@ export default function DescriptionContainer({ name, description }) {
 						/>
 					</Button>
 					<Button
-						onClick={() => setLayout("grid")}
+						onClick={() => changeLayout("grid")}
 						classes={{
 							outlined: clsx(classes.button, {
 								[classes.selected]: layout === "grid",

@@ -67,19 +67,21 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		alignItems: "center",
 		justifyContent: "center",
-		marginLeft: "-6.69rem",
+		// use {position} prop from the <toolbar>, <infoItem>, <actionsItem>
+		// to fix this instead of hard coding in
+		// marginLeft: "-6.69rem",
 	},
 	qtyContainer: {
 		marginTop: "2.25rem",
 	},
 	infoItem: {
 		position: "absolute",
-		left: "1rem",
+		left: "1.69rem",
 		height: "calc(100% - 1rem)",
 	},
 	actionsItem: {
 		position: "absolute",
-		right: "1rem",
+		right: "1.69rem",
 	},
 }))
 
@@ -90,18 +92,14 @@ export default function QuickView({
 	url,
 	name,
 	price,
+	sizes,
+	selectedSize,
+	setSelectedSize,
+	colors,
+	selectedColor,
+	setSelectedColor,
 }) {
 	const classes = useStyles()
-
-	const [selectedSize, setSelectedSize] = useState(null)
-	const [selectedColor, setSelectedColor] = useState(null)
-
-	let colors = []
-	let sizes = []
-	product.variants.forEach(variant => {
-		sizes.push(variant.size)
-		colors.push(variant.color)
-	})
 
 	return (
 		<Dialog
@@ -111,7 +109,13 @@ export default function QuickView({
 		>
 			<DialogContent classes={{ root: classes.selectedFrame }}>
 				<Grid container direction="column" alignItems="center">
-					<Grid item>
+					<Grid
+						item
+						component={Link}
+						to={`/${product.category.name.toLowerCase()}/${product.name
+							.split(" ")[0]
+							.toLowerCase()}`}
+					>
 						<img
 							src={url}
 							alt="product quick view"
@@ -122,14 +126,18 @@ export default function QuickView({
 						item
 						container
 						classes={{ root: classes.toolbar }}
-						justifyContent="space-between"
+						justifyContent="center" // only applies to the <Chip/>
 					>
-						<Grid item>
+						<Grid item classes={{ root: classes.infoItem }}>
 							<Grid
 								container
 								direction="column"
 								justifyContent="space-between"
 								classes={{ root: classes.infoContainer }}
+								component={Link}
+								to={`/${product.category.name.toLowerCase()}/${product.name
+									.split(" ")[0]
+									.toLowerCase()}`}
 							>
 								<Grid item>
 									<Typography variant="h4">{name}</Typography>
@@ -168,7 +176,7 @@ export default function QuickView({
 								classes={{ root: classes.chipRoot }}
 							/>
 						</Grid>
-						<Grid item>
+						<Grid item classes={{ root: classes.actionsItem }}>
 							<Grid container direction="column">
 								<Sizes
 									sizes={sizes}
@@ -176,11 +184,13 @@ export default function QuickView({
 									setSelectedSize={setSelectedSize}
 								/>
 								<Swatches
+									colors={colors}
 									selectedColor={selectedColor}
 									setSelectedColor={setSelectedColor}
-									colors={colors}
 								/>
-								<QtyButton />
+								<span className={classes.qtyContainer}>
+									<QtyButton />
+								</span>
 							</Grid>
 						</Grid>
 					</Grid>
