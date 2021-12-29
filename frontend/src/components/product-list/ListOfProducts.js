@@ -72,7 +72,6 @@ export default function ListOfProducts({
 	layout,
 	page,
 	productsPerPage,
-	filterOptions,
 }) {
 	const classes = useStyles({ layout })
 	const matchesSM = useMediaQuery(theme => theme.breakpoints.down("sm"))
