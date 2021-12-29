@@ -143,8 +143,7 @@ export default function ProductList({
 						if (option === "Color") {
 							if (
 								// because we want the {colorLabel}, not the hexadecimal format of it, so we have to separate this case from the generalized case below
-								item.variant.colorLabel === value.label &&
-								!filteredProducts.includes(item) //TODO: seems irrelevant here, try to omit it then see what happens
+								item.variant.colorLabel === value.label
 							)
 								filteredProducts.push(item)
 						} else if (
