@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import ProductFrameGrid from "./ProductFrameGrid"
 import ProductFrameList from "./ProductFrameList"
 
+
 const useStyles = makeStyles(theme => ({
 	productContainer: {
 		width: "95%",
