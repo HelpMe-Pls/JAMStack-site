@@ -100,16 +100,31 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+export const getStockDisplay = (stock, variant) => {
+	switch (stock) {
+		case undefined:
+		case null:
+			return "Loading Inventory..."
+		case -1:
+			return "Error Loading Inventory"
+		default:
+			if (stock[variant].qty === 0) {
+				return "Out of Stock"
+			} else {
+				return `${stock[variant].qty} Currently In Stock`
+			}
+	}
+}
+
 export default function ProductInfo({
 	name,
 	description,
 	variants,
 	selectedVariant,
 	setSelectedVariant,
-	// stock,
+	stock,
 	// rating,
 	// setEdit,
-	product,
 }) {
 	const classes = useStyles()
 	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
@@ -144,6 +159,8 @@ export default function ProductInfo({
 			setSelectedVariant(imageIndex)
 		}
 	}, [imageIndex])
+
+	const stockDisplay = getStockDisplay(stock, selectedVariant)
 
 	return (
 		<Grid
@@ -246,7 +263,9 @@ export default function ProductInfo({
 				<Grid
 					item
 					container
-					justify={matchesXS ? "space-around" : "space-between"}
+					justifyContent={
+						matchesXS ? "space-around" : "space-between"
+					}
 					direction={matchesXS ? "column" : "row"}
 					alignItems={matchesXS ? "flex-start" : "center"}
 					classes={{
@@ -278,13 +297,18 @@ export default function ProductInfo({
 									variant="h3"
 									classes={{ root: classes.stock }}
 								>
-									69 Currently in Stock
+									{stockDisplay}
 								</Typography>
 							</Grid>
 						</Grid>
 					</Grid>
 					<Grid item>
-						<QtyButton />
+						<QtyButton
+							name={name}
+							variants={variants}
+							stock={stock}
+							selectedVariant={selectedVariant}
+						/>
 					</Grid>
 				</Grid>
 			</Grid>

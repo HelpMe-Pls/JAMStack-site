@@ -1,20 +1,29 @@
 import React, { useState, useEffect } from "react"
+import { useQuery } from "@apollo/client"
 import Grid from "@material-ui/core/Grid"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 
 import Layout from "../components/ui/layout"
+//import SEO from "../components/ui/seo"
 import ProductImages from "../components/product-detail/ProductImages"
 import ProductInfo from "../components/product-detail/ProductInfo"
 import RecentlyViewed from "../components/product-detail/RecentlyViewed"
+//import ProductReviews from "../components/product-detail/ProductReviews"
+
+import { GET_DETAILS } from "../apollo/queries"
 
 export default function ProductDetail({
 	pageContext: { name, id, category, description, variants, product },
 }) {
 	const [selectedVariant, setSelectedVariant] = useState(0)
 	const [selectedImage, setSelectedImage] = useState(0) //TODO: lecture 178 @8:36
+	const [stock, setStock] = useState(null)
+	// const [rating, setRating] = useState(0)
+	// const [edit, setEdit] = useState(false)
 
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
+	// ######################## Recently Viewed products handling:
 	const params =
 		// get the part after "?" in current URL in the address bar
 		typeof window !== "undefined"
@@ -70,6 +79,20 @@ export default function ProductDetail({
 		setSelectedVariant(variantIndex)
 	}, [style])
 
+	// ######################## Run-time queries handling:
+	const { error, data } = useQuery(GET_DETAILS, {
+		variables: { id }, // {id} destructured from component's prop
+	})
+	console.log(stock)
+	useEffect(() => {
+		if (error) {
+			setStock(-1)
+		} else if (data) {
+			setStock(data.product.variants)
+			//setRating(data.product.rating)
+		}
+	}, [error, data])
+
 	return (
 		<Layout>
 			<Grid container direction="column">
@@ -85,6 +108,7 @@ export default function ProductDetail({
 						variants={variants}
 						selectedVariant={selectedVariant}
 						setSelectedVariant={setSelectedVariant}
+						stock={stock}
 					/>
 				</Grid>
 				<RecentlyViewed products={recentlyViewedProducts} />
@@ -92,20 +116,6 @@ export default function ProductDetail({
 		</Layout>
 	)
 }
-
-// import React, { useState, useEffect } from "react"
-// import { useQuery } from "@apollo/client"
-// import Grid from "@material-ui/core/Grid"
-// import useMediaQuery from "@material-ui/core/useMediaQuery"
-
-// import Layout from "../components/ui/layout"
-// import SEO from "../components/ui/seo"
-// import ProductImages from "../components/product-detail/ProductImages"
-// import ProductInfo from "../components/product-detail/ProductInfo"
-// import RecentlyViewed from "../components/product-detail/RecentlyViewed"
-// import ProductReviews from "../components/product-detail/ProductReviews"
-
-// import { GET_DETAILS } from "../apollo/queries"
 
 // export default function ProductDetail({
 // 	pageContext: { name, id, category, description, variants, product },

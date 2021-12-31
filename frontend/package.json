@@ -5,9 +5,11 @@
     "version": "0.1.0",
     "author": "Le Tan Khoi <khoile5399@gmail.com>",
     "dependencies": {
+        "@apollo/client": "^3.2.9",
         "@emotion/react": "^11.7.0",
         "@material-ui/core": "^4.12.3",
         "@material-ui/lab": "^4.0.0-alpha.60",
+        "cross-fetch": "^3.0.6",
         "gatsby": "^4.4.0",
         "gatsby-plugin-gatsby-cloud": "^4.2.0",
         "gatsby-plugin-image": "^2.2.0",

@@ -109,7 +109,7 @@ export default function QtyButton() {
 					}}
 				>
 					<Badge
-						overlap="circle"
+						overlap="circular"
 						badgeContent="+"
 						classes={{ badge: classes.badge }}
 					>
