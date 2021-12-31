@@ -51,6 +51,12 @@ const useStyles = makeStyles(theme => ({
 			cursor: "pointer",
 		},
 	},
+	// fix weird marginTop
+	"@global": {
+		".MuiButtonGroup-groupedOutlinedVertical:not(:first-child)": {
+			marginTop: -0.5,
+		},
+	},
 }))
 
 export default function ProductFrameList({

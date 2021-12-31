@@ -130,15 +130,9 @@ export default function ProductInfo({
 	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
 	const [selectedSize, setSelectedSize] = useState(
-		variants[selectedVariant].size
+		variants[selectedVariant].size // to display corresponding size of that variant at initial render
 	)
 	const [selectedColor, setSelectedColor] = useState(null)
-
-	const imageIndex = colorIndex(
-		{ variants }, //product.variants
-		variants[selectedVariant],
-		selectedColor
-	)
 
 	const sizes = []
 	const colors = []
@@ -146,6 +140,7 @@ export default function ProductInfo({
 		sizes.push(variant.size)
 
 		if (
+			// show only the available color(s) of a specific size
 			!colors.includes(variant.color) &&
 			variant.size === selectedSize &&
 			variant.style === variants[selectedVariant].style
@@ -153,6 +148,25 @@ export default function ProductInfo({
 			colors.push(variant.color)
 		}
 	})
+	// Setting the display image as the first color (colors[0]) in the swatches when the user switches the size
+	useEffect(() => {
+		setSelectedColor(null)
+
+		const newVariant = variants.find(
+			variant =>
+				variant.size === selectedSize &&
+				variant.style === variants[selectedVariant].style &&
+				variant.color === colors[0]
+		)
+
+		setSelectedVariant(variants.indexOf(newVariant))
+	}, [selectedSize])
+
+	const imageIndex = colorIndex(
+		{ variants }, //product.variants
+		variants[selectedVariant],
+		selectedColor
+	)
 
 	useEffect(() => {
 		if (imageIndex !== -1) {

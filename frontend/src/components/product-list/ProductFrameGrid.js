@@ -100,7 +100,10 @@ const useStyles = makeStyles(theme => ({
 export const colorIndex = (product, variant, color) => {
 	return product.variants.indexOf(
 		product.variants.filter(
-			item => item.color === color && variant.style === item.style
+			item =>
+				item.color === color &&
+				variant.style === item.style &&
+				variant.size === item.size // in case of multiple sizes have the same color
 		)[0]
 	)
 }
