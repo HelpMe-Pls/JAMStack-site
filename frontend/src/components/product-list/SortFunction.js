@@ -12,13 +12,13 @@ export const alphabetic = (data, direction) =>
 		return 0
 	})
 
-export const price = (data, direction) =>
+export const time = (data, direction) =>
 	data.sort((a, b) => {
-		const first = a.variants[0].price
-		const second = b.variants[0].price
+		const first = new Date(a.createdAt)
+		const second = new Date(b.createdAt)
 
-		const x = direction === "asc" ? first : second
-		const y = direction === "asc" ? second : first
+		const x = direction === "asc" ? second : first
+		const y = direction === "asc" ? first : second
 
 		if (x < y) return -1
 		if (x > y) return 1
@@ -26,10 +26,10 @@ export const price = (data, direction) =>
 		return 0
 	})
 
-export const time = (data, direction) =>
+export const price = (data, direction) =>
 	data.sort((a, b) => {
-		const first = new Date(a.createdAt)
-		const second = new Date(b.createdAt)
+		const first = a.variants[0].price
+		const second = b.variants[0].price
 
 		const x = direction === "asc" ? second : first
 		const y = direction === "asc" ? first : second

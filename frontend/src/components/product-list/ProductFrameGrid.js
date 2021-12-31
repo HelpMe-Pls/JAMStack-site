@@ -26,8 +26,8 @@ const useStyles = makeStyles(theme => ({
 			width: "20rem",
 		},
 		[theme.breakpoints.up("xs")]: {
-			height: ({ small }) => (small ? "15rem" : undefined),
-			width: ({ small }) => (small ? "15rem" : undefined),
+			height: ({ small }) => (small ? "12rem" : undefined),
+			width: ({ small }) => (small ? "12rem" : undefined),
 		},
 	},
 	product: {
@@ -38,8 +38,8 @@ const useStyles = makeStyles(theme => ({
 			width: "15rem",
 		},
 		[theme.breakpoints.up("xs")]: {
-			height: ({ small }) => (small ? "12rem" : undefined),
-			width: ({ small }) => (small ? "12rem" : undefined),
+			height: ({ small }) => (small ? "10rem" : undefined),
+			width: ({ small }) => (small ? "10rem" : undefined),
 		},
 	},
 	title: {
@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 			width: "20rem",
 		},
 		[theme.breakpoints.up("xs")]: {
-			width: ({ small }) => (small ? "15rem" : undefined),
+			width: ({ small }) => (small ? "12rem" : undefined),
 		},
 	},
 	invisibility: {
@@ -113,7 +113,9 @@ export default function ProductFrameGrid({
 	colors,
 	selectedColor,
 	setSelectedColor,
+	hasStyles,
 	small,
+	disableQuickView,
 }) {
 	const classes = useStyles({ small })
 
@@ -146,10 +148,12 @@ export default function ProductFrameGrid({
 				container
 				direction="column"
 				onClick={() =>
-					matchesMD
+					matchesMD || disableQuickView
 						? navigate(
-								`/${product.category.name.toLowerCase()}/${
-									product.name.split(" ")[0]
+								`/${product.category.name.toLowerCase()}/${product.name
+									.split(" ")[0]
+									.toLowerCase()}${
+									hasStyles ? `?style=${variant.style}` : ""
 								}`
 						  )
 						: setOpenDialog(true)
@@ -179,6 +183,8 @@ export default function ProductFrameGrid({
 				name={productName}
 				price={variant.price}
 				product={product}
+				variant={variant}
+				hasStyles={hasStyles}
 			/>
 		</Grid>
 	)

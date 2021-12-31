@@ -81,7 +81,7 @@ export default function Header({ categories }) {
 			routes.filter(
 				({ name, path }) =>
 					(path || `/${name.toLowerCase()}`) ===
-					`/${window.location.pathname.split("/")[1]}`
+					`/${window.location.pathname.split("/")[1]}` //[1] to remain the active tab after navigated to ProductDetail
 			)[0] // [0] to return the actual item (e.x: hats, hoodies, shirts)
 		)
 

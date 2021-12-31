@@ -88,6 +88,11 @@ export default function ListOfProducts({
 			// fix duplicate color swatches in "shirt" category
 			if (!colors.includes(variant.color)) colors.push(variant.color)
 		})
+
+		const hasStyles = product.variants.some(
+			variant => variant.style !== null
+		)
+
 		return (
 			<Frame
 				sizes={sizes}
@@ -98,6 +103,7 @@ export default function ListOfProducts({
 				setSelectedColor={setSelectedColor}
 				product={product}
 				variant={variant}
+				hasStyles={hasStyles}
 			></Frame>
 		)
 	}

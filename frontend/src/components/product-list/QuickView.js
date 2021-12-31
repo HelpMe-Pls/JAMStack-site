@@ -89,6 +89,7 @@ export default function QuickView({
 	open,
 	setOpen,
 	product,
+	variant,
 	url,
 	name,
 	price,
@@ -98,6 +99,7 @@ export default function QuickView({
 	colors,
 	selectedColor,
 	setSelectedColor,
+	hasStyles,
 }) {
 	const classes = useStyles()
 
@@ -114,7 +116,9 @@ export default function QuickView({
 						component={Link}
 						to={`/${product.category.name.toLowerCase()}/${product.name
 							.split(" ")[0]
-							.toLowerCase()}`}
+							.toLowerCase()}${
+							hasStyles ? `?style=${variant.style}` : ""
+						}`}
 					>
 						<img
 							src={url}
@@ -137,7 +141,9 @@ export default function QuickView({
 								component={Link}
 								to={`/${product.category.name.toLowerCase()}/${product.name
 									.split(" ")[0]
-									.toLowerCase()}`}
+									.toLowerCase()}${
+									hasStyles ? `?style=${variant.style}` : ""
+								}`}
 							>
 								<Grid item>
 									<Typography variant="h4">{name}</Typography>

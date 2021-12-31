@@ -62,6 +62,7 @@ export default function ProductFrameList({
 	colors,
 	selectedColor,
 	setSelectedColor,
+	hasStyles,
 }) {
 	const classes = useStyles()
 
@@ -87,7 +88,9 @@ export default function ProductFrameList({
 						component={Link}
 						to={`/${product.category.name.toLowerCase()}/${product.name
 							.split(" ")[0]
-							.toLowerCase()}`}
+							.toLowerCase()}${
+							hasStyles ? `?style=${variant.style}` : ""
+						}`}
 					>
 						<img
 							src={process.env.GATSBY_STRAPI_URL + image.url}
@@ -112,7 +115,9 @@ export default function ProductFrameList({
 					component={Link}
 					to={`/${product.category.name.toLowerCase()}/${product.name
 						.split(" ")[0]
-						.toLowerCase()}`}
+						.toLowerCase()}${
+						hasStyles ? `?style=${variant.style}` : ""
+					}`}
 				>
 					<Grid item>
 						<Typography variant="h4">
