@@ -7,8 +7,19 @@ exports.createPages = async ({ graphql, actions }) => {
 				nodes {
 					name
 					strapiId
+					description
 					category {
 						name
+					}
+					variants {
+						id
+						color
+						size
+						style
+						price
+						images {
+							url
+						}
 					}
 				}
 			}
@@ -53,6 +64,9 @@ exports.createPages = async ({ graphql, actions }) => {
 				name: product.name,
 				id: product.strapiId,
 				category: product.category.name,
+				description: product.description,
+				variants: product.variants,
+				product: product,
 			},
 		})
 	})
