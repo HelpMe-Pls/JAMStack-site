@@ -3,9 +3,9 @@ import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
-// import { useQuery } from "@apollo/client"
+import { useQuery } from "@apollo/client"
 
-// import { GET_DETAILS } from "../../apollo/queries"
+import { GET_DETAILS } from "../../apollo/queries"
 
 import ProductFrameGrid from "./ProductFrameGrid"
 import ProductFrameList from "./ProductFrameList"
@@ -79,6 +79,9 @@ export default function ListOfProducts({
 	const FrameHelper = ({ Frame, product, variant }) => {
 		const [selectedSize, setSelectedSize] = useState(null)
 		const [selectedColor, setSelectedColor] = useState(null)
+		// const [selectedVariant, setSelectedVariant] = useState(null)
+		const [stock, setStock] = useState(null)
+		// const [rating, setRating] = useState(0)
 
 		let colors = []
 		let sizes = []
@@ -93,6 +96,19 @@ export default function ListOfProducts({
 			variant => variant.style !== null
 		)
 
+		const { error, data } = useQuery(GET_DETAILS, {
+			variables: { id: product.strapiId },
+		})
+
+		useEffect(() => {
+			if (error) {
+				setStock(-1)
+			} else if (data) {
+				setStock(data.product.variants)
+				//setRating(data.product.rating)
+			}
+		}, [error, data])
+
 		return (
 			<Frame
 				sizes={sizes}
@@ -104,6 +120,7 @@ export default function ListOfProducts({
 				product={product}
 				variant={variant}
 				hasStyles={hasStyles}
+				stock={stock}
 			></Frame>
 		)
 	}

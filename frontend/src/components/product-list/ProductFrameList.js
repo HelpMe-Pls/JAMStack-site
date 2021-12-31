@@ -9,7 +9,7 @@ import Rating from "../home/Rating"
 import Sizes from "./Sizes"
 import Swatches from "./Swatches"
 import QtyButton from "./QtyButton"
-//import { getStockDisplay } from "../product-detail/ProductInfo"
+import { getStockDisplay } from "../product-detail/ProductInfo"
 
 import { colorIndex } from "./ProductFrameGrid"
 
@@ -63,6 +63,7 @@ export default function ProductFrameList({
 	selectedColor,
 	setSelectedColor,
 	hasStyles,
+	stock,
 }) {
 	const classes = useStyles()
 
@@ -70,6 +71,10 @@ export default function ProductFrameList({
 
 	const images =
 		imageIndex !== -1 ? product.variants[imageIndex].images : variant.images
+	const selectedVariant =
+		imageIndex === -1 ? product.variants.indexOf(variant) : imageIndex
+
+	const stockDisplay = getStockDisplay(stock, selectedVariant)
 
 	return (
 		<Grid item container>
@@ -105,7 +110,7 @@ export default function ProductFrameList({
 				lg={3}
 				container
 				direction="column"
-				justify="space-between"
+				justifyContent="space-between"
 				classes={{ root: classes.info }}
 			>
 				<Grid
@@ -138,7 +143,7 @@ export default function ProductFrameList({
 							variant="h3"
 							classes={{ root: classes.stock }}
 						>
-							69 currently in stock
+							{stockDisplay}
 						</Typography>
 					</Grid>
 				</Grid>
@@ -160,7 +165,12 @@ export default function ProductFrameList({
 						setSelectedColor={setSelectedColor}
 					/>
 				</Grid>
-				<QtyButton />
+				<QtyButton
+					variants={product.variants}
+					name={product.name.split(" ")[0]}
+					stock={stock}
+					selectedVariant={selectedVariant}
+				/>
 			</Grid>
 		</Grid>
 	)

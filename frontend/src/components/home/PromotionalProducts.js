@@ -183,7 +183,7 @@ export default function PromotionalProducts() {
 	return (
 		<Grid
 			container
-			justify={matchesMD ? "space-around" : "space-between"}
+			justifyContent={matchesMD ? "space-around" : "space-between"}
 			alignItems="center"
 			classes={{ root: classes.mainContainer }}
 			direction={matchesMD ? "column" : "row"}

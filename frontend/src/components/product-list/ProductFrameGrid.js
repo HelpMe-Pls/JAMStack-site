@@ -116,6 +116,7 @@ export default function ProductFrameGrid({
 	hasStyles,
 	small,
 	disableQuickView,
+	stock,
 }) {
 	const classes = useStyles({ small })
 
@@ -171,20 +172,22 @@ export default function ProductFrameGrid({
 				</Grid>
 			</Grid>
 			<QuickView
+				open={openDialog}
+				setOpen={setOpenDialog}
 				sizes={sizes}
 				selectedSize={selectedSize}
 				setSelectedSize={setSelectedSize}
 				colors={colors}
 				selectedColor={selectedColor}
 				setSelectedColor={setSelectedColor}
-				open={openDialog}
-				setOpen={setOpenDialog}
 				url={imgURL}
+				imageIndex={imageIndex}
 				name={productName}
 				price={variant.price}
 				product={product}
 				variant={variant}
 				hasStyles={hasStyles}
+				stock={stock}
 			/>
 		</Grid>
 	)
