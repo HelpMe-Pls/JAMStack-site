@@ -3,11 +3,8 @@ import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import IconButton from "@material-ui/core/IconButton"
 import { makeStyles } from "@material-ui/core/styles"
-<<<<<<< HEAD
-import { GatsbyImage, getImage } from "gatsby-plugin-image"
-=======
+
 //import { GatsbyImage, getImage } from "gatsby-plugin-image"
->>>>>>> products-page
 
 const useStyles = makeStyles(theme => ({
 	selected: {
