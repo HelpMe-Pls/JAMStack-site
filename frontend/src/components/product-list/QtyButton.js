@@ -52,10 +52,42 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function QtyButton() {
+export default function QtyButton({
+	stock,
+	variants,
+	selectedVariant,
+	name,
+	isCart,
+	white,
+	hideCartButton,
+	round,
+	override,
+}) {
 	const classes = useStyles()
 
-	const [qty, setQty] = useState(1) //TODO: add condition to set minimum qty no less than 0
+	const [qty, setQty] = useState(1)
+
+	const handleChange = direction => {
+		if (qty === stock[selectedVariant].qty && direction === "up")
+			return null
+		// going no lower than 1 product
+		if (qty === 1 && direction === "down") return null
+
+		const newQty = direction === "up" ? qty + 1 : qty - 1
+
+		setQty(newQty)
+	}
+
+	// if the user adds an amount of products to the cart, and then switch to another variant of that product,
+	// we should update the {qty} to reflect the stock of that newly switched to variant
+	useEffect(() => {
+		if (stock === null || stock === -1) {
+			// for error cases in fetching data
+			return undefined
+		} else if (qty > stock[selectedVariant].qty) {
+			setQty(stock[selectedVariant].qty)
+		}
+	}, [stock, selectedVariant])
 
 	return (
 		<Grid item>
@@ -74,7 +106,7 @@ export default function QtyButton() {
 				</Button>
 				<ButtonGroup orientation="vertical">
 					<Button
-						onClick={() => setQty(qty + 1)}
+						onClick={() => handleChange("up")}
 						classes={{ root: classes.editButtons }}
 					>
 						<Typography
@@ -85,7 +117,7 @@ export default function QtyButton() {
 						</Typography>
 					</Button>
 					<Button
-						onClick={() => setQty(qty - 1)}
+						onClick={() => handleChange("down")}
 						classes={{
 							root: clsx(
 								classes.editButtons,

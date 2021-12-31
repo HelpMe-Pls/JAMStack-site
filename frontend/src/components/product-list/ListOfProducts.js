@@ -79,22 +79,43 @@ export default function ListOfProducts({
 	const FrameHelper = ({ Frame, product, variant }) => {
 		const [selectedSize, setSelectedSize] = useState(null)
 		const [selectedColor, setSelectedColor] = useState(null)
-		// const [selectedVariant, setSelectedVariant] = useState(null)
+		const [selectedVariant, setSelectedVariant] = useState(null)
 		const [stock, setStock] = useState(null)
 		// const [rating, setRating] = useState(0)
-
-		let colors = []
-		let sizes = []
-		product.variants.forEach(variant => {
-			sizes.push(variant.size)
-
-			// fix duplicate color swatches in "shirt" category
-			if (!colors.includes(variant.color)) colors.push(variant.color)
-		})
 
 		const hasStyles = product.variants.some(
 			variant => variant.style !== null
 		)
+
+		let colors = []
+		let sizes = []
+		product.variants.forEach(item => {
+			sizes.push(item.size)
+
+			// fix duplicate color swatches in "shirt" category
+			if (
+				!colors.includes(item.color) &&
+				item.size === selectedSize &&
+				item.style === variant.style
+			)
+				colors.push(item.color)
+		})
+
+		// Setting the display image as the first color (colors[0]) in the swatches
+		// when the user switches the size
+		useEffect(() => {
+			if (selectedSize === null) return undefined // a checkpoint to prevent breaking the render of Hats (coz they only have the Color property)
+			setSelectedColor(null)
+
+			const newVariant = product.variants.find(
+				item =>
+					item.size === (selectedSize || variant.size) &&
+					item.style === variant.style &&
+					item.color === colors[0]
+			)
+
+			setSelectedVariant(newVariant)
+		}, [selectedSize])
 
 		const { error, data } = useQuery(GET_DETAILS, {
 			variables: { id: product.strapiId },
@@ -104,7 +125,7 @@ export default function ListOfProducts({
 			if (error) {
 				setStock(-1)
 			} else if (data) {
-				setStock(data.product.variants)
+				setStock(data.product.variants) // stock is applied to the product, not the variant
 				//setRating(data.product.rating)
 			}
 		}, [error, data])
@@ -112,13 +133,13 @@ export default function ListOfProducts({
 		return (
 			<Frame
 				sizes={sizes}
-				selectedSize={selectedSize}
+				selectedSize={selectedSize || variant.size}
 				setSelectedSize={setSelectedSize}
 				colors={colors}
 				selectedColor={selectedColor}
 				setSelectedColor={setSelectedColor}
 				product={product}
-				variant={variant}
+				variant={selectedVariant || variant} //{variant} is for initial render, {selectedVariant} for subsequential renders
 				hasStyles={hasStyles}
 				stock={stock}
 			></Frame>

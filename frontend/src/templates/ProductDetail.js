@@ -83,7 +83,7 @@ export default function ProductDetail({
 	const { error, data } = useQuery(GET_DETAILS, {
 		variables: { id }, // {id} destructured from component's prop
 	})
-	console.log(stock)
+
 	useEffect(() => {
 		if (error) {
 			setStock(-1)
