@@ -11,7 +11,7 @@ import RecentlyViewed from "../components/product-detail/RecentlyViewed"
 //import ProductReviews from "../components/product-detail/ProductReviews"
 
 import { GET_DETAILS } from "../apollo/queries"
-import { colorIndex } from "../components/product-list/ProductFrameGrid"
+//import { colorIndex } from "../components/product-list/ProductFrameGrid"
 
 export default function ProductDetail({
 	pageContext: { name, id, category, description, variants, product },

@@ -42,7 +42,7 @@ export default function RecentlyViewed({ products }) {
 		if (firstIndex === 0 && direction === "backward") return null
 		if (
 			// end of the list
-			firstIndex + displayNum === products.length && //TODO: try < products.length and see what happens
+			firstIndex + displayNum === products.length &&
 			direction === "forward"
 		)
 			return null
