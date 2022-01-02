@@ -87,7 +87,7 @@ const useStyles = makeStyles(theme => ({
 // 	}
 // 	]
 // };
-// product.variants.filter(variant => variant.color === "#E84A5F") returns the array [{ color: "#E84A5F" }]
+// product.variants.filter(item => item.color === "#E84A5F") returns the array [{ color: "#E84A5F" }]
 // [{ color: "#E84A5F" }][0] returns the object { color: "#E84A5F" }
 // product.variants.indexOf({ color: "#E84A5F" }) returns 4
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf#description

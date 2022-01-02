@@ -95,7 +95,7 @@ export default function ListOfProducts({
 			// fix duplicate color swatches in "shirt" category
 			if (
 				!colors.includes(item.color) &&
-				item.size === selectedSize &&
+				item.size === (selectedSize || variant.size) &&
 				item.style === variant.style
 			)
 				colors.push(item.color)
@@ -109,7 +109,7 @@ export default function ListOfProducts({
 
 			const newVariant = product.variants.find(
 				item =>
-					item.size === (selectedSize || variant.size) &&
+					item.size === selectedSize &&
 					item.style === variant.style &&
 					item.color === colors[0]
 			)

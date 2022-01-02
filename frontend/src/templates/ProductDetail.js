@@ -11,6 +11,7 @@ import RecentlyViewed from "../components/product-detail/RecentlyViewed"
 //import ProductReviews from "../components/product-detail/ProductReviews"
 
 import { GET_DETAILS } from "../apollo/queries"
+//import { colorIndex } from "../components/product-list/ProductFrameGrid"
 
 export default function ProductDetail({
 	pageContext: { name, id, category, description, variants, product },
@@ -36,12 +37,21 @@ export default function ProductDetail({
 			? JSON.parse(window.localStorage.getItem("recentlyViewed"))
 			: null
 
+	// const imageIndex = colorIndex(
+	// 	product,
+	// 	variants[selectedVariant],
+	// 	variants[selectedVariant].color
+	// ) ?
+
 	useEffect(() => {
 		const styledVariant = variants.filter(
 			variant => variant.style === style
-		)[0]
+		)[0] // always returns a white male || female shirt
 
-		const variantIndex = variants.indexOf(styledVariant)
+		const variantIndex = variants.indexOf(styledVariant) // always returns 0 || 1
+		// if (imageIndex !== -1) {
+		// 	setSelectedVariant(imageIndex)
+		// } ?
 
 		let recentlyViewed = JSON.parse(
 			window.localStorage.getItem("recentlyViewed")
@@ -64,11 +74,18 @@ export default function ProductDetail({
 			) {
 				recentlyViewed.push({
 					...product,
+					//color: variants[selectedVariant].color, ?
 					selectedVariant: variantIndex,
 				})
 			}
 		} else {
-			recentlyViewed = [{ ...product, selectedVariant: variantIndex }]
+			recentlyViewed = [
+				{
+					...product,
+					//color: variants[selectedVariant].color, ?
+					selectedVariant: variantIndex,
+				},
+			]
 		}
 
 		window.localStorage.setItem(
@@ -77,7 +94,7 @@ export default function ProductDetail({
 		)
 
 		setSelectedVariant(variantIndex)
-	}, [style])
+	}, [style]) //add imageIndex here ?
 
 	// ######################## Run-time queries handling:
 	const { error, data } = useQuery(GET_DETAILS, {
