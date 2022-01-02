@@ -33,9 +33,9 @@ export default function RecentlyViewed({ products }) {
 	const [firstIndex, setFirstIndex] = useState(0)
 
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
-	const matchesSM = useMediaQuery(theme => theme.breakpoints.down("sm"))
+	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
-	const displayNum = matchesSM ? 1 : matchesMD ? 2 : 4
+	const displayNum = matchesXS ? 1 : matchesMD ? 2 : 4
 
 	const handleNavigation = direction => {
 		// bounding the navigation within the list
