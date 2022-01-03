@@ -6,8 +6,8 @@ import Paper from "@material-ui/core/Paper"
 import { makeStyles } from "@material-ui/core/styles"
 
 import Login from "./Login"
-// import SignUp from "./SignUp"
-// import Complete from "./Complete"
+import SignUp from "./SignUp"
+import Complete from "./Complete"
 // import Reset from "./Reset"
 // import { UserContext, FeedbackContext } from "../../contexts"
 // import { setUser, setSnackbar } from "../../contexts/actions"
@@ -48,6 +48,9 @@ const useStyles = makeStyles(theme => ({
 		".MuiInput-underline:after": {
 			borderBottom: `2px solid ${theme.palette.primary.main}`,
 		},
+		"input::-ms-reveal, input::-ms-clear": {
+			display: "none",
+		},
 	},
 }))
 
@@ -59,8 +62,8 @@ export default function AuthPortal() {
 
 	const steps = [
 		{ component: Login, label: "Login" },
-		// { component: SignUp, label: "Sign Up" },
-		// { component: Complete, label: "Complete" },
+		{ component: SignUp, label: "Sign Up" },
+		{ component: Complete, label: "Complete" },
 		// { component: Reset, label: "Reset" },
 	]
 

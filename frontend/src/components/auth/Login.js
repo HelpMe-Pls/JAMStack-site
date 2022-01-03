@@ -10,7 +10,7 @@ import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import { makeStyles } from "@material-ui/core/styles"
 
-// import Fields from "./Fields"
+import Fields from "./Fields"
 // import { setUser, setSnackbar } from "../../contexts/actions"
 import validate from "../ui/validate"
 
@@ -62,68 +62,60 @@ const useStyles = makeStyles(theme => ({
 		width: 22,
 		marginBottom: 10,
 	},
-	"@global": {
-		".MuiInput-underline:before, .MuiInput-underline:hover:not(.Mui-disabled):before":
-			{
-				borderBottom: `2px solid ${theme.palette.secondary.main}`,
-			},
-		".MuiInput-underline:after": {
-			borderBottom: `2px solid ${theme.palette.primary.main}`,
-		},
-		"input::-ms-reveal, input::-ms-clear": {
-			display: "none",
-		},
-	},
-	textField: {
-		width: "20rem",
-	},
-	input: {
-		color: theme.palette.secondary.main,
-	},
 	visibleIcon: {
 		padding: 0,
 	},
 }))
 
-// export const EmailPassword = (
-// 	hideEmail,
-// 	hidePassword,
-// 	visible,
-// 	setVisible,
-// 	isWhite
-// ) => ({
-// 	email: {
-// 		helperText: "invalid email",
-// 		placeholder: "Email",
-// 		type: "text",
-// 		hidden: hideEmail,
-// 		startAdornment: (
-// 			<span style={{ height: 17, width: 22, marginBottom: 10 }}>
-// 				<EmailAdornment color={isWhite ? "#fff" : null} />
-// 			</span>
-// 		),
-// 	},
-// 	password: {
-// 		helperText:
-// 			"your password must be at least eight characters and include one uppercase letter, one number, and one special character",
-// 		placeholder: "Password",
-// 		hidden: hidePassword,
-// 		type: visible ? "text" : "password",
-// 		startAdornment: <PasswordAdornment color={isWhite ? "#fff" : null} />,
-// 		endAdornment: (
-// 			<IconButton
-// 				style={{ padding: 0 }}
-// 				onClick={() => setVisible(!visible)}
-// 			>
-// 				{visible ? (
-// 					<ShowPasswordIcon color={isWhite ? "#fff" : null} />
-// 				) : (
-// 					<HidePasswordIcon color={isWhite ? "#fff" : null} />
-// 				)}
-// 			</IconButton>
-// 		),
-// 	},
-// })
+export const EmailPassword = (
+	classes,
+	hideEmail,
+	hidePassword,
+	visible,
+	setVisible
+	//isWhite
+) => ({
+	email: {
+		helperText: "invalid email",
+		placeholder: "Email",
+		type: "text",
+		hidden: hideEmail,
+		startAdornment: (
+			<span className={classes.emailAdornment}>
+				<EmailAdornment />
+			</span>
+			// <span style={{ height: 17, width: 22, marginBottom: 10 }}>
+			// 	<EmailAdornment color={isWhite ? "#fff" : null} />
+			// </span>
+		),
+	},
+	password: {
+		helperText:
+			"your password must be at least eight characters and include one uppercase letter, one number, and one special character",
+		placeholder: "Password",
+		hidden: hidePassword,
+		type: visible ? "text" : "password",
+		startAdornment: <img src={PasswordAdornment} alt="password" />,
+		// <PasswordAdornment color={isWhite ? "#fff" : null} />,
+		endAdornment: (
+			<IconButton
+				//style={{ padding: 0 }}
+				classes={{ root: classes.visibleIcon }}
+				onClick={() => setVisible(!visible)}
+			>
+				<img
+					src={visible ? ShowPasswordIcon : HidePasswordIcon}
+					alt={`${visible ? "Show" : "Hide"} password`}
+				/>
+				{/* {visible ? (
+					<ShowPasswordIcon color={isWhite ? "#fff" : null} />
+				) : (
+					<HidePasswordIcon color={isWhite ? "#fff" : null} />
+				)} */}
+			</IconButton>
+		),
+	},
+})
 
 export default function Login({
 	steps,
@@ -140,45 +132,18 @@ export default function Login({
 	})
 
 	const [visible, setVisible] = useState(false)
-	const [errors, setErrors] = useState({})
 	const [forgot, setForgot] = useState(false)
-	const fields = {
-		email: {
-			helperText: "invalid email",
-			placeholder: "Email",
-			type: "text",
-			startAdornment: (
-				<span className={classes.emailAdornment}>
-					<EmailAdornment />
-				</span>
-			),
-		},
-		password: {
-			helperText:
-				"you must include at least 8 characters, one uppercase letter, one number and one special character",
-			placeholder: "Password",
-			type: visible ? "text" : "password",
-			hidden: forgot,
-			startAdornment: <img src={PasswordAdornment} alt="Password" />,
-			endAdornment: (
-				<img
-					src={visible ? ShowPasswordIcon : HidePasswordIcon}
-					alt={`${visible ? "show" : "hide"} Password`}
-				/>
-			),
-		},
+	const [errors, setErrors] = useState({})
+
+	const fields = EmailPassword(classes, false, forgot, visible, setVisible)
+
+	const navigateToSignUp = () => {
+		const signUp = steps.find(step => step.label === "Sign Up")
+		setSelectedStep(steps.indexOf(signUp))
 	}
 
 	// const [loading, setLoading] = useState(false)
 	// const [success, setSuccess] = useState(false)
-
-	// const fields = EmailPassword(false, forgot, visible, setVisible)
-
-	// const navigateSignUp = () => {
-	// 	const signUp = steps.find(step => step.label === "Sign Up")
-
-	// 	setSelectedStep(steps.indexOf(signUp))
-	// }
 
 	// const handleLogin = () => {
 	// 	setLoading(true)
@@ -251,62 +216,13 @@ export default function Login({
 			<Grid item classes={{ root: classes.accountIcon }}>
 				<img src={accountIcon} alt="login page" />
 			</Grid>
-			{Object.keys(fields).map(field => {
-				const validateHelper = event => {
-					const valid = validate({
-						[field]: event.target.value,
-					})
-					setErrors({
-						...errors,
-						[field]: !valid[field],
-					})
-				}
-				return !fields[field].hidden ? ( // email field always gets rendered
-					<Grid item key={field}>
-						<TextField
-							value={values[field]}
-							onChange={e => {
-								if (errors[field]) {
-									validateHelper(e)
-								}
-
-								setValues({
-									...values,
-									[field]: e.target.value,
-								})
-							}}
-							placeholder={fields[field].placeholder}
-							type={fields[field].type}
-							InputProps={{
-								startAdornment: (
-									<InputAdornment position="start">
-										{fields[field].startAdornment}
-									</InputAdornment>
-								),
-								endAdornment: fields[field].endAdornment ? (
-									<InputAdornment position="end">
-										<IconButton
-											onClick={() => setVisible(!visible)}
-											classes={{
-												root: classes.visibleIcon,
-											}}
-										>
-											{fields[field].endAdornment}
-										</IconButton>
-									</InputAdornment>
-								) : undefined,
-								classes: { input: classes.input },
-							}}
-							onBlur={e => validateHelper(e)}
-							error={errors[field]}
-							helperText={
-								errors[field] && fields[field].helperText
-							}
-							classes={{ root: classes.textField }}
-						/>
-					</Grid>
-				) : null
-			})}
+			<Fields
+				fields={fields}
+				errors={errors}
+				setErrors={setErrors}
+				values={values}
+				setValues={setValues}
+			/>
 			<Grid item>
 				<Button
 					variant="contained"
@@ -340,7 +256,7 @@ export default function Login({
 			)}
 			<Grid item container justify="space-between">
 				<Grid item>
-					<IconButton>
+					<IconButton onClick={navigateToSignUp}>
 						<img src={addUserIcon} alt="sign up" />
 					</IconButton>
 				</Grid>
@@ -360,14 +276,8 @@ export default function Login({
 					</IconButton>
 				</Grid>
 			</Grid>
-			{/* <Fields
-				fields={fields}
-				errors={errors}
-				setErrors={setErrors}
-				values={values}
-				setValues={setValues}
-			/>
-			<Grid item>
+
+			{/* <Grid item>
 				<Button
 					variant="contained"
 					color="secondary"
