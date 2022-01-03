@@ -9,10 +9,10 @@ export default function validate(input) {
 			/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(val),
 		name: val => val.length > 3,
 		message: val => val.length > 3,
-		//   password: val =>
-		//     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(
-		//       val
-		//     ),
+		password: val =>
+			/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(
+				val
+			),
 		//   confirmation: val =>
 		//     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(
 		//       val
