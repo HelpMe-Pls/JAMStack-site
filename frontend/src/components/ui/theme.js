@@ -77,7 +77,7 @@ const theme = createTheme({
 				fontFamily: "Montserrat",
 				fontSize: "1.5rem",
 				color: "#fff",
-				fontWeight: 500,
+				fontWeight: 400,
 			},
 		},
 	},

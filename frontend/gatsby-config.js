@@ -14,8 +14,8 @@ module.exports = {
 			options: {
 				google: {
 					families: [
-						"Philosopher:i7:latin",
-						"Montserrat:n6,n5,n4,n3:latin",
+						"Philosopher:700:latin",
+						"Montserrat:700,600,500,400,300:latin",
 					],
 				},
 			},
