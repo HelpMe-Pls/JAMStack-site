@@ -346,6 +346,9 @@ const ContactPage = () => {
 														: undefined
 												}
 												InputProps={{
+													// https://mui.com/api/text-field/#props
+													// https://mui.com/api/outlined-input/#props
+													// https://mui.com/api/input-adornment/#props
 													classes: {
 														input: classes.input,
 														// only applied for the {message}, the rest of them will have the above {classes.input}
