@@ -87,6 +87,12 @@ export default function SignUp({
 		? EmailPassword(classes, false, false, visible, setVisible)
 		: nameField
 
+	const disabled =
+		Object.keys(errors).some(error => errors[error] === true) ||
+		Object.keys(errors).length !== Object.keys(values).length // user haven't filled out all fields
+	// Object.keys(errors).length < Object.keys(values).length also works but it doesn't make the most sense
+	// because the opposite of < is >=, and > cases are not true
+
 	const handleNavigate = direction => {
 		if (direction === "forward") {
 			setInfo(true)
@@ -104,35 +110,29 @@ export default function SignUp({
 
 	const handleComplete = () => {
 		// setLoading(true)
-		const complete = steps.find(step => step.label === "Complete")
-		setSelectedStep(steps.indexOf(complete))
-		// axios
-		// 	.post(process.env.GATSBY_STRAPI_URL + "/auth/local/register", {
-		// 		username: values.name,
-		// 		email: values.email,
-		// 		password: values.password,
-		// 	})
-		// 	.then(response => {
-		// 		setLoading(false)
-		// 		dispatchUser(
-		// 			setUser({ ...response.data.user, jwt: response.data.jwt })
-		// 		)
+		axios
+			.post(process.env.GATSBY_STRAPI_URL + "/auth/local/register", {
+				username: values.name,
+				email: values.email,
+				password: values.password,
+			})
+			.then(response => {
+				//setLoading(false)
+				// dispatchUser(
+				// 	setUser({ ...response.data.user, jwt: response.data.jwt })
+				// )
 
-		// 		const complete = steps.find(step => step.label === "Complete")
+				const complete = steps.find(step => step.label === "Complete")
 
-		// 		setSelectedStep(steps.indexOf(complete))
-		// 	})
-		// 	.catch(error => {
-		// 		const { message } = error.response.data.message[0].messages[0]
-		// 		setLoading(false)
-		// 		console.error(error)
-		// 		dispatchFeedback(setSnackbar({ status: "error", message }))
-		// 	})
+				setSelectedStep(steps.indexOf(complete))
+			})
+			.catch(error => {
+				const { message } = error.response.data.message[0].messages[0]
+				//setLoading(false)
+				console.error(error)
+				//dispatchFeedback(setSnackbar({ status: "error", message }))
+			})
 	}
-
-	// const disabled =
-	// 	Object.keys(errors).some(error => errors[error] === true) ||
-	// 	Object.keys(errors).length !== Object.keys(values).length
 
 	return (
 		<>
@@ -160,7 +160,10 @@ export default function SignUp({
 					// 		? `${process.env.GATSBY_STRAPI_URL}/connect/facebook`
 					// 		: undefined
 					// }
-					// disabled={loading || (info && disabled)}
+					disabled={
+						//loading ||
+						info && disabled
+					}
 					onClick={() => (info ? handleComplete() : null)}
 					classes={{
 						root: clsx(classes.facebookSignUp, {
