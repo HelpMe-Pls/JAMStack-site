@@ -295,12 +295,8 @@ const ContactPage = () => {
 							<Grid container direction="column">
 								{Object.keys(fields).map(field => {
 									const validateHelper = event => {
-										const valid = validate({
+										return validate({
 											[field]: event.target.value,
-										})
-										setErrors({
-											...errors,
-											[field]: !valid[field],
 										})
 									}
 									return (
@@ -317,8 +313,18 @@ const ContactPage = () => {
 											<TextField
 												value={values[field]}
 												onChange={e => {
-													if (errors[field]) {
+													const valid =
 														validateHelper(e)
+
+													if (
+														errors[field] ||
+														valid[field] === true
+													) {
+														setErrors({
+															...errors,
+															[field]:
+																!valid[field],
+														})
 													}
 													// not using ternary operator here because {setValues} has to be called everytime, not just in "no errors field" cases
 													setValues({
@@ -327,7 +333,14 @@ const ContactPage = () => {
 													})
 												}}
 												// onBlur will be called when the user clicks away from the input
-												onBlur={e => validateHelper(e)}
+												onBlur={e => {
+													const valid =
+														validateHelper(e)
+													setErrors({
+														...errors,
+														[field]: !valid[field],
+													})
+												}}
 												error={errors[field]}
 												helperText={
 													errors[field] &&

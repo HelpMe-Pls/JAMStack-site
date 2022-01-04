@@ -14,10 +14,13 @@ import { GET_DETAILS } from "../apollo/queries"
 //import { colorIndex } from "../components/product-list/ProductFrameGrid"
 
 export default function ProductDetail({
-	pageContext: { name, id, category, description, variants, product },
+	pageContext: { name, id, category, description, product, variants },
 }) {
 	const [selectedVariant, setSelectedVariant] = useState(0)
 	const [selectedImage, setSelectedImage] = useState(0) //TODO: lecture 178 @8:36
+	// hint: set initial state to null then useEffect() to setSelectedImage accordingly ?
+	// watch how the QuickView got the right image and try to replicate that
+
 	const [stock, setStock] = useState(null)
 	// const [rating, setRating] = useState(0)
 	// const [edit, setEdit] = useState(false)
@@ -44,10 +47,8 @@ export default function ProductDetail({
 	// ) ?
 
 	useEffect(() => {
-		const styledVariant = variants.filter(
-			variant => variant.style === style
-		)[0] // always returns a white male || female shirt
-
+		const styledVariant = variants.find(variant => variant.style === style) // always returns a white male || female shirt
+		//console.log(styledVariant)
 		const variantIndex = variants.indexOf(styledVariant) // always returns 0 || 1
 		// if (imageIndex !== -1) {
 		// 	setSelectedVariant(imageIndex)
@@ -133,4 +134,3 @@ export default function ProductDetail({
 		</Layout>
 	)
 }
-

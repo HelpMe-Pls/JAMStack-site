@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import axios from "axios"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
@@ -9,7 +9,8 @@ import Login from "./Login"
 import SignUp from "./SignUp"
 import Complete from "./Complete"
 // import Reset from "./Reset"
-// import { UserContext, FeedbackContext } from "../../contexts"
+
+import { useUser } from "../../contexts/wrappers/UserWrapper"
 // import { setUser, setSnackbar } from "../../contexts/actions"
 
 const useStyles = makeStyles(theme => ({
@@ -57,7 +58,7 @@ const useStyles = makeStyles(theme => ({
 export default function AuthPortal() {
 	const classes = useStyles()
 	const [selectedStep, setSelectedStep] = useState(0)
-	//   const { user, dispatchUser } = useContext(UserContext)
+	const { user, dispatchUser } = useUser()
 	//   const { feedback, dispatchFeedback } = useContext(FeedbackContext)
 
 	const steps = [

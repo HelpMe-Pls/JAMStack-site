@@ -137,6 +137,10 @@ export default function Login({
 
 	const fields = EmailPassword(classes, false, forgot, visible, setVisible)
 
+	const disabled =
+		Object.keys(errors).some(error => errors[error] === true) ||
+		Object.keys(errors).length !== Object.keys(values).length
+
 	const navigateToSignUp = () => {
 		const signUp = steps.find(step => step.label === "Sign Up")
 		setSelectedStep(steps.indexOf(signUp))
@@ -145,61 +149,56 @@ export default function Login({
 	// const [loading, setLoading] = useState(false)
 	// const [success, setSuccess] = useState(false)
 
-	// const handleLogin = () => {
-	// 	setLoading(true)
+	const handleLogin = () => {
+		//setLoading(true)
 
-	// 	axios
-	// 		.post(process.env.GATSBY_STRAPI_URL + "/auth/local", {
-	// 			identifier: values.email,
-	// 			password: values.password,
-	// 		})
-	// 		.then(response => {
-	// 			setLoading(false)
-	// 			dispatchUser(
-	// 				setUser({
-	// 					...response.data.user,
-	// 					jwt: response.data.jwt,
-	// 					onboarding: true,
-	// 				})
-	// 			)
-	// 		})
-	// 		.catch(error => {
-	// 			const { message } = error.response.data.message[0].messages[0]
-	// 			setLoading(false)
-	// 			console.error(error)
-	// 			dispatchFeedback(setSnackbar({ status: "error", message }))
-	// 		})
-	// }
+		axios
+			.post(process.env.GATSBY_STRAPI_URL + "/auth/local", {
+				identifier: values.email,
+				password: values.password,
+			})
+			.then(response => {
+				// setLoading(false)
+				// dispatchUser(
+				// 	setUser({
+				// 		...response.data.user,
+				// 		jwt: response.data.jwt,
+				// 		onboarding: true,
+				// 	})
+				// )
+			})
+			.catch(error => {
+				const { message } = error.response.data.message[0].messages[0]
+				// setLoading(false)
+				// console.error(error)
+				// dispatchFeedback(setSnackbar({ status: "error", message }))
+			})
+	}
 
-	// const handleForgot = () => {
-	// 	setLoading(true)
+	const handleForgot = () => {
+		//setLoading(true)
 
-	// 	axios
-	// 		.post(process.env.GATSBY_STRAPI_URL + "/auth/forgot-password", {
-	// 			email: values.email,
-	// 		})
-	// 		.then(response => {
-	// 			setLoading(false)
-	// 			setSuccess(true)
-
-	// 			dispatchFeedback(
-	// 				setSnackbar({
-	// 					status: "success",
-	// 					message: "Reset Code Sent",
-	// 				})
-	// 			)
-	// 		})
-	// 		.catch(error => {
-	// 			const { message } = error.response.data.message[0].messages[0]
-	// 			setLoading(false)
-	// 			console.error(error)
-	// 			dispatchFeedback(setSnackbar({ status: "error", message }))
-	// 		})
-	// }
-
-	// const disabled =
-	// 	Object.keys(errors).some(error => errors[error] === true) ||
-	// 	Object.keys(errors).length !== Object.keys(values).length
+		axios
+			.post(process.env.GATSBY_STRAPI_URL + "/auth/forgot-password", {
+				email: values.email,
+			})
+			.then(response => {
+				// setLoading(false)
+				// setSuccess(true)
+				// dispatchFeedback(
+				// 	setSnackbar({
+				// 		status: "success",
+				// 		message: "Reset Code Sent",
+				// 	})
+				// )
+			})
+			.catch(error => {
+				const { message } = error.response.data.message[0].messages[0]
+				// setLoading(false)
+				// console.error(error)
+				// dispatchFeedback(setSnackbar({ status: "error", message }))
+			})
+	}
 
 	// useEffect(() => {
 	// 	if (!success) return
@@ -227,6 +226,11 @@ export default function Login({
 				<Button
 					variant="contained"
 					color="secondary"
+					disabled={
+						// loading ||
+						!forgot && disabled
+					}
+					onClick={() => (forgot ? handleForgot() : handleLogin())}
 					classes={{
 						root: clsx(classes.login, { [classes.reset]: forgot }),
 					}}

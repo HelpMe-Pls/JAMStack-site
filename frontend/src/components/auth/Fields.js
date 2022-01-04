@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+//TODO: lecture 211 @12:00
 export default function Fields({
 	fields,
 	errors,
@@ -32,9 +33,8 @@ export default function Fields({
 	// fullWidth,
 	// settings,
 }) {
-	const classes =
-		useStyles()
-		//{ isWhite, fullWidth, settings }
+	const classes = useStyles()
+	//{ isWhite, fullWidth, settings }
 
 	return Object.keys(fields).map(field => {
 		const validateHelper = event => {
