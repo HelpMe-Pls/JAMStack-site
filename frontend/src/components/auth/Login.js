@@ -164,7 +164,7 @@ export default function Login({
 						// payload
 						...response.data.user,
 						jwt: response.data.jwt,
-						// onboarding: true,
+						onboarding: true,
 					})
 				)
 			})

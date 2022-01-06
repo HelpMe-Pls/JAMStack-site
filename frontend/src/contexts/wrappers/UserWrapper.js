@@ -19,6 +19,8 @@ export function UserWrapper({ children }) {
 			// checking if the current authenticated user is having the latest version of their account
 			// e.g. the user makes changes to their account on another device,
 			// we want to reflect those changes in the next time they login
+			// Or: the user got blocked while they're logged in, the next time they refresh the page,
+			// the localStorage cleared their creds, and they're logged out automatically after 3s
 			setTimeout(() => {
 				axios
 					.get(process.env.GATSBY_STRAPI_URL + "/users/me", {
