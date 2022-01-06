@@ -11,8 +11,7 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import { makeStyles } from "@material-ui/core/styles"
 
 import Fields from "./Fields"
-// import { setUser, setSnackbar } from "../../contexts/actions"
-import validate from "../ui/validate"
+import { setUser, setSnackbar } from "../../contexts/actions"
 
 import accountIcon from "../../images/account.svg"
 import EmailAdornment from "../../images/EmailAdornment"
@@ -120,9 +119,8 @@ export const EmailPassword = (
 export default function Login({
 	steps,
 	setSelectedStep,
-	// user,
-	// dispatchUser,
-	// dispatchFeedback,
+	dispatchUser,
+	dispatchFeedback,
 }) {
 	const classes = useStyles()
 
@@ -146,11 +144,12 @@ export default function Login({
 		setSelectedStep(steps.indexOf(signUp))
 	}
 
-	// const [loading, setLoading] = useState(false)
+	const [loading, setLoading] = useState(false)
 	// const [success, setSuccess] = useState(false)
 
+	// console.log(user)
 	const handleLogin = () => {
-		//setLoading(true)
+		setLoading(true)
 
 		axios
 			.post(process.env.GATSBY_STRAPI_URL + "/auth/local", {
@@ -158,32 +157,34 @@ export default function Login({
 				password: values.password,
 			})
 			.then(response => {
-				// setLoading(false)
-				// dispatchUser(
-				// 	setUser({
-				// 		...response.data.user,
-				// 		jwt: response.data.jwt,
-				// 		onboarding: true,
-				// 	})
-				// )
+				setLoading(false)
+
+				dispatchUser(
+					setUser({
+						// payload
+						...response.data.user,
+						jwt: response.data.jwt,
+						onboarding: true,
+					})
+				)
 			})
 			.catch(error => {
 				const { message } = error.response.data.message[0].messages[0]
-				// setLoading(false)
-				// console.error(error)
-				// dispatchFeedback(setSnackbar({ status: "error", message }))
+				setLoading(false)
+				console.error(error)
+				dispatchFeedback(setSnackbar({ status: "error", message }))
 			})
 	}
 
 	const handleForgot = () => {
-		//setLoading(true)
+		setLoading(true)
 
 		axios
 			.post(process.env.GATSBY_STRAPI_URL + "/auth/forgot-password", {
 				email: values.email,
 			})
 			.then(response => {
-				// setLoading(false)
+				setLoading(false)
 				// setSuccess(true)
 				// dispatchFeedback(
 				// 	setSnackbar({
@@ -194,9 +195,9 @@ export default function Login({
 			})
 			.catch(error => {
 				const { message } = error.response.data.message[0].messages[0]
-				// setLoading(false)
-				// console.error(error)
-				// dispatchFeedback(setSnackbar({ status: "error", message }))
+				setLoading(false)
+				console.error(error)
+				dispatchFeedback(setSnackbar({ status: "error", message }))
 			})
 	}
 
@@ -226,18 +227,22 @@ export default function Login({
 				<Button
 					variant="contained"
 					color="secondary"
-					disabled={
-						// loading ||
-						!forgot && disabled
-					}
+					disabled={loading || (!forgot && disabled)}
 					onClick={() => (forgot ? handleForgot() : handleLogin())}
 					classes={{
 						root: clsx(classes.login, { [classes.reset]: forgot }),
 					}}
 				>
-					<Typography variant="h5">
-						{forgot ? "reset password" : " login"}
-					</Typography>
+					{loading ? (
+						<CircularProgress />
+					) : (
+						<Typography
+							variant="h5"
+							classes={{ root: classes.buttonText }}
+						>
+							{forgot ? "forgot password" : "login"}
+						</Typography>
+					)}
 				</Button>
 			</Grid>
 			{forgot ? null : (
@@ -258,7 +263,7 @@ export default function Login({
 					</Button>
 				</Grid>
 			)}
-			<Grid item container justify="space-between">
+			<Grid item container justifyContent="space-between">
 				<Grid item>
 					<IconButton onClick={navigateToSignUp}>
 						<img src={addUserIcon} alt="sign up" />

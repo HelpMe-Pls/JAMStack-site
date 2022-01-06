@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles"
 
 import Fields from "./Fields"
 import { EmailPassword } from "./Login"
-//import { setUser, setSnackbar } from "../../contexts/actions"
+import { setUser, setSnackbar } from "../../contexts/actions"
 
 import addUserIcon from "../../images/add-user.svg"
 import nameAdornment from "../../images/name-adornment.svg"
@@ -73,7 +73,7 @@ export default function SignUp({
 	const [errors, setErrors] = useState({})
 	const [visible, setVisible] = useState(false)
 	const [info, setInfo] = useState(false) // email and password
-	// const [loading, setLoading] = useState(false)
+	const [loading, setLoading] = useState(false)
 
 	const nameField = {
 		name: {
@@ -109,7 +109,7 @@ export default function SignUp({
 	}
 
 	const handleComplete = () => {
-		// setLoading(true)
+		setLoading(true)
 		axios
 			.post(process.env.GATSBY_STRAPI_URL + "/auth/local/register", {
 				username: values.name,
@@ -117,10 +117,10 @@ export default function SignUp({
 				password: values.password,
 			})
 			.then(response => {
-				//setLoading(false)
-				// dispatchUser(
-				// 	setUser({ ...response.data.user, jwt: response.data.jwt })
-				// )
+				setLoading(false)
+				dispatchUser(
+					setUser({ ...response.data.user, jwt: response.data.jwt })
+				)
 
 				const complete = steps.find(step => step.label === "Complete")
 
@@ -128,9 +128,9 @@ export default function SignUp({
 			})
 			.catch(error => {
 				const { message } = error.response.data.message[0].messages[0]
-				//setLoading(false)
+				setLoading(false)
 				console.error(error)
-				//dispatchFeedback(setSnackbar({ status: "error", message }))
+				dispatchFeedback(setSnackbar({ status: "error", message }))
 			})
 	}
 
@@ -160,10 +160,7 @@ export default function SignUp({
 					// 		? `${process.env.GATSBY_STRAPI_URL}/connect/facebook`
 					// 		: undefined
 					// }
-					disabled={
-						//loading ||
-						info && disabled
-					}
+					disabled={loading || (info && disabled)}
 					onClick={() => (info ? handleComplete() : null)}
 					classes={{
 						root: clsx(classes.facebookSignUp, {
@@ -171,15 +168,19 @@ export default function SignUp({
 						}),
 					}}
 				>
-					<Typography
-						variant="h5"
-						classes={{ root: classes.facebookText }}
-					>
-						sign up{info ? "" : " with Facebook"}
-					</Typography>
+					{loading ? (
+						<CircularProgress />
+					) : (
+						<Typography
+							variant="h5"
+							classes={{ root: classes.facebookText }}
+						>
+							sign up{info ? "" : " with Facebook"}
+						</Typography>
+					)}
 				</Button>
 			</Grid>
-			<Grid item container justify="space-between">
+			<Grid item container justifyContent="space-between">
 				<Grid item>
 					<IconButton onClick={() => handleNavigate("backward")}>
 						<img

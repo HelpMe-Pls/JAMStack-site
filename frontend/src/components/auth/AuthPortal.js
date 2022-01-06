@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import axios from "axios"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
@@ -10,7 +10,8 @@ import SignUp from "./SignUp"
 import Complete from "./Complete"
 // import Reset from "./Reset"
 
-import { useUser } from "../../contexts/wrappers/UserWrapper"
+import { useUser, useFeedback } from "../../contexts"
+
 // import { setUser, setSnackbar } from "../../contexts/actions"
 
 const useStyles = makeStyles(theme => ({
@@ -59,7 +60,7 @@ export default function AuthPortal() {
 	const classes = useStyles()
 	const [selectedStep, setSelectedStep] = useState(0)
 	const { user, dispatchUser } = useUser()
-	//   const { feedback, dispatchFeedback } = useContext(FeedbackContext)
+	const { feedback, dispatchFeedback } = useFeedback()
 
 	const steps = [
 		{ component: Login, label: "Login" },
@@ -105,13 +106,17 @@ export default function AuthPortal() {
 	//   }, [])
 
 	return (
-		<Grid container justify="center" classes={{ root: classes.container }}>
+		<Grid
+			container
+			justifyContent="center"
+			classes={{ root: classes.container }}
+		>
 			<Grid item>
 				<Paper elevation={15} classes={{ root: classes.paper }}>
 					<Grid
 						container
 						direction="column"
-						justify="space-between"
+						justifyContent="space-between"
 						alignItems="center"
 						classes={{ root: classes.inner }}
 					>
@@ -120,10 +125,10 @@ export default function AuthPortal() {
 								<Step.component
 									setSelectedStep={setSelectedStep}
 									steps={steps}
-									// user={user}
-									// dispatchUser={dispatchUser}
-									// feedback={feedback}
-									// dispatchFeedback={dispatchFeedback}
+									user={user}
+									dispatchUser={dispatchUser}
+									feedback={feedback}
+									dispatchFeedback={dispatchFeedback}
 									key={Step.label}
 								/>
 							) : null
