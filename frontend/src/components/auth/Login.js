@@ -145,7 +145,7 @@ export default function Login({
 	}
 
 	const [loading, setLoading] = useState(false)
-	// const [success, setSuccess] = useState(false)
+	const [success, setSuccess] = useState(false) // a flag to start the setTimeOut
 
 	// console.log(user)
 	const handleLogin = () => {
@@ -158,7 +158,6 @@ export default function Login({
 			})
 			.then(response => {
 				setLoading(false)
-
 				dispatchUser(
 					setUser({
 						// payload
@@ -184,14 +183,15 @@ export default function Login({
 				email: values.email,
 			})
 			.then(response => {
+				//TODO: try to get rid of {response} and replace it with ()
 				setLoading(false)
-				// setSuccess(true)
-				// dispatchFeedback(
-				// 	setSnackbar({
-				// 		status: "success",
-				// 		message: "Reset Code Sent",
-				// 	})
-				// )
+				setSuccess(true)
+				dispatchFeedback(
+					setSnackbar({
+						status: "success",
+						message: "Reset Code Sent",
+					})
+				)
 			})
 			.catch(error => {
 				const { message } = error.response.data.message[0].messages[0]
@@ -201,15 +201,16 @@ export default function Login({
 			})
 	}
 
-	// useEffect(() => {
-	// 	if (!success) return
+	useEffect(() => {
+		if (!success) return
 
-	// 	const timer = setTimeout(() => {
-	// 		setForgot(false)
-	// 	}, 6000)
+		// assigning the setTimeout to a const to later use it in clearTimeout
+		const timer = setTimeout(() => {
+			setForgot(false)
+		}, 6000) // takes the user back to login page
 
-	// 	return () => clearTimeout(timer)
-	// }, [success])
+		return () => clearTimeout(timer) // in cases the user navigates to somewhere else BEFORE the 6s finished
+	}, [success])
 
 	return (
 		<>

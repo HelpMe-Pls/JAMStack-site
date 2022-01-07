@@ -57,6 +57,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+//TODO: Try implementing an error message when the user signs up without the username
 export default function SignUp({
 	steps,
 	setSelectedStep,
@@ -77,7 +78,7 @@ export default function SignUp({
 
 	const nameField = {
 		name: {
-			helperText: "you must enter a name",
+			helperText: "you must enter a name with more than 3 characters",
 			placeholder: "Name",
 			startAdornment: <img src={nameAdornment} alt="name" />,
 		},
@@ -93,6 +94,7 @@ export default function SignUp({
 	// Object.keys(errors).length < Object.keys(values).length also works but it doesn't make the most sense
 	// because the opposite of < is >=, and > cases are not true
 
+	// const disableForward = values.name.length < 4 // not exactly how i wanted but that's something
 	const handleNavigate = direction => {
 		if (direction === "forward") {
 			setInfo(true)
@@ -192,7 +194,10 @@ export default function SignUp({
 				</Grid>
 				{info ? null : (
 					<Grid item>
-						<IconButton onClick={() => handleNavigate("forward")}>
+						<IconButton
+							// disabled={disableForward} try this on the <img/> below
+							onClick={() => handleNavigate("forward")}
+						>
 							<img
 								src={forward}
 								alt="continue registration"

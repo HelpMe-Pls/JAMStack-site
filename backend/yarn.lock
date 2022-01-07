@@ -10056,7 +10056,7 @@ strapi-plugin-users-permissions@3.1.4:
     strapi-utils "3.1.4"
     uuid "^3.1.0"
 
-strapi-provider-email-sendgrid@^3.4.0:
+strapi-provider-email-sendgrid@^3.6.8:
   version "3.6.8"
   resolved "https://registry.yarnpkg.com/strapi-provider-email-sendgrid/-/strapi-provider-email-sendgrid-3.6.8.tgz#47699a50e5e43b98e75c3a776b58319189e352df"
   integrity sha512-l31T2LqTn1rAtWrMwRkN4OGtqmZJ40FoWsZDu247UQCAqtvHCcNeOttcgMGkkLjIG+arysfn8otsY1yudLwu1A==
