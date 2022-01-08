@@ -38,6 +38,9 @@ const useStyles = makeStyles(theme => ({
 		fontSize: "1.5rem",
 		fontWeight: 600,
 		textTransform: "none",
+		[theme.breakpoints.down("xs")]: {
+			fontSize: "1.3rem",
+		},
 	},
 	facebookButton: {
 		marginTop: "-1rem",
@@ -53,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	buttonText: {
 		[theme.breakpoints.down("xs")]: {
-			fontSize: "1.5rem",
+			fontSize: "1.69rem",
 		},
 	},
 	emailAdornment: {
@@ -189,7 +192,7 @@ export default function Login({
 				dispatchFeedback(
 					setSnackbar({
 						status: "success",
-						message: "Reset Code Sent",
+						message: "Reset Code Sent, please check your email",
 					})
 				)
 			})
