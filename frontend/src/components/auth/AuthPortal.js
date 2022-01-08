@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 			width: "30rem",
 		},
 		[theme.breakpoints.down("xs")]: {
-			width: "calc(100vw - 2rem)",
+			width: "calc(100vw - 2rem)", // 2rem from the borders on both sides
 			borderWidth: "1rem",
 		},
 	},

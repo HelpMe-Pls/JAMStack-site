@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	buttonText: {
 		[theme.breakpoints.down("xs")]: {
-			fontSize: "1.5rem",
+			fontSize: "1.69rem",
 		},
 	},
 }))
@@ -98,10 +98,11 @@ export default function Reset({ steps, setSelectedStep, dispatchFeedback }) {
 		const timer = setTimeout(() => {
 			// to clear the {code} query from the url when the user is navigated back to Login page
 			window.history.replaceState(null, null, window.location.pathname)
+			document.title = window.location.hostname + window.location.pathname
 
 			const login = steps.find(step => step.label === "Login")
 			setSelectedStep(steps.indexOf(login))
-		}, 6000)
+		}, 3000)
 
 		return () => clearTimeout(timer)
 	}, [success])

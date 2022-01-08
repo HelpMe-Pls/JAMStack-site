@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 		textTransform: "none",
 		fontSize: "1.5rem",
 		[theme.breakpoints.down("xs")]: {
-			fontSize: "1.25rem",
+			fontSize: "1.3rem",
 		},
 	},
 	navigation: {
@@ -156,6 +156,8 @@ export default function SignUp({
 				<Button
 					variant="contained"
 					color="secondary"
+					// gotcha: not using {!info && "a"} coz JS sees "a" as a string here, so the expression returns a boolean
+					// not a component of <a>
 					component={!info ? "a" : undefined}
 					href={
 						!info
