@@ -156,12 +156,12 @@ export default function SignUp({
 				<Button
 					variant="contained"
 					color="secondary"
-					// component={!info ? "a" : undefined}
-					// href={
-					// 	!info
-					// 		? `${process.env.GATSBY_STRAPI_URL}/connect/facebook`
-					// 		: undefined
-					// }
+					component={!info ? "a" : undefined}
+					href={
+						!info
+							? `${process.env.GATSBY_STRAPI_URL}/connect/facebook`
+							: undefined
+					}
 					disabled={loading || (info && disabled)}
 					onClick={() => (info ? handleComplete() : null)}
 					classes={{
@@ -207,38 +207,6 @@ export default function SignUp({
 					</Grid>
 				)}
 			</Grid>
-			{/* 
-			<Grid item>
-				<Button
-					variant="contained"
-					color="secondary"
-					component={!info ? "a" : undefined}
-					href={
-						!info
-							? `${process.env.GATSBY_STRAPI_URL}/connect/facebook`
-							: undefined
-					}
-					disabled={loading || (info && disabled)}
-					onClick={() => (info ? handleComplete() : null)}
-					classes={{
-						root: clsx(classes.facebookSignUp, {
-							[classes.removeButtonMargin]: info,
-						}),
-					}}
-				>
-					{loading ? (
-						<CircularProgress />
-					) : (
-						<Typography
-							variant="h5"
-							classes={{ root: classes.facebookText }}
-						>
-							sign up{info ? "" : " with Facebook"}
-						</Typography>
-					)}
-				</Button>
-			</Grid>
-			*/}
 		</>
 	)
 }

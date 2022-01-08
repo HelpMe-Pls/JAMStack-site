@@ -69,16 +69,17 @@ export default function AuthPortal() {
 		{ component: Reset, label: "Reset" },
 	]
 
-	// check if it needs to render <Reset/>
 	useEffect(() => {
 		const params = new URLSearchParams(window.location.search)
 		const code = params.get("code")
 		const access_token = params.get("access_token")
 
 		if (code) {
+			// check if it needs to render <Reset/>
 			const resetStep = steps.find(step => step.label === "Reset")
 			setSelectedStep(steps.indexOf(resetStep))
 		} else if (access_token) {
+			// check if user's creds are valid from Fb's Auth
 			axios
 				.get(
 					process.env.GATSBY_STRAPI_URL + "/auth/facebook/callback",
@@ -94,12 +95,14 @@ export default function AuthPortal() {
 							onboarding: true,
 						})
 					)
-
+					// to clear the {access_token} query from the url once the user is logged in with Fb
 					window.history.replaceState(
 						null,
 						null,
 						window.location.pathname
 					)
+					document.title =
+						window.location.hostname + window.location.pathname
 				})
 				.catch(error => {
 					console.error(error)

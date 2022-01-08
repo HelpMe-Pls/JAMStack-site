@@ -249,6 +249,8 @@ export default function Login({
 			{forgot ? null : (
 				<Grid item>
 					<Button
+						component="a"
+						href={`${process.env.GATSBY_STRAPI_URL}/connect/facebook`}
 						classes={{
 							root: clsx(classes.facebookButton, {
 								[classes.passwordError]: errors.password,
@@ -286,73 +288,6 @@ export default function Login({
 					</IconButton>
 				</Grid>
 			</Grid>
-
-			{/* <Grid item>
-				<Button
-					variant="contained"
-					color="secondary"
-					disabled={loading || (!forgot && disabled)}
-					onClick={() => (forgot ? handleForgot() : handleLogin())}
-					classes={{
-						root: clsx(classes.login, {
-							[classes.reset]: forgot,
-						}),
-					}}
-				>
-					{loading ? (
-						<CircularProgress />
-					) : (
-						<Typography
-							variant="h5"
-							classes={{ root: classes.buttonText }}
-						>
-							{forgot ? "forgot password" : "login"}
-						</Typography>
-					)}
-				</Button>
-			</Grid>
-			{forgot ? null : (
-				<Grid item>
-					<Button
-						component="a"
-						href={`${process.env.GATSBY_STRAPI_URL}/connect/facebook`}
-						classes={{
-							root: clsx(classes.facebookButton, {
-								[classes.passwordError]: errors.password,
-							}),
-						}}
-					>
-						<Typography
-							variant="h3"
-							classes={{ root: classes.facebookText }}
-						>
-							login with Facebook
-						</Typography>
-					</Button>
-				</Grid>
-			)}
-			<Grid item container justify="space-between">
-				<Grid item>
-					<IconButton onClick={navigateSignUp}>
-						<img src={addUserIcon} alt="sign up" />
-					</IconButton>
-				</Grid>
-				<Grid
-					item
-					classes={{
-						root: clsx({
-							[classes.close]: forgot,
-						}),
-					}}
-				>
-					<IconButton onClick={() => setForgot(!forgot)}>
-						<img
-							src={forgot ? close : forgotPasswordIcon}
-							alt={forgot ? "back to login" : "forgot password"}
-						/>
-					</IconButton>
-				</Grid>
-			</Grid> */}
 		</>
 	)
 }
