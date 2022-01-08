@@ -8,11 +8,11 @@ import { makeStyles } from "@material-ui/core/styles"
 import Login from "./Login"
 import SignUp from "./SignUp"
 import Complete from "./Complete"
-// import Reset from "./Reset"
+import Reset from "./Reset"
 
 import { useUser, useFeedback } from "../../contexts"
 
-// import { setUser, setSnackbar } from "../../contexts/actions"
+import { setUser, setSnackbar } from "../../contexts/actions"
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -66,44 +66,56 @@ export default function AuthPortal() {
 		{ component: Login, label: "Login" },
 		{ component: SignUp, label: "Sign Up" },
 		{ component: Complete, label: "Complete" },
-		// { component: Reset, label: "Reset" },
+		{ component: Reset, label: "Reset" },
 	]
 
-	//   useEffect(() => {
-	//     const params = new URLSearchParams(window.location.search)
-	//     const code = params.get("code")
-	//     const access_token = params.get("access_token")
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search)
+		const code = params.get("code")
+		const access_token = params.get("access_token")
 
-	//     if (code) {
-	//       const resetStep = steps.find(step => step.label === "Reset")
-	//       setSelectedStep(steps.indexOf(resetStep))
-	//     } else if (access_token) {
-	//       axios
-	//         .get(process.env.GATSBY_STRAPI_URL + "/auth/facebook/callback", {
-	//           params: { access_token },
-	//         })
-	//         .then(response => {
-	//           dispatchUser(
-	//             setUser({
-	//               ...response.data.user,
-	//               jwt: response.data.jwt,
-	//               onboarding: true,
-	//             })
-	//           )
-
-	//           window.history.replaceState(null, null, window.location.pathname)
-	//         })
-	//         .catch(error => {
-	//           console.error(error)
-	//           dispatchFeedback(
-	//             setSnackbar({
-	//               status: "error",
-	//               message: "Connecting To Facebook failed, please try again.",
-	//             })
-	//           )
-	//         })
-	//     }
-	//   }, [])
+		if (code) {
+			// check if it needs to render <Reset/>
+			const resetStep = steps.find(step => step.label === "Reset")
+			setSelectedStep(steps.indexOf(resetStep))
+		} else if (access_token) {
+			// check if user's creds are valid from Fb's Auth
+			axios
+				.get(
+					process.env.GATSBY_STRAPI_URL + "/auth/facebook/callback",
+					{
+						params: { access_token },
+					}
+				)
+				.then(response => {
+					dispatchUser(
+						setUser({
+							...response.data.user,
+							jwt: response.data.jwt,
+							onboarding: true,
+						})
+					)
+					// to clear the {access_token} query from the url once the user is logged in with Fb
+					window.history.replaceState(
+						null,
+						null,
+						window.location.pathname
+					)
+					document.title =
+						window.location.hostname + window.location.pathname
+				})
+				.catch(error => {
+					console.error(error)
+					dispatchFeedback(
+						setSnackbar({
+							status: "error",
+							message:
+								"Connecting To Facebook failed, please try again.",
+						})
+					)
+				})
+		}
+	}, [])
 
 	return (
 		<Grid

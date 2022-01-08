@@ -7,8 +7,9 @@ export default function userReducer(state, action) {
 
 	switch (action.type) {
 		case SET_USER:
-			if (user.username === "Guest") {
-				// to clear the previous version of logged in/ signed up user
+			if (!user.username) {
+				// in cases where setUser(defaultUser)
+				// to also clear the previous version of logged in/ signed up user
 				localStorage.removeItem("user")
 			} else {
 				// always set the localStorage with the latest version of that user's account
