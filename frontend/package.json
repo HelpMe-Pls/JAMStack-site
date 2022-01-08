@@ -28,6 +28,7 @@
         "react-dom": "^17.0.1",
         "react-helmet": "^6.1.0",
         "react-lottie": "^1.2.3",
+        "react-spring": "^9.4.1",
         "react-spring-3d-carousel": "^1.2.1"
     },
     "devDependencies": {
