@@ -235,7 +235,15 @@ export default function Details({
 	// }
 
 	return (
-		<Grid item container direction="column" xs={6} alignItems="center">
+		<Grid
+			item
+			container
+			direction="column"
+			xs={6}
+			alignItems="center"
+			justifyContent="center"
+			classes={{ root: classes.detailsContainer }}
+		>
 			<Grid item>
 				<img
 					src={fingerprint}
@@ -260,7 +268,7 @@ export default function Details({
 					/>
 				</Grid>
 			))}
-			<Grid container>
+			<Grid item container classes={{ root: classes.slotContainer }}>
 				<Slots />
 			</Grid>
 		</Grid>

@@ -34,12 +34,10 @@ const useStyles = makeStyles(theme => ({
 		backgroundSize: "auto",
 		backgroundPosition: "center",
 		backgroundRepeat: "repeat",
-		// borderTop: ({ showComponent }) =>
-		// 	`${showComponent ? 0 : 0.5}rem solid ${theme.palette.primary.main}`,
-		// borderBottom: ({ showComponent }) =>
-		// 	`${showComponent ? 0 : 0.5}rem solid ${theme.palette.primary.main}`,
-		borderTop: `0.5rem solid ${theme.palette.primary.main}`,
-		borderBottom: `0.5rem solid ${theme.palette.primary.main}`,
+		borderTop: ({ showComponent }) =>
+			`${showComponent ? 0 : 0.5}rem solid ${theme.palette.primary.main}`,
+		borderBottom: ({ showComponent }) =>
+			`${showComponent ? 0 : 0.5}rem solid ${theme.palette.primary.main}`,
 		margin: "5rem 0",
 		// [theme.breakpoints.down("md")]: {
 		// 	padding: ({ showComponent }) => (showComponent ? 0 : "5rem 0"),
@@ -83,7 +81,6 @@ const AnimatedGrid = animated(Grid)
 const AnimatedButton = animated(Button)
 
 export default function SettingsPortal() {
-	// const classes = useStyles({ showComponent })
 	// const matchesLG = useMediaQuery(theme => theme.breakpoints.down("lg"))
 	// const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 	// const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
@@ -91,7 +88,7 @@ export default function SettingsPortal() {
 	const [selectedSetting, setSelectedSetting] = useState(null)
 	const [resizeListener, sizes] = useResizeAware()
 	const [showComponent, setShowComponent] = useState(false)
-	const classes = useStyles()
+	const classes = useStyles({ showComponent }) // place {classes} so that {showComponent} is defined
 
 	// const buttonWidth = matchesXS
 	// 	? `${sizes.width - 64}`

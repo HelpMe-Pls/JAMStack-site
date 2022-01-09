@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import Details from "./Details"
 import Payments from "./Payments"
 import Location from "./Location"
-// import Edit from "./Edit"
+import Edit from "./Edit"
 
 import { useUser } from "../../contexts"
 
@@ -66,12 +66,18 @@ export default function Settings({ setSelectedSetting }) {
 
 	return (
 		<>
-			<Grid container>
+			<Grid container classes={{ root: classes.sectionContainer }}>
 				<Details />
 				<Payments />
 			</Grid>
-			<Grid container>
+			<Grid
+				container
+				classes={{
+					root: clsx(classes.bottomRow, classes.sectionContainer),
+				}}
+			>
 				<Location />
+				<Edit setSelectedSetting={setSelectedSetting} />
 			</Grid>
 		</>
 		// {/* <Grid container classes={{ root: classes.sectionContainer }}>
