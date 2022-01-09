@@ -6,9 +6,9 @@ import Button from "@material-ui/core/Button"
 import { makeStyles } from "@material-ui/core/styles"
 import { useSpring, useSprings, animated } from "react-spring"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
-// import useResizeAware from "react-resize-aware"
+import useResizeAware from "react-resize-aware"
 
-// import Settings from "./Settings"
+import Settings from "./Settings"
 // import OrderHistory from "./OrderHistory"
 // import Favorites from "./Favorites"
 // import Subscriptions from "./Subscriptions"
@@ -31,43 +31,42 @@ const useStyles = makeStyles(theme => ({
 		minHeight: "30rem",
 		height: "auto",
 		backgroundImage: `url(${background})`,
-		backgroundSize: "fill",
+		backgroundSize: "auto",
 		backgroundPosition: "center",
 		backgroundRepeat: "repeat",
-		borderTop: ({ showComponent }) =>
-			`${showComponent ? 0 : 0.5}rem solid ${theme.palette.primary.main}`,
-		borderBottom: ({ showComponent }) =>
-			`${showComponent ? 0 : 0.5}rem solid ${theme.palette.primary.main}`,
+		// borderTop: ({ showComponent }) =>
+		// 	`${showComponent ? 0 : 0.5}rem solid ${theme.palette.primary.main}`,
+		// borderBottom: ({ showComponent }) =>
+		// 	`${showComponent ? 0 : 0.5}rem solid ${theme.palette.primary.main}`,
+		borderTop: `0.5rem solid ${theme.palette.primary.main}`,
+		borderBottom: `0.5rem solid ${theme.palette.primary.main}`,
 		margin: "5rem 0",
-		[theme.breakpoints.down("md")]: {
-			padding: ({ showComponent }) => (showComponent ? 0 : "5rem 0"),
-			"& > :not(:last-child)": {
-				marginBottom: ({ showComponent }) =>
-					showComponent ? 0 : "5rem",
-			},
-		},
-		[theme.breakpoints.down("xs")]: {
-			padding: ({ showComponent }) => (showComponent ? 0 : "2rem 0"),
-			"& > :not(:last-child)": {
-				marginBottom: ({ showComponent }) =>
-					showComponent ? 0 : "2rem",
-			},
-		},
+		// [theme.breakpoints.down("md")]: {
+		// 	padding: ({ showComponent }) => (showComponent ? 0 : "5rem 0"),
+		// 	"& > :not(:last-child)": {
+		// 		marginBottom: ({ showComponent }) =>
+		// 			showComponent ? 0 : "5rem",
+		// 	},
+		// },
+		// [theme.breakpoints.down("xs")]: {
+		// 	padding: ({ showComponent }) => (showComponent ? 0 : "2rem 0"),
+		// 	"& > :not(:last-child)": {
+		// 		marginBottom: ({ showComponent }) =>
+		// 			showComponent ? 0 : "2rem",
+		// 	},
+		// },
 	},
 	icon: {
 		height: "12rem",
 		width: "12rem",
-		[theme.breakpoints.down("lg")]: {
-			height: "10rem",
-			width: "10rem",
-		},
+		// [theme.breakpoints.down("lg")]: {
+		// 	height: "10rem",
+		// 	width: "10rem",
+		// },
 	},
 	button: {
-		// backgroundColor: theme.palette.primary.main,
-		// display: "flex",
-		height: "20rem",
-		width: "20rem",
-		borderRadius: 25,
+		backgroundColor: theme.palette.primary.main,
+		display: "flex",
 	},
 	addHover: {
 		"&:hover": {
@@ -75,23 +74,24 @@ const useStyles = makeStyles(theme => ({
 			backgroundColor: theme.palette.secondary.main,
 		},
 	},
-	logout: {
-		color: theme.palette.error.main,
-	},
+	// logout: {
+	// 	color: theme.palette.error.main,
+	// },
 }))
 
-const AnimatedButton = animated(Button)
 const AnimatedGrid = animated(Grid)
+const AnimatedButton = animated(Button)
 
 export default function SettingsPortal() {
+	// const classes = useStyles({ showComponent })
+	// const matchesLG = useMediaQuery(theme => theme.breakpoints.down("lg"))
+	// const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
+	// const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 	const { user, dispatchUser, defaultUser } = useUser()
 	const [selectedSetting, setSelectedSetting] = useState(null)
-	// const [resizeListener, sizes] = useResizeAware()
+	const [resizeListener, sizes] = useResizeAware()
 	const [showComponent, setShowComponent] = useState(false)
-	const classes = useStyles({ showComponent })
-	const matchesLG = useMediaQuery(theme => theme.breakpoints.down("lg"))
-	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
-	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
+	const classes = useStyles()
 
 	// const buttonWidth = matchesXS
 	// 	? `${sizes.width - 64}`
@@ -106,7 +106,7 @@ export default function SettingsPortal() {
 		{
 			label: "Settings",
 			icon: settingsIcon,
-			// component: Settings,
+			component: Settings,
 			// large: true,
 		},
 		{
@@ -127,59 +127,74 @@ export default function SettingsPortal() {
 	]
 
 	const handleClick = setting => {
-		if (selectedSetting === setting) {
-			setSelectedSetting(null)
-		} else {
+		if (selectedSetting !== setting) {
 			setSelectedSetting(setting)
+		} else {
+			setSelectedSetting(null) // second click or first rendered with no click
 		}
 	}
 
 	const springs = useSprings(
 		buttons.length, // 4
 		buttons.map(button => ({
-			// to: async (next, cancel) => {
-			// 	const scale = {
-			transform:
-				selectedSetting === button.label || selectedSetting === null
-					? "scale(1)"
-					: "scale(0)",
-			// delay: selectedSetting !== null ? 0 : 600,
-			// }
+			to: async next => {
+				const scale = {
+					transform:
+						// these 2 cases below cannot be merged into selectedSetting !== null
+						// coz then the "go back to setting Portal" wouldn't work as expected:
+						// once the selected setting got de-selected, the rest of the settings won't appear
+						selectedSetting === button.label ||
+						selectedSetting === null
+							? "scale(1)"
+							: "scale(0)",
+					// wait (600ms) until the selectedSetting shrinked down to
+					// its original size then the rest of the settings come in (scale(1))
+					delay: selectedSetting !== null ? 0 : 600,
+				}
 
-			// const size = {
-			// 	height:
-			// 		selectedSetting === button.label
-			// 			? matchesMD && button.large
-			// 				? "120rem"
-			// 				: "60rem"
-			// 			: buttonHeight,
-			// 	width:
-			// 		selectedSetting === button.label
-			// 			? `${sizes.width}px`
-			// 			: buttonWidth,
-			// 	borderRadius: selectedSetting === button.label ? 0 : 25,
-			// 	delay: selectedSetting !== null ? 600 : 0,
-			// }
+				const size = {
+					height:
+						selectedSetting === button.label
+							? // ? matchesMD && button.large
+							  // ? "120rem"
+							  // : "60rem"
+							  // : buttonHeight, // original height
+							  "60rem"
+							: "20rem",
+					width:
+						selectedSetting === button.label
+							? `${sizes.width}px`
+							: // : buttonWidth,	// original width
+							  "320px",
+					borderRadius: selectedSetting === button.label ? 0 : 25,
+					// wait (for 600ms) until those NOT selected settings finished its scale(0) then
+					// the selectedSetting is expanded
+					delay: selectedSetting !== null ? 600 : 0,
+				}
 
-			// const hide = {
-			// 	display:
-			// 		selectedSetting === button.label ||
-			// 		selectedSetting === null
-			// 			? "flex"
-			// 			: "none",
-			// 	delay: 150,
-			// }
+				const hide = {
+					// explanation: lecture 246 @3:25
+					display:
+						selectedSetting === button.label ||
+						selectedSetting === null // initial render & "go back to Portal cases" case
+							? "flex"
+							: "none", // for those setting buttons that are NOT selected
+					delay: 150, // to wait for the shrinking/expanding effect to finish then do the hide/unhide thing
+				}
 
-			// await next(selectedSetting !== null ? scale : size)
-			// await next(hide)
-			// await next(selectedSetting !== null ? size : scale)
+				await next(selectedSetting !== null ? scale : size)
+				await next(hide)
+				await next(selectedSetting !== null ? size : scale)
+			},
 		}))
 	)
 
-	// const styles = useSpring({
-	// 	opacity: selectedSetting === null || showComponent ? 1 : 0,
-	// 	delay: selectedSetting === null || showComponent ? 0 : 1350,
-	// })
+	const styles = useSpring({
+		opacity: selectedSetting === null || showComponent ? 1 : 0,
+		// "go back to Portal" click
+		// 1350 === 600*2 + 150: to wait for {springs} effects to finish then unmount the component
+		delay: selectedSetting === null || showComponent ? 0 : 1350,
+	})
 
 	// const handleLogout = () => {
 	// 	dispatchUser(setUser(defaultUser))
@@ -187,18 +202,19 @@ export default function SettingsPortal() {
 
 	useEffect(() => {
 		if (selectedSetting === null) {
+			// none of the settings are clicked yet
 			setShowComponent(false)
 			return
 		}
 
-		const timer = setTimeout(() => setShowComponent(true), 2000)
+		const timer = setTimeout(() => setShowComponent(true), 2000) // 2000 > 1350
 
 		return () => clearTimeout(timer)
 	}, [selectedSetting])
 
 	return (
 		<Grid container direction="column" alignItems="center">
-			{/* {resizeListener} */}
+			{resizeListener}
 			<Grid item>
 				<img src={accountIcon} alt="settings page" />
 			</Grid>
@@ -223,36 +239,10 @@ export default function SettingsPortal() {
 				container
 				classes={{ root: classes.dashboard }}
 				alignItems="center"
-				justify="space-around"
-				direction={matchesMD ? "column" : "row"}
+				justifyContent="space-around"
+				// direction={matchesMD ? "column" : "row"}
 			>
-				{springs.map((prop, i) => (
-					<Grid item>
-						<AnimatedButton
-							variant="contained"
-							color="primary"
-							style={prop}
-							classes={{ root: classes.button }}
-							onClick={() => handleClick(buttons[i].label)}
-						>
-							<Grid container direction="column">
-								<Grid item>
-									<img
-										src={buttons[i].icon}
-										alt={buttons[i].label}
-										className={classes.icon}
-									/>
-								</Grid>
-								<Grid item>
-									<Typography variant="h5">
-										{buttons[i].label}
-									</Typography>
-								</Grid>
-							</Grid>
-						</AnimatedButton>
-					</Grid>
-				))}
-				{/* {springs.map((prop, i) => {
+				{springs.map((prop, i) => {
 					const button = buttons[i]
 
 					return (
@@ -300,7 +290,7 @@ export default function SettingsPortal() {
 							</AnimatedGrid>
 						</AnimatedGrid>
 					)
-				})} */}
+				})}
 			</Grid>
 		</Grid>
 	)

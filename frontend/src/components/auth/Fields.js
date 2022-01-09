@@ -28,12 +28,12 @@ export default function Fields({
 	setErrors,
 	values,
 	setValues,
-	// isWhite,
+	isWhite,
 	// disabled,
 	// fullWidth,
 	// settings,
 }) {
-	const classes = useStyles()
+	const classes = useStyles({ isWhite })
 	//{ isWhite, fullWidth, settings }
 
 	return Object.keys(fields).map(field => {
