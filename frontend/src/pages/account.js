@@ -6,27 +6,18 @@ import { setUser } from "../contexts/actions"
 
 import Layout from "../components/ui/layout"
 import AuthPortal from "../components/auth/AuthPortal"
-// import SettingsPortal from "../components/settings/SettingsPortal"
+import SettingsPortal from "../components/settings/SettingsPortal"
 
 export default function Account() {
-	const { user, dispatchUser, defaultUser } = useUser()
-	const handleLogout = () => {
-		dispatchUser(setUser(defaultUser))
-	}
+	const { user } = useUser()
 
 	return (
 		<Layout>
-			{
-				user.jwt && user.onboarding ? ( // {user.onboarding} only available AFTER we rendered the <Complete/>
-					<Button variant="contained" onClick={handleLogout}>
-						Logout
-					</Button>
-				) : (
-					<AuthPortal />
-				)
-				//user.jwt && user.onboarding ? <SettingsPortal /> :
-				// <AuthPortal />
-			}
+			{user.jwt && user.onboarding ? (
+				<SettingsPortal /> // {user.onboarding} only available AFTER we rendered the <Complete/>
+			) : (
+				<AuthPortal />
+			)}
 		</Layout>
 	)
 }

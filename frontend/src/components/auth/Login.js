@@ -6,8 +6,7 @@ import Typography from "@material-ui/core/Typography"
 import CircularProgress from "@material-ui/core/CircularProgress"
 import Button from "@material-ui/core/Button"
 import IconButton from "@material-ui/core/IconButton"
-import TextField from "@material-ui/core/TextField"
-import InputAdornment from "@material-ui/core/InputAdornment"
+
 import { makeStyles } from "@material-ui/core/styles"
 
 import Fields from "./Fields"
@@ -15,9 +14,9 @@ import { setUser, setSnackbar } from "../../contexts/actions"
 
 import accountIcon from "../../images/account.svg"
 import EmailAdornment from "../../images/EmailAdornment"
-import PasswordAdornment from "../../images/password-adornment.svg"
-import HidePasswordIcon from "../../images/hide-password.svg"
-import ShowPasswordIcon from "../../images/show-password.svg"
+import PasswordAdornment from "../../images/PasswordAdornment"
+import HidePasswordIcon from "../../images/HidePassword"
+import ShowPasswordIcon from "../../images/ShowPassword"
 import addUserIcon from "../../images/add-user.svg"
 import forgotPasswordIcon from "../../images/forgot.svg"
 import close from "../../images/close.svg"
@@ -74,8 +73,8 @@ export const EmailPassword = (
 	hideEmail,
 	hidePassword,
 	visible,
-	setVisible
-	//isWhite
+	setVisible,
+	isWhite
 ) => ({
 	email: {
 		helperText: "invalid email",
@@ -83,12 +82,9 @@ export const EmailPassword = (
 		type: "text",
 		hidden: hideEmail,
 		startAdornment: (
-			<span className={classes.emailAdornment}>
-				<EmailAdornment />
+			<span style={{ height: 17, width: 22, marginBottom: 10 }}>
+				<EmailAdornment color={isWhite ? "#fff" : null} />
 			</span>
-			// <span style={{ height: 17, width: 22, marginBottom: 10 }}>
-			// 	<EmailAdornment color={isWhite ? "#fff" : null} />
-			// </span>
 		),
 	},
 	password: {
@@ -97,23 +93,18 @@ export const EmailPassword = (
 		placeholder: "Password",
 		hidden: hidePassword,
 		type: visible ? "text" : "password",
-		startAdornment: <img src={PasswordAdornment} alt="password" />,
-		// <PasswordAdornment color={isWhite ? "#fff" : null} />,
+		startAdornment: <PasswordAdornment color={isWhite ? "#fff" : null} />,
 		endAdornment: (
 			<IconButton
-				//style={{ padding: 0 }}
+				style={{ padding: 0 }}
 				classes={{ root: classes.visibleIcon }}
 				onClick={() => setVisible(!visible)}
 			>
-				<img
-					src={visible ? ShowPasswordIcon : HidePasswordIcon}
-					alt={`${visible ? "Show" : "Hide"} password`}
-				/>
-				{/* {visible ? (
+				{visible ? (
 					<ShowPasswordIcon color={isWhite ? "#fff" : null} />
 				) : (
 					<HidePasswordIcon color={isWhite ? "#fff" : null} />
-				)} */}
+				)}
 			</IconButton>
 		),
 	},
