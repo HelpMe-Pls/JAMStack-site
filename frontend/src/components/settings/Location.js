@@ -51,8 +51,8 @@ export default function Location({
 	setChangesMade,
 	// values,
 	// setValues,
-	slot,
-	setSlot,
+	// slot,
+	// setSlot,
 	// errors,
 	// setErrors,
 }) {
@@ -60,8 +60,14 @@ export default function Location({
 	const [loading, setLoading] = useState(false)
 	// const { dispatchFeedback } = useFeedback()
 
-	const [values, setValues] = useState({ street: "", zip: "" })
+	const [values, setValues] = useState({
+		street: "",
+		zip: "",
+		city: "",
+		state: "",
+	})
 	const [errors, setErrors] = useState({})
+	const [slot, setSlot] = useState(0)
 
 	// const getLocation = () => {
 	// 	setLoading(true)
@@ -91,9 +97,9 @@ export default function Location({
 	// 		})
 	// }
 
-	// useEffect(() => {
-	// 	setValues(user.locations[slot])
-	// }, [slot])
+	useEffect(() => {
+		setValues(user.locations[slot])
+	}, [slot])
 
 	// useEffect(() => {
 	// 	const changed = Object.keys(user.locations[slot]).some(

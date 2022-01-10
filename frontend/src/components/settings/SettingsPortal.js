@@ -72,13 +72,12 @@ const useStyles = makeStyles(theme => ({
 			backgroundColor: theme.palette.secondary.main,
 		},
 	},
-	// logout: {
-	// 	color: theme.palette.error.main,
-	// },
+	logout: {
+		color: theme.palette.error.main,
+	},
 }))
 
 const AnimatedGrid = animated(Grid)
-const AnimatedButton = animated(Button)
 
 export default function SettingsPortal() {
 	// const matchesLG = useMediaQuery(theme => theme.breakpoints.down("lg"))
@@ -127,8 +126,12 @@ export default function SettingsPortal() {
 		if (selectedSetting !== setting) {
 			setSelectedSetting(setting)
 		} else {
-			setSelectedSetting(null) // second click or first rendered with no click
+			setSelectedSetting(null) // second click or at initial render
 		}
+	}
+
+	const handleLogout = () => {
+		dispatchUser(setUser(defaultUser))
 	}
 
 	const springs = useSprings(
@@ -193,10 +196,6 @@ export default function SettingsPortal() {
 		delay: selectedSetting === null || showComponent ? 0 : 1350,
 	})
 
-	// const handleLogout = () => {
-	// 	dispatchUser(setUser(defaultUser))
-	// }
-
 	useEffect(() => {
 		if (selectedSetting === null) {
 			// none of the settings are clicked yet
@@ -224,13 +223,13 @@ export default function SettingsPortal() {
 					Welcome back, {user.username}
 				</Typography>
 			</Grid>
-			{/* <Grid item>
+			<Grid item>
 				<Button onClick={handleLogout}>
 					<Typography variant="h5" classes={{ root: classes.logout }}>
 						logout
 					</Typography>
 				</Button>
-			</Grid> */}
+			</Grid>
 			<Grid
 				item
 				container

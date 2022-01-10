@@ -52,8 +52,7 @@ export default function Payments({ user }) {
 	const classes = useStyles()
 	const [slot, setSlot] = useState(0)
 
-	// const card = user.paymentMethods[slot]
-	const cards = [{ last4: 6996, brand: "Visa" }]
+	const card = user.paymentMethods[slot]
 
 	return (
 		<Grid
@@ -80,36 +79,28 @@ export default function Payments({ user }) {
 						variant="h3"
 						classes={{ root: classes.number }}
 					>
-						{cards
-							? `${cards[0].brand.toUpperCase()} **** **** **** ${
-									cards[0].last4
-							  }`
-							: "Add a new card during checkout"}
-						{/* {card.last4
+						{card.last4
 							? `${card[0].brand.toUpperCase()} **** **** **** ${
 									card[0].last4
 							  }`
-							: "Add A New Card During Checkout"} */}
+							: "Add A New Card During Checkout"}
 					</Typography>
 				</Grid>
-				{
-					//card.last4
-					cards && (
-						<Grid item>
-							<Button
-								variant="contained"
-								classes={{ root: classes.removeCard }}
+				{card.last4 && (
+					<Grid item>
+						<Button
+							variant="contained"
+							classes={{ root: classes.removeCard }}
+						>
+							<Typography
+								variant="h6"
+								classes={{ root: classes.removeCardText }}
 							>
-								<Typography
-									variant="h6"
-									classes={{ root: classes.removeCardText }}
-								>
-									remove card
-								</Typography>
-							</Button>
-						</Grid>
-					)
-				}
+								remove card
+							</Typography>
+						</Button>
+					</Grid>
+				)}
 			</Grid>
 			<Grid item container classes={{ root: classes.slotContainer }}>
 				<Slots slot={slot} setSlot={setSlot} />

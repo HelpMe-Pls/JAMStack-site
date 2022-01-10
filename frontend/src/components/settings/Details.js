@@ -117,8 +117,8 @@ export default function Details({
 	setChangesMade,
 	// values,
 	// setValues,
-	slot,
-	setSlot,
+	// slot,
+	// setSlot,
 	// errors,
 	// setErrors,
 	checkout,
@@ -139,20 +139,21 @@ export default function Details({
 		name: "",
 		phone: "",
 		email: "",
-		password: "",
+		password: "********",
 	})
 	const [errors, setErrors] = useState({})
+	const [slot, setSlot] = useState(0)
 	// const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
-	// useEffect(() => {
-	// 	if (noSlots || user.username === "Guest") return
+	useEffect(() => {
+		if (noSlots || !user.username) return
 
-	// 	if (checkout) {
-	// 		setValues(user.contactInfo[slot])
-	// 	} else {
-	// 		setValues({ ...user.contactInfo[slot], password: "********" })
-	// 	}
-	// }, [slot])
+		if (checkout) {
+			setValues(user.contactInfo[slot])
+		} else {
+			setValues({ ...user.contactInfo[slot], password: "********" })
+		}
+	}, [slot])
 
 	// useEffect(() => {
 	// 	if (checkout) return
@@ -269,7 +270,7 @@ export default function Details({
 				</Grid>
 			))}
 			<Grid item container classes={{ root: classes.slotContainer }}>
-				<Slots />
+				<Slots slot={slot} setSlot={setSlot} />
 			</Grid>
 		</Grid>
 		// <Grid

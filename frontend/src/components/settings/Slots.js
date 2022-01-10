@@ -46,7 +46,7 @@ export default function Slots({ slot, setSlot }) {
 		<Grid item classes={{ root: classes.slotWrapper }}>
 			{[1, 2, 3].map(number => (
 				<Button
-					onClick={() => setSlot(number - 1)}
+					onClick={() => setSlot(number - 1)} // set as INDEX so it matches the index from the objects in backend\extensions\users-permissions\models\User.js
 					key={number}
 					classes={{
 						root: clsx(classes.slot, {
