@@ -29,7 +29,7 @@ export default function Fields({
 	values,
 	setValues,
 	isWhite,
-	// disabled,
+	disabled,
 	// fullWidth,
 	// settings,
 }) {
@@ -63,7 +63,7 @@ export default function Fields({
 					helperText={errors[field] && fields[field].helperText}
 					placeholder={fields[field].placeholder}
 					type={fields[field].type}
-					// disabled={disabled}
+					disabled={disabled}
 					// fullWidth={fullWidth}
 					InputProps={{
 						startAdornment: (

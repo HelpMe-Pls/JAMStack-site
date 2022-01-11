@@ -30,85 +30,89 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function Edit({
-	setSelectedSetting,
-	edit,
-	setEdit,
-	details,
-	locations,
-	detailSlot,
-	locationSlot,
-	changesMade,
 	user,
 	dispatchUser,
+	setSelectedSetting,
+	details,
+	detailSlot,
+	locations,
+	locationSlot,
 	isError,
+	changesMade,
+	edit,
+	setEdit,
 }) {
 	const classes = useStyles()
 	const { dispatchFeedback } = useFeedback()
 	const [loading, setLoading] = useState(false)
-	const [dialogOpen, setDialogOpen] = useState(false)
+	// const [dialogOpen, setDialogOpen] = useState(false)
 
-	// const handleEdit = () => {
-	// 	if (edit && isError) {
-	// 		dispatchFeedback(
-	// 			setSnackbar({
-	// 				status: "error",
-	// 				message: "All fields must be valid before saving.",
-	// 			})
-	// 		)
-	// 		return
-	// 	}
+	const handleEdit = () => {
+		if (edit && isError) {
+			dispatchFeedback(
+				setSnackbar({
+					status: "error",
+					message: "All fields must be valid before saving.",
+				})
+			)
+			return
+		}
 
-	// 	setEdit(!edit)
-	// 	const { password, ...newDetails } = details
+		// if (password !== "********") {
+		// 	setDialogOpen(true)
+		// }
 
-	// 	if (password !== "********") {
-	// 		setDialogOpen(true)
-	// 	}
+		if (edit && changesMade) {
+			// clicked on the "Save" icon ({edit}'s value within this function is from the previous setEdit())
+			// outside of this function, {edit} has the updated value
+			// i.e. after the user clicked "Edit", within this function's scope,
+			// {edit} === false
+			setLoading(true)
 
-	// 	if (edit && changesMade) {
-	// 		setLoading(true)
-
-	// 		axios
-	// 			.post(
-	// 				process.env.GATSBY_STRAPI_URL +
-	// 					"/users-permissions/set-settings",
-	// 				{
-	// 					details: newDetails,
-	// 					detailSlot,
-	// 					location: locations,
-	// 					locationSlot,
-	// 				},
-	// 				{ headers: { Authorization: `Bearer ${user.jwt}` } }
-	// 			)
-	// 			.then(response => {
-	// 				setLoading(false)
-	// 				dispatchFeedback(
-	// 					setSnackbar({
-	// 						status: "success",
-	// 						message: "Settings Saved Successfully",
-	// 					})
-	// 				)
-	// 				dispatchUser(
-	// 					setUser({
-	// 						...response.data,
-	// 						jwt: user.jwt,
-	// 						onboarding: true,
-	// 					})
-	// 				)
-	// 			})
-	// 			.catch(error => {
-	// 				setLoading(false)
-	// 				console.error(error)
-	// 				dispatchFeedback(
-	// 					setSnackbar({
-	// 						status: "error",
-	// 						message:
-	// 							"There was a problem saving your settings, please try again.",
-	// 					})
-	// 				)
-	// 			})
-	// 	}
-	// }
+			const { password, ...newDetails } = details
+			axios
+				.post(
+					process.env.GATSBY_STRAPI_URL +
+						"/users-permissions/set-settings",
+					{
+						details: newDetails,
+						detailSlot,
+						location: locations,
+						locationSlot,
+					},
+					{ headers: { Authorization: `Bearer ${user.jwt}` } }
+				)
+				.then(response => {
+					setLoading(false)
+					dispatchFeedback(
+						setSnackbar({
+							status: "success",
+							message: "Settings Saved Successfully",
+						})
+					)
+					dispatchUser(
+						// sending updated user details to context
+						setUser({
+							...response.data,
+							jwt: user.jwt,
+							onboarding: true,
+						})
+					)
+				})
+				.catch(error => {
+					setLoading(false)
+					console.error(error)
+					dispatchFeedback(
+						setSnackbar({
+							status: "error",
+							message:
+								"There was a problem saving your settings, please try again.",
+						})
+					)
+				})
+		}
+		setEdit(!edit) // toggle between "Save" & "Edit" icons
+	}
 
 	return (
 		<Grid
@@ -131,10 +135,7 @@ export default function Edit({
 				{loading ? (
 					<CircularProgress color="secondary" size="8rem" />
 				) : (
-					<IconButton
-					// disabled={loading}
-					// onClick={handleEdit}
-					>
+					<IconButton disabled={loading} onClick={handleEdit}>
 						<img
 							src={edit ? saveIcon : editIcon}
 							alt={`${edit ? "save" : "edit"} settings`}

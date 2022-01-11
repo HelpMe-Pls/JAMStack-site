@@ -115,12 +115,12 @@ export default function Details({
 	user,
 	edit,
 	setChangesMade,
-	// values,
-	// setValues,
-	// slot,
-	// setSlot,
-	// errors,
-	// setErrors,
+	values,
+	setValues,
+	slot,
+	setSlot,
+	errors,
+	setErrors,
 	checkout,
 	billing,
 	setBilling,
@@ -135,35 +135,29 @@ export default function Details({
 	// const isMounted = useRef(false)
 
 	const [visible, setVisible] = useState(false)
-	const [values, setValues] = useState({
-		name: "",
-		phone: "",
-		email: "",
-		password: "********",
-	})
-	const [errors, setErrors] = useState({})
-	const [slot, setSlot] = useState(0)
+
 	// const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
 	useEffect(() => {
-		if (noSlots || !user.username) return
+		// if (noSlots || !user.username) return
 
-		if (checkout) {
-			setValues(user.contactInfo[slot])
-		} else {
-			setValues({ ...user.contactInfo[slot], password: "********" })
-		}
+		// if (checkout) {
+		// 	setValues(user.contactInfo[slot])
+		// } else {
+		setValues({ ...user.contactInfo[slot], password: "********" })
+		// }
 	}, [slot])
 
-	// useEffect(() => {
-	// 	if (checkout) return
+	useEffect(() => {
+		// if (checkout) return
 
-	// 	const changed = Object.keys(user.contactInfo[slot]).some(
-	// 		field => values[field] !== user.contactInfo[slot][field]
-	// 	)
+		// to check if there's ACTUAL changes in the input fields by comparing the current input with the info in localStorage
+		const changed = Object.keys(user.contactInfo[slot]).some(
+			field => values[field] !== user.contactInfo[slot][field]
+		)
 
-	// 	setChangesMade(changed)
-	// }, [values])
+		setChangesMade(changed)
+	}, [values])
 
 	// useEffect(() => {
 	// 	if (noSlots) {
@@ -266,6 +260,7 @@ export default function Details({
 						errors={errors}
 						setErrors={setErrors}
 						isWhite
+						disabled={!edit}
 					/>
 				</Grid>
 			))}

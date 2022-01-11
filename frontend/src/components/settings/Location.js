@@ -49,25 +49,16 @@ export default function Location({
 	user,
 	edit,
 	setChangesMade,
-	// values,
-	// setValues,
-	// slot,
-	// setSlot,
-	// errors,
-	// setErrors,
+	values,
+	setValues,
+	slot,
+	setSlot,
+	errors,
+	setErrors,
 }) {
 	const classes = useStyles()
 	const [loading, setLoading] = useState(false)
 	// const { dispatchFeedback } = useFeedback()
-
-	const [values, setValues] = useState({
-		street: "",
-		zip: "",
-		city: "",
-		state: "",
-	})
-	const [errors, setErrors] = useState({})
-	const [slot, setSlot] = useState(0)
 
 	// const getLocation = () => {
 	// 	setLoading(true)
@@ -101,21 +92,21 @@ export default function Location({
 		setValues(user.locations[slot])
 	}, [slot])
 
-	// useEffect(() => {
-	// 	const changed = Object.keys(user.locations[slot]).some(
-	// 		field => values[field] !== user.locations[slot][field]
-	// 	)
+	useEffect(() => {
+		const changed = Object.keys(user.locations[slot]).some(
+			field => values[field] !== user.locations[slot][field]
+		)
 
-	// 	setChangesMade(changed)
+		setChangesMade(changed)
 
-	// 	if (values.zip.length === 5) {
-	// 		if (values.city) return
+		// if (values.zip.length === 5) {
+		// 	if (values.city) return
 
-	// 		getLocation()
-	// 	} else if (values.zip.length < 5 && values.city) {
-	// 		setValues({ ...values, city: "", state: "" })
-	// 	}
-	// }, [values])
+		// 	getLocation()
+		// } else if (values.zip.length < 5 && values.city) {
+		// 	setValues({ ...values, city: "", state: "" })
+		// }
+	}, [values])
 
 	const fields = {
 		street: {
@@ -162,7 +153,7 @@ export default function Location({
 					errors={errors}
 					setErrors={setErrors}
 					isWhite
-					// disabled={!edit}
+					disabled={!edit}
 				/>
 			</Grid>
 			<Grid item classes={{ root: classes.chipWrapper }}>
