@@ -43,6 +43,7 @@ module.exports = {
 			};
 		}
 
+		// this is where the database actually updates the new info
 		let newUser = await strapi.plugins[
 			"users-permissions"
 		].services.user.edit(
@@ -50,9 +51,9 @@ module.exports = {
 			{ contactInfo: newInfo, locations: newLocations }
 		);
 
-		newUser = sanitizeUser(newUser); // so that we don't send sensitive data to the server
+		newUser = sanitizeUser(newUser); // so that we don't send sensitive data to the client
 
-		ctx.send(newUser, 200);
+		ctx.send(newUser, 200); // send updated user profile back to the client
 	},
 
 	async changePassword(ctx) {
@@ -60,11 +61,11 @@ module.exports = {
 		const { password } = ctx.request.body;
 
 		await strapi.plugins["users-permissions"].services.user.edit(
-			{ id },
+			{ id }, // to make sure that it's the correct user who's changing their password
 			{ password }
 		);
 
-		ctx.send("Password Changed Successfully", 200);
+		ctx.send("Password Successfully Changed", 200); // the {password} is not attached to the user's profile so we don't need to include it in the send()
 	},
 
 	// async me(ctx) {

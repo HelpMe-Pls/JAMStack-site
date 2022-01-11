@@ -58,18 +58,9 @@ const useStyles = makeStyles(theme => ({
 			fontSize: "1.69rem",
 		},
 	},
-	emailAdornment: {
-		height: 17,
-		width: 22,
-		marginBottom: 10,
-	},
-	visibleIcon: {
-		padding: 0,
-	},
 }))
 
 export const EmailPassword = (
-	classes,
 	hideEmail,
 	hidePassword,
 	visible,
@@ -97,7 +88,6 @@ export const EmailPassword = (
 		endAdornment: (
 			<IconButton
 				style={{ padding: 0 }}
-				classes={{ root: classes.visibleIcon }}
 				onClick={() => setVisible(!visible)}
 			>
 				{visible ? (
@@ -127,7 +117,7 @@ export default function Login({
 	const [forgot, setForgot] = useState(false)
 	const [errors, setErrors] = useState({})
 
-	const fields = EmailPassword(classes, false, forgot, visible, setVisible)
+	const fields = EmailPassword(false, forgot, visible, setVisible)
 
 	const disabled =
 		Object.keys(errors).some(error => errors[error] === true) ||
@@ -162,10 +152,15 @@ export default function Login({
 				)
 			})
 			.catch(error => {
-				const { message } = error.response.data.message[0].messages[0]
+				// const { message } = error.response.data.message[0].messages[0]
 				setLoading(false)
 				console.error(error)
-				dispatchFeedback(setSnackbar({ status: "error", message }))
+				dispatchFeedback(
+					setSnackbar({
+						status: "error",
+						message: "Invalid email and/or password",
+					})
+				)
 			})
 	}
 

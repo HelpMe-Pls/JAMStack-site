@@ -10,7 +10,7 @@ import validate from "../ui/validate"
 const useStyles = makeStyles(theme => ({
 	textField: {
 		width: ({ fullWidth, settings }) =>
-			fullWidth ? undefined : settings ? "15rem" : "20rem",
+			fullWidth ? undefined : settings ? "15rem" : "20rem", // {undefined} so that it takes the ACTUAL full width (from MUI prop)
 		[theme.breakpoints.down("xs")]: {
 			width: ({ fullWidth }) => (fullWidth ? undefined : "15rem"),
 		},
@@ -30,11 +30,10 @@ export default function Fields({
 	setValues,
 	isWhite,
 	disabled,
-	// fullWidth,
-	// settings,
+	fullWidth,
+	settings,
 }) {
-	const classes = useStyles({ isWhite })
-	//{ isWhite, fullWidth, settings }
+	const classes = useStyles({ isWhite, fullWidth, settings })
 
 	return Object.keys(fields).map(field => {
 		const validateHelper = event => {
@@ -64,7 +63,7 @@ export default function Fields({
 					placeholder={fields[field].placeholder}
 					type={fields[field].type}
 					disabled={disabled}
-					// fullWidth={fullWidth}
+					fullWidth={fullWidth}
 					InputProps={{
 						startAdornment: (
 							<InputAdornment position="start">

@@ -11,7 +11,14 @@ export default function feedbackReducer(state, action) {
 				// snackbars are independent from each other so there's no need to {...state},
 				// therefore, this object is considered a new piece of state, not inherit from its previous states
 				open: true, // if we don't explicitly set the state {open} === false, it'll automatically set to true
-				backgroundColor: status === "error" ? "#FF3232" : "#4BB543",
+				backgroundColor:
+					status === "error"
+						? "#FF3232"
+						: status === "success"
+						? "#4BB543"
+						: status === "warning"
+						? "#FFCC00"
+						: "#0288d1",
 				message,
 			}
 		default:

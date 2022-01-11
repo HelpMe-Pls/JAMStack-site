@@ -54,9 +54,11 @@ export default function Settings({ setSelectedSetting }) {
 
 	const allErrors = { ...detailErrors, ...locationErrors }
 	const isError = Object.keys(allErrors).some(
+		// to only enable "Save" ì there's no error
 		error => allErrors[error] === true
 	)
 
+	// so that the error message(s) is linked to its corresponding slot
 	useEffect(() => {
 		setDetailErrors({})
 	}, [detailSlot])
@@ -99,9 +101,8 @@ export default function Settings({ setSelectedSetting }) {
 					setChangesMade={setChangesMade}
 				/>
 				<Edit
-					user={user}
-					dispatchUser={dispatchUser}
 					setSelectedSetting={setSelectedSetting}
+					user={user}
 					details={detailValues}
 					detailSlot={detailSlot}
 					locations={locationValues}
@@ -110,6 +111,7 @@ export default function Settings({ setSelectedSetting }) {
 					changesMade={changesMade}
 					edit={edit}
 					setEdit={setEdit}
+					dispatchUser={dispatchUser}
 				/>
 			</Grid>
 		</>

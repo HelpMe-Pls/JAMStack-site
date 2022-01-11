@@ -21,14 +21,6 @@ const useStyles = makeStyles(theme => ({
 		height: 25.122,
 		width: 25.173,
 	},
-	visibleIcon: {
-		padding: 0,
-	},
-	emailAdornment: {
-		height: 17,
-		width: 22,
-		marginBottom: 10,
-	},
 	icon: {
 		// marginTop: ({ checkout }) => (checkout ? "-2rem" : undefined),
 		// marginBottom: ({ checkout }) => (checkout ? "1rem" : "3rem"),
@@ -185,7 +177,6 @@ export default function Details({
 	// 	true
 	// )
 	const email_password = EmailPassword(
-		classes,
 		false,
 		false,
 		visible,

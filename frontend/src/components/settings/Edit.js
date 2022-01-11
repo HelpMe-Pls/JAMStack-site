@@ -1,12 +1,11 @@
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import axios from "axios"
 import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
 import IconButton from "@material-ui/core/IconButton"
 import CircularProgress from "@material-ui/core/CircularProgress"
 import { makeStyles } from "@material-ui/core/styles"
 
-// import Confirmation from "./Confirmation"
+import Confirmation from "./Confirmation"
 
 import { useFeedback } from "../../contexts"
 import { setSnackbar, setUser } from "../../contexts/actions"
@@ -30,9 +29,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function Edit({
-	user,
-	dispatchUser,
 	setSelectedSetting,
+	user,
 	details,
 	detailSlot,
 	locations,
@@ -41,26 +39,19 @@ export default function Edit({
 	changesMade,
 	edit,
 	setEdit,
+	dispatchUser,
 }) {
 	const classes = useStyles()
 	const { dispatchFeedback } = useFeedback()
 	const [loading, setLoading] = useState(false)
-	// const [dialogOpen, setDialogOpen] = useState(false)
+	const [dialogOpen, setDialogOpen] = useState(false)
 
 	const handleEdit = () => {
-		if (edit && isError) {
-			dispatchFeedback(
-				setSnackbar({
-					status: "error",
-					message: "All fields must be valid before saving.",
-				})
-			)
-			return
+		const { password, ...newDetails } = details
+		if (password !== "********") {
+			setDialogOpen(true)
 		}
-
-		// if (password !== "********") {
-		// 	setDialogOpen(true)
-		// }
+		//const { password, ...newDetails } = details
 
 		if (edit && changesMade) {
 			// clicked on the "Save" icon ({edit}'s value within this function is from the previous setEdit())
@@ -69,11 +60,10 @@ export default function Edit({
 			// {edit} === false
 			setLoading(true)
 
-			const { password, ...newDetails } = details
 			axios
 				.post(
 					process.env.GATSBY_STRAPI_URL +
-						"/users-permissions/set-settings",
+						"/users-permissions/set-settings", // route to
 					{
 						details: newDetails,
 						detailSlot,
@@ -111,6 +101,15 @@ export default function Edit({
 					)
 				})
 		}
+		if (edit && isError) {
+			dispatchFeedback(
+				setSnackbar({
+					status: "error",
+					message: "All fields must be valid before saving.",
+				})
+			)
+			return // so that this function's execution scope is poped off the stack and the rest of the code in this function is not executed (that means the user can go back and correct the invalid field(s))
+		}
 		setEdit(!edit) // toggle between "Save" & "Edit" icons
 	}
 
@@ -144,13 +143,14 @@ export default function Edit({
 					</IconButton>
 				)}
 			</Grid>
-			{/* <Confirmation
+			<Confirmation
+				//TODO: set this to open only AFTER the user clicked on the password field
 				dialogOpen={dialogOpen}
 				setDialogOpen={setDialogOpen}
 				user={user}
 				dispatchFeedback={dispatchFeedback}
 				setSnackbar={setSnackbar}
-			/> */}
+			/>
 		</Grid>
 	)
 }
