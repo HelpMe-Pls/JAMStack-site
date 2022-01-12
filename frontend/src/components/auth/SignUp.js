@@ -85,7 +85,7 @@ export default function SignUp({
 	}
 
 	const fields = info
-		? EmailPassword(classes, false, false, visible, setVisible)
+		? EmailPassword(false, false, visible, setVisible)
 		: nameField
 
 	const disabled =

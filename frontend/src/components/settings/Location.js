@@ -49,67 +49,66 @@ export default function Location({
 	user,
 	edit,
 	setChangesMade,
-	// values,
-	// setValues,
+	values,
+	setValues,
 	slot,
 	setSlot,
-	// errors,
-	// setErrors,
+	errors,
+	setErrors,
 }) {
 	const classes = useStyles()
 	const [loading, setLoading] = useState(false)
-	// const { dispatchFeedback } = useFeedback()
+	const { dispatchFeedback } = useFeedback()
 
-	const [values, setValues] = useState({ street: "", zip: "" })
-	const [errors, setErrors] = useState({})
+	const getLocation = () => {
+		setLoading(true)
 
-	// const getLocation = () => {
-	// 	setLoading(true)
+		axios
+			.get(
+				`https://data.opendatasoft.com/api/records/1.0/search/?dataset=geonames-postal-code%40public&q=&rows=1&facet=country_code&facet=admin_name1&facet=place_name&facet=postal_code&refine.country_code=US&refine.postal_code=${values.zip}`
+			)
+			.then(response => {
+				setLoading(false)
 
-	// 	axios
-	// 		.get(
-	// 			`https://data.opendatasoft.com/api/records/1.0/search/?dataset=geonames-postal-code%40public-us&rows=1&sort=place_name&facet=country_code&facet=admin_name1&facet=place_name&facet=postal_code&refine.country_code=US&refine.postal_code=${values.zip}`
-	// 		)
-	// 		.then(response => {
-	// 			setLoading(false)
+				const { place_name, admin_name1 } =
+					response.data.records[0].fields
 
-	// 			const { place_name, admin_name1 } =
-	// 				response.data.records[0].fields
+				setValues({ ...values, city: place_name, state: admin_name1 }) // spread to set street & zipcode as well
+			})
+			.catch(error => {
+				setLoading(false)
+				console.error(error)
+				dispatchFeedback(
+					setSnackbar({
+						status: "error",
+						message:
+							"There was a problem with your zipcode (or maybe your zipcode is not found on our database), please try again.",
+					})
+				)
+			})
+	}
 
-	// 			setValues({ ...values, city: place_name, state: admin_name1 })
-	// 		})
-	// 		.catch(error => {
-	// 			setLoading(false)
-	// 			console.error(error)
-	// 			dispatchFeedback(
-	// 				setSnackbar({
-	// 					status: "error",
-	// 					message:
-	// 						"There was a problem with your zipcode, please try again.",
-	// 				})
-	// 			)
-	// 		})
-	// }
+	useEffect(() => {
+		setValues(user.locations[slot])
+	}, [slot])
 
-	// useEffect(() => {
-	// 	setValues(user.locations[slot])
-	// }, [slot])
+	useEffect(() => {
+		// to check if there's ACTUAL changes in the input fields by comparing the current input with the info in localStorage
+		const changed = Object.keys(user.locations[slot]).some(
+			field => values[field] !== user.locations[slot][field]
+		)
 
-	// useEffect(() => {
-	// 	const changed = Object.keys(user.locations[slot]).some(
-	// 		field => values[field] !== user.locations[slot][field]
-	// 	)
+		setChangesMade(changed)
 
-	// 	setChangesMade(changed)
+		if (values.zip.length === 5) {
+			if (values.city) return
 
-	// 	if (values.zip.length === 5) {
-	// 		if (values.city) return
-
-	// 		getLocation()
-	// 	} else if (values.zip.length < 5 && values.city) {
-	// 		setValues({ ...values, city: "", state: "" })
-	// 	}
-	// }, [values])
+			getLocation()
+		} else if (values.zip.length < 5 && values.city) {
+			// to reset the <Chip/> when the user types in a new zipcode
+			setValues({ ...values, city: "", state: "" })
+		}
+	}, [values])
 
 	const fields = {
 		street: {
@@ -129,10 +128,10 @@ export default function Location({
 			item
 			container
 			direction="column"
-			// lg={6}
-			xs={6}
+			lg={6}
+			xs={12}
 			alignItems="center"
-			justify="center"
+			justifyContent="center"
 			classes={{ root: classes.locationContainer }}
 		>
 			<Grid item>
@@ -156,7 +155,7 @@ export default function Location({
 					errors={errors}
 					setErrors={setErrors}
 					isWhite
-					// disabled={!edit}
+					disabled={!edit}
 				/>
 			</Grid>
 			<Grid item classes={{ root: classes.chipWrapper }}>

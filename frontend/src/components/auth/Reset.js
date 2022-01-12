@@ -42,13 +42,7 @@ export default function Reset({ steps, setSelectedStep, dispatchFeedback }) {
 	const [success, setSuccess] = useState(false)
 
 	// destructuring {password} to get just the "password" field from the EmailPassword()
-	const { password } = EmailPassword(
-		classes,
-		true,
-		false,
-		visible,
-		setVisible
-	)
+	const { password } = EmailPassword(true, false, visible, setVisible)
 	const fields = {
 		password,
 		confirmation: { ...password, placeholder: "Confirm Password" },

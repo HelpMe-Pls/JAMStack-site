@@ -21,20 +21,12 @@ const useStyles = makeStyles(theme => ({
 		height: 25.122,
 		width: 25.173,
 	},
-	visibleIcon: {
-		padding: 0,
-	},
-	emailAdornment: {
-		height: 17,
-		width: 22,
-		marginBottom: 10,
-	},
 	icon: {
-		// marginTop: ({ checkout }) => (checkout ? "-2rem" : undefined),
-		// marginBottom: ({ checkout }) => (checkout ? "1rem" : "3rem"),
-		// [theme.breakpoints.down("xs")]: {
-		// 	marginBottom: "1rem",
-		// },
+		marginTop: ({ checkout }) => (checkout ? "-2rem" : undefined),
+		marginBottom: ({ checkout }) => (checkout ? "1rem" : "3rem"),
+		[theme.breakpoints.down("xs")]: {
+			marginBottom: "0.69rem",
+		},
 		marginBottom: "3rem",
 	},
 	fieldContainer: {
@@ -43,10 +35,10 @@ const useStyles = makeStyles(theme => ({
 			marginLeft: "5rem",
 		},
 		[theme.breakpoints.down("xs")]: {
-			marginBottom: "1rem",
+			marginBottom: "1.69rem",
 			"& > :not(:first-child)": {
 				marginLeft: 0,
-				marginTop: "1rem",
+				marginTop: "1.69rem",
 			},
 		},
 	},
@@ -115,12 +107,12 @@ export default function Details({
 	user,
 	edit,
 	setChangesMade,
-	// values,
-	// setValues,
+	values,
+	setValues,
 	slot,
 	setSlot,
-	// errors,
-	// setErrors,
+	errors,
+	setErrors,
 	checkout,
 	billing,
 	setBilling,
@@ -135,34 +127,29 @@ export default function Details({
 	// const isMounted = useRef(false)
 
 	const [visible, setVisible] = useState(false)
-	const [values, setValues] = useState({
-		name: "",
-		phone: "",
-		email: "",
-		password: "",
-	})
-	const [errors, setErrors] = useState({})
-	// const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
-	// useEffect(() => {
-	// 	if (noSlots || user.username === "Guest") return
+	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
-	// 	if (checkout) {
-	// 		setValues(user.contactInfo[slot])
-	// 	} else {
-	// 		setValues({ ...user.contactInfo[slot], password: "********" })
-	// 	}
-	// }, [slot])
+	useEffect(() => {
+		// if (noSlots || !user.username) return
 
-	// useEffect(() => {
-	// 	if (checkout) return
+		// if (checkout) {
+		// 	setValues(user.contactInfo[slot])
+		// } else {
+		setValues({ ...user.contactInfo[slot], password: "********" })
+		// }
+	}, [slot])
 
-	// 	const changed = Object.keys(user.contactInfo[slot]).some(
-	// 		field => values[field] !== user.contactInfo[slot][field]
-	// 	)
+	useEffect(() => {
+		// if (checkout) return
 
-	// 	setChangesMade(changed)
-	// }, [values])
+		// to check if there's ACTUAL changes in the input fields by comparing the current input with the info in localStorage
+		const changed = Object.keys(user.contactInfo[slot]).some(
+			field => values[field] !== user.contactInfo[slot][field]
+		)
+
+		setChangesMade(changed)
+	}, [values])
 
 	// useEffect(() => {
 	// 	if (noSlots) {
@@ -190,7 +177,6 @@ export default function Details({
 	// 	true
 	// )
 	const email_password = EmailPassword(
-		classes,
 		false,
 		false,
 		visible,
@@ -239,7 +225,8 @@ export default function Details({
 			item
 			container
 			direction="column"
-			xs={6}
+			lg={6}
+			xs={12}
 			alignItems="center"
 			justifyContent="center"
 			classes={{ root: classes.detailsContainer }}
@@ -253,9 +240,11 @@ export default function Details({
 			</Grid>
 			{fields.map((pair, i) => (
 				<Grid
+					key={i}
 					container
 					justifyContent="center"
-					key={i}
+					alignItems={matchesXS || checkout ? "center" : undefined}
+					direction={matchesXS || checkout ? "column" : "row"}
 					classes={{ root: classes.fieldContainer }}
 				>
 					<Fields
@@ -265,11 +254,13 @@ export default function Details({
 						errors={errors}
 						setErrors={setErrors}
 						isWhite
+						disabled={!edit}
+						settings
 					/>
 				</Grid>
 			))}
 			<Grid item container classes={{ root: classes.slotContainer }}>
-				<Slots />
+				<Slots slot={slot} setSlot={setSlot} />
 			</Grid>
 		</Grid>
 		// <Grid
