@@ -16,8 +16,12 @@ import saveIcon from "../../images/save.svg"
 
 const useStyles = makeStyles(theme => ({
 	icon: {
-		height: "8rem",
-		width: "8rem",
+		height: "6.9rem",
+		width: "6.9rem",
+		[theme.breakpoints.down("xs")]: {
+			height: "5rem",
+			width: "5rem",
+		},
 	},
 	editContainer: {
 		borderLeft: "4px solid #fff",
@@ -44,7 +48,7 @@ export default function Edit({
 	const classes = useStyles()
 	const { dispatchFeedback } = useFeedback()
 	const [loading, setLoading] = useState(false)
-	const [dialogOpen, setDialogOpen] = useState(false)
+	const [dialogOpen, setDialogOpen] = useState(true)
 
 	const handleEdit = () => {
 		const { password, ...newDetails } = details
@@ -117,9 +121,9 @@ export default function Edit({
 		<Grid
 			item
 			container
-			// lg={6}
-			xs={6}
-			justify="space-evenly"
+			lg={6}
+			xs={12}
+			justifyContent="space-evenly"
 			alignItems="center"
 			classes={{ root: classes.editContainer }}
 		>

@@ -22,11 +22,11 @@ const useStyles = makeStyles(theme => ({
 		width: 25.173,
 	},
 	icon: {
-		// marginTop: ({ checkout }) => (checkout ? "-2rem" : undefined),
-		// marginBottom: ({ checkout }) => (checkout ? "1rem" : "3rem"),
-		// [theme.breakpoints.down("xs")]: {
-		// 	marginBottom: "1rem",
-		// },
+		marginTop: ({ checkout }) => (checkout ? "-2rem" : undefined),
+		marginBottom: ({ checkout }) => (checkout ? "1rem" : "3rem"),
+		[theme.breakpoints.down("xs")]: {
+			marginBottom: "0.69rem",
+		},
 		marginBottom: "3rem",
 	},
 	fieldContainer: {
@@ -35,10 +35,10 @@ const useStyles = makeStyles(theme => ({
 			marginLeft: "5rem",
 		},
 		[theme.breakpoints.down("xs")]: {
-			marginBottom: "1rem",
+			marginBottom: "1.69rem",
 			"& > :not(:first-child)": {
 				marginLeft: 0,
-				marginTop: "1rem",
+				marginTop: "1.69rem",
 			},
 		},
 	},
@@ -128,7 +128,7 @@ export default function Details({
 
 	const [visible, setVisible] = useState(false)
 
-	// const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
+	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
 	useEffect(() => {
 		// if (noSlots || !user.username) return
@@ -225,7 +225,8 @@ export default function Details({
 			item
 			container
 			direction="column"
-			xs={6}
+			lg={6}
+			xs={12}
 			alignItems="center"
 			justifyContent="center"
 			classes={{ root: classes.detailsContainer }}
@@ -239,9 +240,11 @@ export default function Details({
 			</Grid>
 			{fields.map((pair, i) => (
 				<Grid
+					key={i}
 					container
 					justifyContent="center"
-					key={i}
+					alignItems={matchesXS || checkout ? "center" : undefined}
+					direction={matchesXS || checkout ? "column" : "row"}
 					classes={{ root: classes.fieldContainer }}
 				>
 					<Fields
@@ -252,6 +255,7 @@ export default function Details({
 						setErrors={setErrors}
 						isWhite
 						disabled={!edit}
+						settings
 					/>
 				</Grid>
 			))}

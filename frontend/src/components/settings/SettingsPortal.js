@@ -39,28 +39,32 @@ const useStyles = makeStyles(theme => ({
 		borderBottom: ({ showComponent }) =>
 			`${showComponent ? 0 : 0.5}rem solid ${theme.palette.primary.main}`,
 		margin: "5rem 0",
-		// [theme.breakpoints.down("md")]: {
-		// 	padding: ({ showComponent }) => (showComponent ? 0 : "5rem 0"),
-		// 	"& > :not(:last-child)": {
-		// 		marginBottom: ({ showComponent }) =>
-		// 			showComponent ? 0 : "5rem",
-		// 	},
-		// },
-		// [theme.breakpoints.down("xs")]: {
-		// 	padding: ({ showComponent }) => (showComponent ? 0 : "2rem 0"),
-		// 	"& > :not(:last-child)": {
-		// 		marginBottom: ({ showComponent }) =>
-		// 			showComponent ? 0 : "2rem",
-		// 	},
-		// },
+		[theme.breakpoints.down("md")]: {
+			padding: ({ showComponent }) => (showComponent ? 0 : "5rem 0"),
+			"& > :not(:last-child)": {
+				marginBottom: ({ showComponent }) =>
+					showComponent ? 0 : "5rem", // hide the background when stretched into <Settings/>
+			},
+		},
+		[theme.breakpoints.down("xs")]: {
+			padding: ({ showComponent }) => (showComponent ? 0 : "2rem 0"),
+			"& > :not(:last-child)": {
+				marginBottom: ({ showComponent }) =>
+					showComponent ? 0 : "2rem",
+			},
+		},
 	},
 	icon: {
 		height: "12rem",
 		width: "12rem",
-		// [theme.breakpoints.down("lg")]: {
-		// 	height: "10rem",
-		// 	width: "10rem",
-		// },
+		[theme.breakpoints.down("lg")]: {
+			height: "10rem",
+			width: "10rem",
+		},
+		[theme.breakpoints.down("xs")]: {
+			height: "5rem",
+			width: "5rem",
+		},
 	},
 	button: {
 		backgroundColor: theme.palette.primary.main,
@@ -80,30 +84,36 @@ const useStyles = makeStyles(theme => ({
 const AnimatedGrid = animated(Grid)
 
 export default function SettingsPortal() {
-	// const matchesLG = useMediaQuery(theme => theme.breakpoints.down("lg"))
-	// const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
-	// const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
+	const matchesLG = useMediaQuery(theme => theme.breakpoints.down("lg"))
+	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
+	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 	const { user, dispatchUser, defaultUser } = useUser()
 	const [selectedSetting, setSelectedSetting] = useState(null)
 	const [resizeListener, sizes] = useResizeAware()
 	const [showComponent, setShowComponent] = useState(false)
 	const classes = useStyles({ showComponent }) // place {classes} so that {showComponent} is defined
 
-	// const buttonWidth = matchesXS
-	// 	? `${sizes.width - 64}`
-	// 	: matchesMD
-	// 	? `${sizes.width - 160}px`
-	// 	: matchesLG
-	// 	? "288px"
-	// 	: "352px"
-	// const buttonHeight = matchesMD ? "22rem" : matchesLG ? "18rem" : "22rem"
+	const buttonWidth = matchesXS
+		? `${sizes.width - 64}px`
+		: matchesMD
+		? `${sizes.width - 160}px`
+		: matchesLG
+		? "288px"
+		: "352px"
+	const buttonHeight = matchesXS
+		? "15rem"
+		: matchesMD
+		? "22rem"
+		: matchesLG
+		? "18rem"
+		: "22rem"
 
 	const buttons = [
 		{
 			label: "Settings",
 			icon: settingsIcon,
 			component: Settings,
-			// large: true,
+			large: true,
 		},
 		{
 			label: "Order History",
@@ -155,17 +165,16 @@ export default function SettingsPortal() {
 				const size = {
 					height:
 						selectedSetting === button.label
-							? // ? matchesMD && button.large
-							  // ? "120rem"
-							  // : "60rem"
-							  // : buttonHeight, // original height
-							  "60rem"
-							: "20rem",
+							? matchesMD && button.large
+								? "120rem"
+								: "60rem"
+							: buttonHeight, // original height BEFORE navigating into <Settings/>
+
 					width:
 						selectedSetting === button.label
 							? `${sizes.width}px`
-							: // : buttonWidth,	// original width
-							  "320px",
+							: buttonWidth,
+
 					borderRadius: selectedSetting === button.label ? 0 : 25,
 					// wait (for 600ms) until those NOT selected settings finished its scale(0) then
 					// the selectedSetting is expanded
@@ -236,7 +245,7 @@ export default function SettingsPortal() {
 				classes={{ root: classes.dashboard }}
 				alignItems="center"
 				justifyContent="space-around"
-				// direction={matchesMD ? "column" : "row"}
+				direction={matchesMD ? "column" : "row"}
 			>
 				{springs.map((prop, i) => {
 					const button = buttons[i]
@@ -260,7 +269,7 @@ export default function SettingsPortal() {
 								container
 								direction="column"
 								alignItems="center"
-								justify="center"
+								justifyContent="center"
 							>
 								{selectedSetting === button.label &&
 								showComponent ? (

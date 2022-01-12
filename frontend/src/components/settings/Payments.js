@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 		borderLeft: "4px solid #fff",
 		position: "relative",
 		[theme.breakpoints.down("md")]: {
-			height: "30rem",
+			height: "30rem", // so that it matches 120rem in total (for matchesMD) with <Edit/>, <Details/> and <Location/>
 			borderLeft: 0,
 		},
 	},
@@ -59,10 +59,10 @@ export default function Payments({ user }) {
 			item
 			container
 			direction="column"
-			// lg={6}
-			xs={6}
+			lg={6}
+			xs={12}
 			alignItems="center"
-			justify="center"
+			justifyContent="center"
 			classes={{ root: classes.paymentContainer }}
 		>
 			<Grid item>
@@ -72,7 +72,7 @@ export default function Payments({ user }) {
 					className={classes.icon}
 				/>
 			</Grid>
-			<Grid item container justify="center">
+			<Grid item container justifyContent="center">
 				<Grid item>
 					<Typography
 						align="center"

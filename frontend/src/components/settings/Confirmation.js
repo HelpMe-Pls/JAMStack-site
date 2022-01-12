@@ -41,7 +41,7 @@ export default function Confirmation({
 	const { password } = EmailPassword(false, false, visible, setVisible)
 
 	const fields = {
-		password: { ...password, placeholder: "Old Password" }, // coz we're changing just the placeholder so we gotta spread the {password} to get the rest of its fields
+		password: { ...password, placeholder: "Old Password" }, // coz we're changing JUST the placeholder so we gotta spread the {password} to get the rest of its fields
 		confirmation: { ...password, placeholder: "New Password" },
 	}
 
@@ -71,7 +71,7 @@ export default function Confirmation({
 				axios
 					.post(
 						process.env.GATSBY_STRAPI_URL +
-							"/users-permissions/change-password", // handled by  backend\extensions\users-permissions\controllers\User.js\changePassword
+							"/users-permissions/change-password", // handled by  backend\extensions\users-permissions\controllers\User.js\changePassword()
 						{
 							password: values.confirmation,
 						},
