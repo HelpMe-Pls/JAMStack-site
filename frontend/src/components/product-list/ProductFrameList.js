@@ -172,10 +172,10 @@ export default function ProductFrameList({
 					/>
 				</Grid>
 				<QtyButton
-					variants={product.variants}
 					name={product.name.split(" ")[0]}
-					stock={stock}
+					variants={product.variants}
 					selectedVariant={selectedVariant}
+					stock={stock}
 				/>
 			</Grid>
 		</Grid>

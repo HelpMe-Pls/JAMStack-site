@@ -203,10 +203,10 @@ export default function QuickView({
 								/>
 								<span className={classes.qtyContainer}>
 									<QtyButton
-										variants={product.variants}
 										name={name}
-										stock={stock}
+										variants={product.variants}
 										selectedVariant={selectedVariant}
+										stock={stock}
 									/>
 								</span>
 							</Grid>

@@ -15,7 +15,7 @@ import accountIcon from "../../images/account.svg"
 
 const useStyles = makeStyles(theme => ({
 	reset: {
-		width: "20rem",
+		width: "25rem",
 		borderRadius: 50,
 		textTransform: "none",
 		marginBottom: "4rem",
@@ -44,8 +44,8 @@ export default function Reset({ steps, setSelectedStep, dispatchFeedback }) {
 	// destructuring {password} to get just the "password" field from the EmailPassword()
 	const { password } = EmailPassword(true, false, visible, setVisible)
 	const fields = {
-		password,
-		confirmation: { ...password, placeholder: "Confirm Password" },
+		password: { ...password, placeholder: "New password" },
+		confirmation: { ...password, placeholder: "Confirm new password" },
 	}
 
 	const handleReset = () => {
