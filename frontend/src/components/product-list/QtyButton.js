@@ -7,6 +7,9 @@ import ButtonGroup from "@material-ui/core/ButtonGroup"
 import Badge from "@material-ui/core/Badge"
 import { makeStyles } from "@material-ui/core/styles"
 
+import { useCart } from "../../contexts"
+import { addToCart, removeFromCart } from "../../contexts/actions"
+
 import Cart from "../../images/Cart"
 
 const useStyles = makeStyles(theme => ({
@@ -19,19 +22,23 @@ const useStyles = makeStyles(theme => ({
 	editButtons: {
 		height: "1.525rem",
 		borderRadius: 0,
-		backgroundColor: theme.palette.secondary.main,
-		borderLeft: "2px solid #fff",
+		backgroundColor: ({ isCart }) =>
+			isCart ? "#fff" : theme.palette.secondary.main,
+		borderLeft: ({ isCart }) =>
+			`2px solid ${isCart ? theme.palette.secondary.main : "#fff"}`,
 		borderRight: "2px solid #fff",
 		borderBottom: "none",
 		borderTop: "none",
 	},
 	endButtons: {
-		backgroundColor: theme.palette.secondary.main,
+		backgroundColor: ({ isCart }) =>
+			isCart ? "#fff" : theme.palette.secondary.main,
 		borderRadius: 50,
 		border: "none",
 	},
 	cartButton: {
 		marginLeft: "0 !important",
+		transition: "background-color 1s ease",
 	},
 	minus: {
 		marginTop: "-0.3rem",
@@ -46,26 +53,46 @@ const useStyles = makeStyles(theme => ({
 	},
 	badge: {
 		color: "#fff",
-		fontSize: "1.69rem",
+		fontSize: "1rem",
 		backgroundColor: theme.palette.secondary.main,
 		padding: 3,
+		[theme.breakpoints.down("xs")]: {
+			fontSize: "0.69rem",
+			height: "1.1rem",
+			width: "1.1rem",
+			minWidth: 0,
+		},
+	},
+	success: {
+		backgroundColor: theme.palette.success.main,
+		"&:hover": {
+			backgroundColor: theme.palette.success.main,
+		},
 	},
 }))
 
 export default function QtyButton({
 	stock,
 	variants,
-	selectedVariant,
-	name,
+	selectedVariant, // actually the index of the variant
+	name, //product's name
 	isCart,
 	white,
 	hideCartButton,
 	round,
 	override,
 }) {
-	const classes = useStyles()
+	const classes = useStyles({ isCart })
 
-	const [qty, setQty] = useState(1)
+	const { cart, dispatchCart } = useCart()
+	const existingItem = cart.find(
+		item => item.variant === variants[selectedVariant]
+	)
+
+	const [qty, setQty] = useState(isCart ? existingItem.qty : 1)
+	const [success, setSuccess] = useState(false)
+
+	// stock[selectedVariant].qty: the {qty} is from apollo\queries.js
 
 	const handleChange = direction => {
 		if (qty === stock[selectedVariant].qty && direction === "up")
@@ -76,6 +103,27 @@ export default function QtyButton({
 		const newQty = direction === "up" ? qty + 1 : qty - 1
 
 		setQty(newQty)
+
+		if (isCart) {
+			if (direction === "up") {
+				dispatchCart(addToCart(variants[selectedVariant], 1, name))
+			} else if (direction === "down") {
+				dispatchCart(removeFromCart(variants[selectedVariant], 1))
+			}
+		}
+	}
+
+	const handleCart = () => {
+		setSuccess(true)
+
+		dispatchCart(
+			addToCart(
+				variants[selectedVariant],
+				qty,
+				name,
+				stock[selectedVariant].qty
+			)
+		)
 	}
 
 	// if the user adds an amount of products to the cart, and then switch to another variant of that product,
@@ -87,12 +135,23 @@ export default function QtyButton({
 		} else if (qty > stock[selectedVariant].qty) {
 			setQty(stock[selectedVariant].qty)
 		}
-	}, [stock, selectedVariant])
+	}, [stock, selectedVariant, qty])
+
+	useEffect(() => {
+		let timer
+
+		if (success) {
+			timer = setTimeout(() => setSuccess(false), 1500)
+		}
+
+		return () => clearTimeout(timer)
+	}, [success])
 
 	return (
 		<Grid item>
 			<ButtonGroup classes={{ root: classes.mainGroup }}>
 				<Button
+					disabled
 					classes={{
 						root: clsx(classes.endButtons, classes.qtyButton),
 					}}
@@ -135,19 +194,33 @@ export default function QtyButton({
 						</Typography>
 					</Button>
 				</ButtonGroup>
-				<Button
-					classes={{
-						root: clsx(classes.endButtons, classes.cartButton),
-					}}
-				>
-					<Badge
-						overlap="circular"
-						badgeContent="+"
-						classes={{ badge: classes.badge }}
+				{isCart ? null : (
+					<Button
+						onClick={handleCart}
+						classes={{
+							root: clsx(classes.endButtons, classes.cartButton, {
+								[classes.success]: success,
+							}),
+						}}
 					>
-						<Cart color="#fff" />
-					</Badge>
-				</Button>
+						{success ? (
+							<Typography
+								variant="h3"
+								classes={{ root: classes.qtyText }}
+							>
+								✓
+							</Typography>
+						) : (
+							<Badge
+								overlap="circle"
+								badgeContent="+"
+								classes={{ badge: classes.badge }}
+							>
+								<Cart color="#fff" />
+							</Badge>
+						)}
+					</Button>
+				)}
 			</ButtonGroup>
 		</Grid>
 	)

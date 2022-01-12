@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 import { useQuery } from "@apollo/client"
@@ -125,7 +124,7 @@ export default function ListOfProducts({
 			if (error) {
 				setStock(-1)
 			} else if (data) {
-				setStock(data.product.variants) // stock is applied to the product, not the variant
+				setStock(data.product.variants) // stock is applied to the product, not the variant, so if we want to get the "stock" of a singular variant, it'll be data.product.variants[variant].qty
 				//setRating(data.product.rating)
 			}
 		}, [error, data])

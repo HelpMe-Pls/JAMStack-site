@@ -10,11 +10,14 @@ import SwipeableDrawer from "@material-ui/core/SwipeableDrawer"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
+import Badge from "@material-ui/core/Badge"
 import { makeStyles } from "@material-ui/core/styles"
 import { Link } from "gatsby"
 
+import { useCart } from "../../contexts"
+
 import search from "../../images/search.svg"
-import cart from "../../images/cart.svg"
+import cartIcon from "../../images/cart.svg"
 import account from "../../images/account-header.svg"
 import IconButton from "@material-ui/core/IconButton"
 import menu from "../../images/menu.svg"
@@ -60,10 +63,23 @@ const useStyles = makeStyles(theme => ({
 	listItemText: {
 		color: "#fff",
 	},
+	badge: {
+		color: "#fff",
+		fontSize: "1rem",
+		backgroundColor: theme.palette.secondary.main,
+		padding: 3,
+		[theme.breakpoints.down("xs")]: {
+			fontSize: "0.69rem",
+			height: "1.1rem",
+			width: "1.1rem",
+			minWidth: 0,
+		},
+	},
 }))
 
 export default function Header({ categories }) {
 	const classes = useStyles()
+	const { cart } = useCart()
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md")) // matches media breakpoints: https://mui.com/customization/breakpoints/
 	const [drawerOpen, setDrawerOpen] = useState(false)
 
@@ -142,7 +158,7 @@ export default function Header({ categories }) {
 			visible: true,
 			onClicked: () => console.log("search"),
 		},
-		{ icon: cart, alt: "cart", visible: true, path: "/cart" },
+		{ icon: cartIcon, alt: "cart", visible: true, path: "/cart" },
 		{
 			icon: account,
 			alt: "account",
@@ -171,23 +187,38 @@ export default function Header({ categories }) {
 					</Typography>
 				</Button>
 				{matchesMD ? drawer : tabs}
-				{actions.map(action =>
-					action.visible ? (
-						<IconButton
-							key={action.alt}
-							component={action.onClicked ? undefined : Link}
-							to={action.onClicked ? undefined : action.path} // so that the {path} doesn't apply for the {menu}
-							onClick={action.onClicked}
-							// onClick={() => action.onClicked} wouldn't work because it returns a function, not a value
-						>
-							<img
-								className={classes.icon}
-								src={action.icon}
-								alt={action.alt}
-							/>
-						</IconButton>
-					) : null
-				)}
+				{actions.map(action => {
+					const image = (
+						<img
+							className={classes.icon}
+							src={action.icon}
+							alt={action.alt}
+						/>
+					)
+					if (action.visible) {
+						return (
+							<IconButton
+								key={action.alt}
+								onClick={action.onClicked}
+								component={action.onClicked ? undefined : Link}
+								to={action.onClicked ? undefined : action.path} // so that the {path} doesn't apply for the {menu}
+								// onClick={() => action.onClicked} wouldn't work because it returns a function, not a value
+							>
+								{action.alt === "cart" ? (
+									<Badge
+										overlap="circle"
+										badgeContent={cart.length}
+										classes={{ badge: classes.badge }}
+									>
+										{image}
+									</Badge>
+								) : (
+									image
+								)}
+							</IconButton>
+						)
+					}
+				})}
 			</Toolbar>
 		</AppBar>
 	)

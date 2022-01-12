@@ -320,8 +320,8 @@ export default function ProductInfo({
 						<QtyButton
 							name={name}
 							variants={variants}
-							stock={stock}
 							selectedVariant={selectedVariant}
+							stock={stock}
 						/>
 					</Grid>
 				</Grid>
