@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
@@ -34,7 +34,7 @@ export default function Cart() {
 				</Grid>
 				<Grid item container>
 					<CartItems />
-					<CheckoutPortal user={user} />
+					{/* <CheckoutPortal user={user} /> */}
 				</Grid>
 			</Grid>
 		</Layout>

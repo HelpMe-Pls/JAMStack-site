@@ -48,7 +48,7 @@ export default function Edit({
 	const classes = useStyles()
 	const { dispatchFeedback } = useFeedback()
 	const [loading, setLoading] = useState(false)
-	const [dialogOpen, setDialogOpen] = useState(true)
+	const [dialogOpen, setDialogOpen] = useState(false)
 
 	const handleEdit = () => {
 		const { password, ...newDetails } = details

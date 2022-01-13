@@ -206,7 +206,7 @@ export default function Header({ categories }) {
 							>
 								{action.alt === "cart" ? (
 									<Badge
-										overlap="circle"
+										overlap="circular"
 										badgeContent={cart.length}
 										classes={{ badge: classes.badge }}
 									>

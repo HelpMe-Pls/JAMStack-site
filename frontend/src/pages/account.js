@@ -1,8 +1,6 @@
 import React from "react"
-import Button from "@material-ui/core/Button"
 
 import { useUser } from "../contexts"
-import { setUser } from "../contexts/actions"
 
 import Layout from "../components/ui/layout"
 import AuthPortal from "../components/auth/AuthPortal"

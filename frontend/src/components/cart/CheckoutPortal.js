@@ -43,221 +43,221 @@ export default function CheckoutPortal({ user }) {
 	const classes = useStyles()
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
-	const [selectedStep, setSelectedStep] = useState(0)
-	const [detailValues, setDetailValues] = useState({
-		name: "",
-		email: "",
-		phone: "",
-	})
-	const [billingDetails, setBillingDetails] = useState({
-		name: "",
-		email: "",
-		phone: "",
-	})
-	const [detailSlot, setDetailSlot] = useState(0)
-	const [detailForBilling, setDetailForBilling] = useState(false)
+	// const [selectedStep, setSelectedStep] = useState(0)
+	// const [detailValues, setDetailValues] = useState({
+	// 	name: "",
+	// 	email: "",
+	// 	phone: "",
+	// })
+	// const [billingDetails, setBillingDetails] = useState({
+	// 	name: "",
+	// 	email: "",
+	// 	phone: "",
+	// })
+	// const [detailSlot, setDetailSlot] = useState(0)
+	// const [detailForBilling, setDetailForBilling] = useState(false)
 
-	const [locationValues, setLocationValues] = useState({
-		street: "",
-		zip: "",
-		city: "",
-		state: "",
-	})
-	const [billingLocation, setBillingLocation] = useState({
-		street: "",
-		zip: "",
-		city: "",
-		state: "",
-	})
-	const [locationSlot, setLocationSlot] = useState(0)
-	const [locationForBilling, setLocationForBilling] = useState(false)
+	// const [locationValues, setLocationValues] = useState({
+	// 	street: "",
+	// 	zip: "",
+	// 	city: "",
+	// 	state: "",
+	// })
+	// const [billingLocation, setBillingLocation] = useState({
+	// 	street: "",
+	// 	zip: "",
+	// 	city: "",
+	// 	state: "",
+	// })
+	// const [locationSlot, setLocationSlot] = useState(0)
+	// const [locationForBilling, setLocationForBilling] = useState(false)
 
-	const [billingSlot, setBillingSlot] = useState(0)
-	const [saveCard, setSaveCard] = useState(false)
+	// const [billingSlot, setBillingSlot] = useState(0)
+	// const [saveCard, setSaveCard] = useState(false)
 
-	const [errors, setErrors] = useState({})
+	// const [errors, setErrors] = useState({})
 
-	const [order, setOrder] = useState(null)
+	// const [order, setOrder] = useState(null)
 
-	const [selectedShipping, setSelectedShipping] = useState(null)
-	const shippingOptions = [
-		{ label: "FREE SHIPPING", price: 0 },
-		{ label: "2-DAY SHIPPING", price: 9.99 },
-		{ label: "OVERNIGHT SHIPPING", price: 29.99 },
-	]
+	// const [selectedShipping, setSelectedShipping] = useState(null)
+	// const shippingOptions = [
+	// 	{ label: "FREE SHIPPING", price: 0 },
+	// 	{ label: "2-DAY SHIPPING", price: 9.99 },
+	// 	{ label: "OVERNIGHT SHIPPING", price: 29.99 },
+	// ]
 
-	const errorHelper = (values, forBilling, billingValues, slot) => {
-		const valid = validate(values)
+	// const errorHelper = (values, forBilling, billingValues, slot) => {
+	// 	const valid = validate(values)
 
-		//If we have one slot marked as billing...
-		if (forBilling !== false && forBilling !== undefined) {
-			//...validate billing values
-			const billingValid = validate(billingValues)
+	// 	//If we have one slot marked as billing...
+	// 	if (forBilling !== false && forBilling !== undefined) {
+	// 		//...validate billing values
+	// 		const billingValid = validate(billingValues)
 
-			//If we are currently on the same slot as marked for billing, ie billing and shipping are the same...
-			if (forBilling === slot) {
-				//...then we just need to validate the one set of values because they are the same
-				return Object.keys(billingValid).some(
-					value => !billingValid[value]
-				)
-			} else {
-				//Otherwise, if we are currently on a different slot than the slot marked for billing, ie billing and shipping are different, then we need to validate both the billing values, and the shipping values
-				return (
-					Object.keys(billingValid).some(
-						value => !billingValid[value]
-					) || Object.keys(valid).some(value => !valid[value])
-				)
-			}
-		} else {
-			//if no slots were marked for billing, just validate current slot
-			return Object.keys(valid).some(value => !valid[value])
-		}
-	}
+	// 		//If we are currently on the same slot as marked for billing, ie billing and shipping are the same...
+	// 		if (forBilling === slot) {
+	// 			//...then we just need to validate the one set of values because they are the same
+	// 			return Object.keys(billingValid).some(
+	// 				value => !billingValid[value]
+	// 			)
+	// 		} else {
+	// 			//Otherwise, if we are currently on a different slot than the slot marked for billing, ie billing and shipping are different, then we need to validate both the billing values, and the shipping values
+	// 			return (
+	// 				Object.keys(billingValid).some(
+	// 					value => !billingValid[value]
+	// 				) || Object.keys(valid).some(value => !valid[value])
+	// 			)
+	// 		}
+	// 	} else {
+	// 		//if no slots were marked for billing, just validate current slot
+	// 		return Object.keys(valid).some(value => !valid[value])
+	// 	}
+	// }
 
-	let steps = [
-		{
-			title: "Contact Info",
-			component: (
-				<Details
-					user={user}
-					values={detailValues}
-					setValues={setDetailValues}
-					slot={detailSlot}
-					setSlot={setDetailSlot}
-					errors={errors}
-					setErrors={setErrors}
-					billing={detailForBilling}
-					setBilling={setDetailForBilling}
-					billingValues={billingDetails}
-					setBillingValues={setBillingDetails}
-					checkout
-				/>
-			),
-			hasActions: true,
-			error: errorHelper(
-				detailValues,
-				detailForBilling,
-				billingDetails,
-				detailSlot
-			),
-		},
-		{
-			title: "Billing Info",
-			component: (
-				<Details
-					values={billingDetails}
-					setValues={setBillingDetails}
-					errors={errors}
-					setErrors={setErrors}
-					checkout
-					noSlots
-				/>
-			),
-			error: errorHelper(billingDetails),
-		},
-		{
-			title: "Address",
-			component: (
-				<Location
-					user={user}
-					values={locationValues}
-					setValues={setLocationValues}
-					slot={locationSlot}
-					setSlot={setLocationSlot}
-					billing={locationForBilling}
-					setBilling={setLocationForBilling}
-					errors={errors}
-					setErrors={setErrors}
-					billingValues={billingLocation}
-					setBillingValues={setBillingLocation}
-					checkout
-				/>
-			),
-			hasActions: true,
-			error: errorHelper(
-				locationValues,
-				locationForBilling,
-				billingLocation,
-				locationSlot
-			),
-		},
-		{
-			title: "Billing Address",
-			component: (
-				<Location
-					values={billingLocation}
-					setValues={setBillingLocation}
-					errors={errors}
-					setErrors={setErrors}
-					checkout
-					noSlots
-				/>
-			),
-			error: errorHelper(billingLocation),
-		},
-		{
-			title: "Shipping",
-			component: (
-				<Shipping
-					shippingOptions={shippingOptions}
-					selectedShipping={selectedShipping}
-					setSelectedShipping={setSelectedShipping}
-				/>
-			),
-			error: selectedShipping === null,
-		},
-		{
-			title: "Payment",
-			component: (
-				<Payments
-					slot={billingSlot}
-					setSlot={setBillingSlot}
-					user={user}
-					saveCard={saveCard}
-					setSaveCard={setSaveCard}
-					checkout
-				/>
-			),
-			error: false,
-		},
-		{
-			title: "Confirmation",
-			component: (
-				<Confirmation
-					user={user}
-					setOrder={setOrder}
-					detailValues={detailValues}
-					billingDetails={billingDetails}
-					detailForBilling={detailForBilling}
-					locationValues={locationValues}
-					billingLocation={billingLocation}
-					locationForBilling={locationForBilling}
-					shippingOptions={shippingOptions}
-					selectedShipping={selectedShipping}
-					selectedStep={selectedStep}
-					setSelectedStep={setSelectedStep}
-				/>
-			),
-		},
-		{
-			title: `Thanks, ${user.username.split(" ")[0]}!`,
-			component: (
-				<ThankYou order={order} selectedShipping={selectedShipping} />
-			),
-		},
-	]
+	// let steps = [
+	// 	{
+	// 		title: "Contact Info",
+	// 		component: (
+	// 			<Details
+	// 				user={user}
+	// 				values={detailValues}
+	// 				setValues={setDetailValues}
+	// 				slot={detailSlot}
+	// 				setSlot={setDetailSlot}
+	// 				errors={errors}
+	// 				setErrors={setErrors}
+	// 				billing={detailForBilling}
+	// 				setBilling={setDetailForBilling}
+	// 				billingValues={billingDetails}
+	// 				setBillingValues={setBillingDetails}
+	// 				checkout
+	// 			/>
+	// 		),
+	// 		hasActions: true,
+	// 		error: errorHelper(
+	// 			detailValues,
+	// 			detailForBilling,
+	// 			billingDetails,
+	// 			detailSlot
+	// 		),
+	// 	},
+	// 	{
+	// 		title: "Billing Info",
+	// 		component: (
+	// 			<Details
+	// 				values={billingDetails}
+	// 				setValues={setBillingDetails}
+	// 				errors={errors}
+	// 				setErrors={setErrors}
+	// 				checkout
+	// 				noSlots
+	// 			/>
+	// 		),
+	// 		error: errorHelper(billingDetails),
+	// 	},
+	// 	{
+	// 		title: "Address",
+	// 		component: (
+	// 			<Location
+	// 				user={user}
+	// 				values={locationValues}
+	// 				setValues={setLocationValues}
+	// 				slot={locationSlot}
+	// 				setSlot={setLocationSlot}
+	// 				billing={locationForBilling}
+	// 				setBilling={setLocationForBilling}
+	// 				errors={errors}
+	// 				setErrors={setErrors}
+	// 				billingValues={billingLocation}
+	// 				setBillingValues={setBillingLocation}
+	// 				checkout
+	// 			/>
+	// 		),
+	// 		hasActions: true,
+	// 		error: errorHelper(
+	// 			locationValues,
+	// 			locationForBilling,
+	// 			billingLocation,
+	// 			locationSlot
+	// 		),
+	// 	},
+	// 	{
+	// 		title: "Billing Address",
+	// 		component: (
+	// 			<Location
+	// 				values={billingLocation}
+	// 				setValues={setBillingLocation}
+	// 				errors={errors}
+	// 				setErrors={setErrors}
+	// 				checkout
+	// 				noSlots
+	// 			/>
+	// 		),
+	// 		error: errorHelper(billingLocation),
+	// 	},
+	// 	{
+	// 		title: "Shipping",
+	// 		component: (
+	// 			<Shipping
+	// 				shippingOptions={shippingOptions}
+	// 				selectedShipping={selectedShipping}
+	// 				setSelectedShipping={setSelectedShipping}
+	// 			/>
+	// 		),
+	// 		error: selectedShipping === null,
+	// 	},
+	// 	{
+	// 		title: "Payment",
+	// 		component: (
+	// 			<Payments
+	// 				slot={billingSlot}
+	// 				setSlot={setBillingSlot}
+	// 				user={user}
+	// 				saveCard={saveCard}
+	// 				setSaveCard={setSaveCard}
+	// 				checkout
+	// 			/>
+	// 		),
+	// 		error: false,
+	// 	},
+	// 	{
+	// 		title: "Confirmation",
+	// 		component: (
+	// 			<Confirmation
+	// 				user={user}
+	// 				setOrder={setOrder}
+	// 				detailValues={detailValues}
+	// 				billingDetails={billingDetails}
+	// 				detailForBilling={detailForBilling}
+	// 				locationValues={locationValues}
+	// 				billingLocation={billingLocation}
+	// 				locationForBilling={locationForBilling}
+	// 				shippingOptions={shippingOptions}
+	// 				selectedShipping={selectedShipping}
+	// 				selectedStep={selectedStep}
+	// 				setSelectedStep={setSelectedStep}
+	// 			/>
+	// 		),
+	// 	},
+	// 	{
+	// 		title: `Thanks, ${user.username.split(" ")[0]}!`,
+	// 		component: (
+	// 			<ThankYou order={order} selectedShipping={selectedShipping} />
+	// 		),
+	// 	},
+	// ]
 
-	if (detailForBilling !== false) {
-		steps = steps.filter(step => step.title !== "Billing Info")
-	}
+	// if (detailForBilling !== false) {
+	// 	steps = steps.filter(step => step.title !== "Billing Info")
+	// }
 
-	if (locationForBilling !== false) {
-		steps = steps.filter(step => step.title !== "Billing Address")
-	}
+	// if (locationForBilling !== false) {
+	// 	steps = steps.filter(step => step.title !== "Billing Address")
+	// }
 
-	useEffect(() => {
-		setErrors({})
-	}, [detailSlot, locationSlot, selectedStep])
+	// useEffect(() => {
+	// 	setErrors({})
+	// }, [detailSlot, locationSlot, selectedStep])
 
 	return (
 		<Grid
@@ -268,7 +268,7 @@ export default function CheckoutPortal({ user }) {
 			alignItems={matchesMD ? "flex-start" : "flex-end"}
 			lg={6}
 		>
-			<CheckoutNavigation
+			{/* <CheckoutNavigation
 				steps={steps}
 				selectedStep={selectedStep}
 				setSelectedStep={setSelectedStep}
@@ -279,7 +279,7 @@ export default function CheckoutPortal({ user }) {
 				setLocation={setLocationValues}
 				locationSlot={locationSlot}
 				setErrors={setErrors}
-			/>
+			/> */}
 			<Grid
 				item
 				container
@@ -287,9 +287,9 @@ export default function CheckoutPortal({ user }) {
 				alignItems="center"
 				classes={{ root: classes.stepContainer }}
 			>
-				{steps[selectedStep].component}
+				{/* {steps[selectedStep].component} */}
 			</Grid>
-			{steps[selectedStep].title === "Confirmation" && (
+			{/* {steps[selectedStep].title === "Confirmation" && (
 				<BillingConfirmation
 					detailForBilling={detailForBilling}
 					billingDetails={billingDetails}
@@ -298,7 +298,7 @@ export default function CheckoutPortal({ user }) {
 					billingLocation={billingLocation}
 					locationSlot={locationSlot}
 				/>
-			)}
+			)} */}
 		</Grid>
 	)
 }

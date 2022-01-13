@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 		marginTop: "2rem",
 	},
 	login: {
-		width: "20rem",
+		width: "18rem",
 		borderRadius: 15,
 		textTransform: "none",
 		[theme.breakpoints.down("xs")]: {

@@ -13,9 +13,10 @@ import { setSnackbar } from "../../contexts/actions"
 
 import accountIcon from "../../images/account.svg"
 
+//TODO: after changing password, unable to navigate to other pages from it
 const useStyles = makeStyles(theme => ({
 	reset: {
-		width: "25rem",
+		width: "22rem",
 		borderRadius: 50,
 		textTransform: "none",
 		marginBottom: "4rem",
@@ -96,7 +97,7 @@ export default function Reset({ steps, setSelectedStep, dispatchFeedback }) {
 
 			const login = steps.find(step => step.label === "Login")
 			setSelectedStep(steps.indexOf(login))
-		}, 3000)
+		}, 1690)
 
 		return () => clearTimeout(timer)
 	}, [success])
