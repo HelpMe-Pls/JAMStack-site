@@ -11,7 +11,7 @@ import { useUser } from "../contexts"
 
 const useStyles = makeStyles(theme => ({
 	cartContainer: {
-		minHeight: "70vh",
+		minHeight: "70vh", //Using {vh} to keep footer always at the bottom
 	},
 }))
 
@@ -34,7 +34,7 @@ export default function Cart() {
 				</Grid>
 				<Grid item container>
 					<CartItems />
-					{/* <CheckoutPortal user={user} /> */}
+					<CheckoutPortal user={user} />
 				</Grid>
 			</Grid>
 		</Layout>

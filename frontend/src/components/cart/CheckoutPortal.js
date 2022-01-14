@@ -4,7 +4,7 @@ import Typography from "@material-ui/core/Typography"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 
-// import CheckoutNavigation from "./CheckoutNavigation"
+import CheckoutNavigation from "./CheckoutNavigation"
 // import BillingConfirmation from "./BillingConfirmation"
 import Details from "../settings/Details"
 import Location from "../settings/Location"
@@ -43,19 +43,19 @@ export default function CheckoutPortal({ user }) {
 	const classes = useStyles()
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
-	// const [selectedStep, setSelectedStep] = useState(0)
-	// const [detailValues, setDetailValues] = useState({
-	// 	name: "",
-	// 	email: "",
-	// 	phone: "",
-	// })
+	const [selectedStep, setSelectedStep] = useState(0)
+	const [detailValues, setDetailValues] = useState({
+		name: "",
+		email: "",
+		phone: "",
+	})
 	// const [billingDetails, setBillingDetails] = useState({
 	// 	name: "",
 	// 	email: "",
 	// 	phone: "",
 	// })
-	// const [detailSlot, setDetailSlot] = useState(0)
-	// const [detailForBilling, setDetailForBilling] = useState(false)
+	const [detailSlot, setDetailSlot] = useState(0)
+	const [detailForBilling, setDetailForBilling] = useState(false)
 
 	// const [locationValues, setLocationValues] = useState({
 	// 	street: "",
@@ -75,7 +75,7 @@ export default function CheckoutPortal({ user }) {
 	// const [billingSlot, setBillingSlot] = useState(0)
 	// const [saveCard, setSaveCard] = useState(false)
 
-	// const [errors, setErrors] = useState({})
+	const [errors, setErrors] = useState({})
 
 	// const [order, setOrder] = useState(null)
 
@@ -114,138 +114,138 @@ export default function CheckoutPortal({ user }) {
 	// 	}
 	// }
 
-	// let steps = [
-	// 	{
-	// 		title: "Contact Info",
-	// 		component: (
-	// 			<Details
-	// 				user={user}
-	// 				values={detailValues}
-	// 				setValues={setDetailValues}
-	// 				slot={detailSlot}
-	// 				setSlot={setDetailSlot}
-	// 				errors={errors}
-	// 				setErrors={setErrors}
-	// 				billing={detailForBilling}
-	// 				setBilling={setDetailForBilling}
-	// 				billingValues={billingDetails}
-	// 				setBillingValues={setBillingDetails}
-	// 				checkout
-	// 			/>
-	// 		),
-	// 		hasActions: true,
-	// 		error: errorHelper(
-	// 			detailValues,
-	// 			detailForBilling,
-	// 			billingDetails,
-	// 			detailSlot
-	// 		),
-	// 	},
-	// 	{
-	// 		title: "Billing Info",
-	// 		component: (
-	// 			<Details
-	// 				values={billingDetails}
-	// 				setValues={setBillingDetails}
-	// 				errors={errors}
-	// 				setErrors={setErrors}
-	// 				checkout
-	// 				noSlots
-	// 			/>
-	// 		),
-	// 		error: errorHelper(billingDetails),
-	// 	},
-	// 	{
-	// 		title: "Address",
-	// 		component: (
-	// 			<Location
-	// 				user={user}
-	// 				values={locationValues}
-	// 				setValues={setLocationValues}
-	// 				slot={locationSlot}
-	// 				setSlot={setLocationSlot}
-	// 				billing={locationForBilling}
-	// 				setBilling={setLocationForBilling}
-	// 				errors={errors}
-	// 				setErrors={setErrors}
-	// 				billingValues={billingLocation}
-	// 				setBillingValues={setBillingLocation}
-	// 				checkout
-	// 			/>
-	// 		),
-	// 		hasActions: true,
-	// 		error: errorHelper(
-	// 			locationValues,
-	// 			locationForBilling,
-	// 			billingLocation,
-	// 			locationSlot
-	// 		),
-	// 	},
-	// 	{
-	// 		title: "Billing Address",
-	// 		component: (
-	// 			<Location
-	// 				values={billingLocation}
-	// 				setValues={setBillingLocation}
-	// 				errors={errors}
-	// 				setErrors={setErrors}
-	// 				checkout
-	// 				noSlots
-	// 			/>
-	// 		),
-	// 		error: errorHelper(billingLocation),
-	// 	},
-	// 	{
-	// 		title: "Shipping",
-	// 		component: (
-	// 			<Shipping
-	// 				shippingOptions={shippingOptions}
-	// 				selectedShipping={selectedShipping}
-	// 				setSelectedShipping={setSelectedShipping}
-	// 			/>
-	// 		),
-	// 		error: selectedShipping === null,
-	// 	},
-	// 	{
-	// 		title: "Payment",
-	// 		component: (
-	// 			<Payments
-	// 				slot={billingSlot}
-	// 				setSlot={setBillingSlot}
-	// 				user={user}
-	// 				saveCard={saveCard}
-	// 				setSaveCard={setSaveCard}
-	// 				checkout
-	// 			/>
-	// 		),
-	// 		error: false,
-	// 	},
-	// 	{
-	// 		title: "Confirmation",
-	// 		component: (
-	// 			<Confirmation
-	// 				user={user}
-	// 				setOrder={setOrder}
-	// 				detailValues={detailValues}
-	// 				billingDetails={billingDetails}
-	// 				detailForBilling={detailForBilling}
-	// 				locationValues={locationValues}
-	// 				billingLocation={billingLocation}
-	// 				locationForBilling={locationForBilling}
-	// 				shippingOptions={shippingOptions}
-	// 				selectedShipping={selectedShipping}
-	// 				selectedStep={selectedStep}
-	// 				setSelectedStep={setSelectedStep}
-	// 			/>
-	// 		),
-	// 	},
-	// 	{
-	// 		title: `Thanks, ${user.username.split(" ")[0]}!`,
-	// 		component: (
-	// 			<ThankYou order={order} selectedShipping={selectedShipping} />
-	// 		),
-	// 	},
-	// ]
+	let steps = [
+		{
+			title: "Contact Info",
+			component: (
+				<Details
+					user={user}
+					values={detailValues}
+					setValues={setDetailValues}
+					slot={detailSlot}
+					setSlot={setDetailSlot}
+					errors={errors}
+					setErrors={setErrors}
+					billing={detailForBilling}
+					setBilling={setDetailForBilling}
+					// billingValues={billingDetails}
+					// setBillingValues={setBillingDetails}
+					checkout
+				/>
+			),
+			// hasActions: true,
+			// error: errorHelper(
+			// 	detailValues,
+			// 	detailForBilling,
+			// 	billingDetails,
+			// 	detailSlot
+			// ),
+		},
+		{
+			title: "Billing Info",
+			// component: (
+			// 	<Details
+			// 		values={billingDetails}
+			// 		setValues={setBillingDetails}
+			// 		errors={errors}
+			// 		setErrors={setErrors}
+			// 		checkout
+			// 		noSlots
+			// 	/>
+			// ),
+			// error: errorHelper(billingDetails),
+		},
+		{
+			title: "Address",
+			// component: (
+			// 	<Location
+			// 		user={user}
+			// 		values={locationValues}
+			// 		setValues={setLocationValues}
+			// 		slot={locationSlot}
+			// 		setSlot={setLocationSlot}
+			// 		// billing={locationForBilling}
+			// 		// setBilling={setLocationForBilling}
+			// 		errors={errors}
+			// 		setErrors={setErrors}
+			// 		// billingValues={billingLocation}
+			// 		// setBillingValues={setBillingLocation}
+			// 		checkout
+			// 	/>
+			// ),
+			// hasActions: true,
+			// error: errorHelper(
+			// 	locationValues,
+			// 	locationForBilling,
+			// 	billingLocation,
+			// 	locationSlot
+			// ),
+		},
+		{
+			title: "Billing Address",
+			// component: (
+			// 	<Location
+			// 		values={billingLocation}
+			// 		setValues={setBillingLocation}
+			// 		errors={errors}
+			// 		setErrors={setErrors}
+			// 		checkout
+			// 		noSlots
+			// 	/>
+			// ),
+			// error: errorHelper(billingLocation),
+		},
+		{
+			title: "Shipping",
+			// component: (
+			// 	<Shipping
+			// 		shippingOptions={shippingOptions}
+			// 		selectedShipping={selectedShipping}
+			// 		setSelectedShipping={setSelectedShipping}
+			// 	/>
+			// ),
+			// error: selectedShipping === null,
+		},
+		{
+			title: "Payment",
+			// component: (
+			// 	<Payments
+			// 		slot={billingSlot}
+			// 		setSlot={setBillingSlot}
+			// 		user={user}
+			// 		saveCard={saveCard}
+			// 		setSaveCard={setSaveCard}
+			// 		checkout
+			// 	/>
+			// ),
+			// error: false,
+		},
+		{
+			title: "Confirmation",
+			// component: (
+			// 	<Confirmation
+			// 		user={user}
+			// 		setOrder={setOrder}
+			// 		detailValues={detailValues}
+			// 		billingDetails={billingDetails}
+			// 		detailForBilling={detailForBilling}
+			// 		locationValues={locationValues}
+			// 		billingLocation={billingLocation}
+			// 		locationForBilling={locationForBilling}
+			// 		shippingOptions={shippingOptions}
+			// 		selectedShipping={selectedShipping}
+			// 		selectedStep={selectedStep}
+			// 		setSelectedStep={setSelectedStep}
+			// 	/>
+			// ),
+		},
+		{
+			title: `Thanks, ${user.username.split(" ")[0]}!`,
+			// component: (
+			// 	<ThankYou order={order} selectedShipping={selectedShipping} />
+			// ),
+		},
+	]
 
 	// if (detailForBilling !== false) {
 	// 	steps = steps.filter(step => step.title !== "Billing Info")
@@ -266,20 +266,21 @@ export default function CheckoutPortal({ user }) {
 			direction="column"
 			classes={{ root: classes.container }}
 			alignItems={matchesMD ? "flex-start" : "flex-end"}
-			lg={6}
+			// lg={6}
+			xs={6}
 		>
-			{/* <CheckoutNavigation
+			<CheckoutNavigation
 				steps={steps}
 				selectedStep={selectedStep}
 				setSelectedStep={setSelectedStep}
-				details={detailValues}
-				detailSlot={detailSlot}
-				setDetails={setDetailValues}
-				location={locationValues}
-				setLocation={setLocationValues}
-				locationSlot={locationSlot}
-				setErrors={setErrors}
-			/> */}
+				// details={detailValues}
+				// detailSlot={detailSlot}
+				// setDetails={setDetailValues}
+				// location={locationValues}
+				// setLocation={setLocationValues}
+				// locationSlot={locationSlot}
+				// setErrors={setErrors}
+			/>
 			<Grid
 				item
 				container
@@ -287,7 +288,7 @@ export default function CheckoutPortal({ user }) {
 				alignItems="center"
 				classes={{ root: classes.stepContainer }}
 			>
-				{/* {steps[selectedStep].component} */}
+				{steps[selectedStep].component}
 			</Grid>
 			{/* {steps[selectedStep].title === "Confirmation" && (
 				<BillingConfirmation

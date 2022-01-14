@@ -27,7 +27,6 @@ const useStyles = makeStyles(theme => ({
 		[theme.breakpoints.down("xs")]: {
 			marginBottom: "0.69rem",
 		},
-		marginBottom: "3rem",
 	},
 	fieldContainer: {
 		marginBottom: "2rem",
@@ -122,8 +121,7 @@ export default function Details({
 	selectedStep,
 	stepNumber,
 }) {
-	// const classes = useStyles({ checkout, selectedStep, stepNumber })
-	const classes = useStyles()
+	const classes = useStyles({ checkout, selectedStep, stepNumber })
 	// const isMounted = useRef(false)
 
 	const [visible, setVisible] = useState(false)
@@ -133,15 +131,16 @@ export default function Details({
 	useEffect(() => {
 		// if (noSlots || !user.username) return
 
-		// if (checkout) {
-		// 	setValues(user.contactInfo[slot])
-		// } else {
-		setValues({ ...user.contactInfo[slot], password: "********" })
-		// }
+		if (checkout) {
+			// no need to save user's password at checkout
+			setValues(user.contactInfo[slot])
+		} else {
+			setValues({ ...user.contactInfo[slot], password: "********" })
+		}
 	}, [slot])
 
 	useEffect(() => {
-		// if (checkout) return
+		if (checkout) return // so that we don't have to check "Edit" & "Save" state in the <CheckoutPortal/>
 
 		// to check if there's ACTUAL changes in the input fields by comparing the current input with the info in localStorage
 		const changed = Object.keys(user.contactInfo[slot]).some(
@@ -200,17 +199,18 @@ export default function Details({
 		},
 	}
 
-	const fields = [name_phone, email_password]
+	let fields = [name_phone, email_password]
 
-	// if (checkout) {
-	// 	fields = [
-	// 		{
-	// 			name: name_phone.name,
-	// 			email: email_password.email,
-	// 			phone: name_phone.phone,
-	// 		},
-	// 	]
-	// }
+	if (checkout) {
+		// no need to display user's password at checkout && display these fields in this particular order
+		fields = [
+			{
+				name: name_phone.name,
+				email: email_password.email,
+				phone: name_phone.phone,
+			},
+		]
+	}
 
 	// const handleValues = values => {
 	// 	if (billing === slot && !noSlots) {
@@ -225,7 +225,7 @@ export default function Details({
 			item
 			container
 			direction="column"
-			lg={6}
+			lg={checkout ? 12 : 6}
 			xs={12}
 			alignItems="center"
 			justifyContent="center"
@@ -245,7 +245,12 @@ export default function Details({
 					justifyContent="center"
 					alignItems={matchesXS || checkout ? "center" : undefined}
 					direction={matchesXS || checkout ? "column" : "row"}
-					classes={{ root: classes.fieldContainer }}
+					classes={{
+						root: clsx({
+							[classes.fieldContainer]: !checkout,
+							[classes.fieldContainerCart]: checkout,
+						}),
+					}}
 				>
 					<Fields
 						fields={pair}
@@ -254,13 +259,41 @@ export default function Details({
 						errors={errors}
 						setErrors={setErrors}
 						isWhite
-						disabled={!edit}
-						settings
+						disabled={checkout ? false : !edit}
+						settings={!checkout}
 					/>
 				</Grid>
 			))}
-			<Grid item container classes={{ root: classes.slotContainer }}>
-				<Slots slot={slot} setSlot={setSlot} />
+			<Grid
+				item
+				container
+				justifyContent={checkout ? "space-between" : undefined}
+				classes={{ root: classes.slotContainer }}
+			>
+				<Slots slot={slot} setSlot={setSlot} checkout={checkout} />
+				{checkout && (
+					<Grid item>
+						<FormControlLabel
+							label="Billing"
+							labelPlacement="start" // label placed on the left of the Switch
+							classes={{
+								root: classes.switchWrapper,
+								label: classes.switchLabel,
+							}}
+							control={
+								<Switch
+									checked={billing === slot}
+									onChange={() =>
+										setBilling(
+											billing === slot ? false : slot
+										)
+									}
+									color="secondary"
+								/>
+							}
+						/>
+					</Grid>
+				)}
 			</Grid>
 		</Grid>
 		// <Grid
