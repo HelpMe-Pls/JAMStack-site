@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 }))
-export default function Slots({ slot, setSlot, checkout }) {
+export default function Slots({ slot, setSlot, checkout, noLabel }) {
 	const classes = useStyles()
 
 	return (
@@ -89,7 +89,7 @@ export default function Slots({ slot, setSlot, checkout }) {
 						variant="body1"
 						classes={{ root: classes.shipping }}
 					>
-						Shipping
+						For Shipping
 					</Typography>
 				</Grid>
 			)}

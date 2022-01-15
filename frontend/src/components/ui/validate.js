@@ -26,9 +26,9 @@ export default function validate(input) {
 		// zip: val => /[0-9]{6}/g.test(val),	// to make this work for Viet Nam, you'll have to also update backend\extensions\users-permissions\models\User.js
 		// unable to find Vietnam's geoname dataset tho...
 
-		//   promo: val => true,
-		//   city: val => val.length !== 0,
-		//   state: val => val.length !== 0,
+		city: val => val.length !== 0,
+		state: val => val.length !== 0,
+		promo: () => true,
 	}
 
 	const valid = {}

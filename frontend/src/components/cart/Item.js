@@ -141,7 +141,7 @@ export default function Item({ item }) {
 							ID: {item.variant.id}
 						</Typography>
 					</Grid>
-					<Grid item container justify="flex-end" xs={5} sm>
+					<Grid item container justifyContent="flex-end" xs={5} sm>
 						{actions.map((action, i) => (
 							<Grid item key={i}>
 								<IconButton

@@ -137,7 +137,7 @@ export default function QtyButton({
 		} else if (qty > stock[selectedVariant].qty) {
 			setQty(stock[selectedVariant].qty)
 		}
-	}, [stock, selectedVariant, qty])
+	}, [stock, selectedVariant])
 
 	useEffect(() => {
 		let timer

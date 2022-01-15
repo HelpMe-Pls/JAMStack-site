@@ -67,9 +67,16 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	navButtons: {
-		width: "1.5rem",
-		height: "1.5rem",
+		width: "1rem",
+		height: "1.69rem",
 		minWidth: 0,
+		paddingLeft: "2.35em",
+		paddingRight: "2rem",
+		"&:hover": {
+			//TODO: try out slick effects/anims
+			backgroundColor: "transparent",
+			transform: "scale(1.269)",
+		},
 	},
 }))
 
@@ -179,6 +186,7 @@ export default function CheckoutNavigation({
 		>
 			<Grid item classes={{ root: classes.back }}>
 				<Button
+					disableRipple
 					classes={{ root: classes.navButtons }}
 					onClick={() => setSelectedStep(selectedStep - 1)}
 				>
@@ -194,6 +202,7 @@ export default function CheckoutNavigation({
 			</Grid>
 			<Grid item classes={{ root: classes.forward }}>
 				<Button
+					disableRipple
 					disabled={steps[selectedStep].error}
 					classes={{
 						root: classes.navButtons,

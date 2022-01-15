@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	"@global": {
-		// these styles are applied to all components whether they are called or not
+		// these styles are only applied when this component is MOUNTED
 		body: {
 			// to remove default <body> margin of the browser
 			margin: 0,
