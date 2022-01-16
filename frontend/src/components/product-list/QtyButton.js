@@ -14,7 +14,7 @@ import Cart from "../../images/Cart"
 
 const useStyles = makeStyles(theme => ({
 	qtyText: {
-		color: "#fff",
+		color: ({ isCart }) => (isCart ? theme.palette.secondary.main : "#fff"),
 	},
 	mainGroup: {
 		height: "3rem",
@@ -44,11 +44,13 @@ const useStyles = makeStyles(theme => ({
 		marginTop: "-0.3rem",
 	},
 	minusButton: {
-		borderTop: "2px solid #fff",
+		borderTop: ({ isCart }) =>
+			`2px solid ${isCart ? theme.palette.secondary.main : "#fff"}`,
 	},
 	qtyButton: {
 		"&:hover": {
-			backgroundColor: theme.palette.secondary.main,
+			backgroundColor: ({ isCart }) =>
+				isCart ? "#fff" : theme.palette.secondary.main,
 		},
 	},
 	badge: {
@@ -76,7 +78,7 @@ export default function QtyButton({
 	variants,
 	selectedVariant, // actually the index of the variant
 	name, //product's name
-	isCart,
+	isCart, // to hide the "Add to cart" button if we're already in the "Cart" page
 	white,
 	hideCartButton,
 	round,
@@ -104,9 +106,10 @@ export default function QtyButton({
 
 		setQty(newQty)
 
+		// update localStorage & context
 		if (isCart) {
 			if (direction === "up") {
-				dispatchCart(addToCart(variants[selectedVariant], 1, name))
+				dispatchCart(addToCart(variants[selectedVariant], 1, name)) // already added the {stock} from handleCart(), so the context already got it, no need to add it again here
 			} else if (direction === "down") {
 				dispatchCart(removeFromCart(variants[selectedVariant], 1))
 			}
@@ -126,8 +129,7 @@ export default function QtyButton({
 		)
 	}
 
-	// if the user adds an amount of products to the cart, and then switch to another variant of that product,
-	// we should update the {qty} to reflect the stock of that newly switched to variant
+	// if the user adds the maximun amount of a variant (of that product) to the cart, and then switch to another variant, we should update the {qty} to reflect the stock of that newly switched to variant. E.g. red-codeblock-hoodie has 96 in stock, user adds 96, then switches to white-codeblock-hoodie (has 69 in stock), we should update {qty} to 69
 	useEffect(() => {
 		if (stock === null || stock === -1) {
 			// for error cases in fetching data
@@ -135,7 +137,7 @@ export default function QtyButton({
 		} else if (qty > stock[selectedVariant].qty) {
 			setQty(stock[selectedVariant].qty)
 		}
-	}, [stock, selectedVariant, qty])
+	}, [stock, selectedVariant])
 
 	useEffect(() => {
 		let timer
@@ -151,7 +153,7 @@ export default function QtyButton({
 		<Grid item>
 			<ButtonGroup classes={{ root: classes.mainGroup }}>
 				<Button
-					disabled
+					disabled={!isCart}
 					classes={{
 						root: clsx(classes.endButtons, classes.qtyButton),
 					}}
@@ -212,7 +214,7 @@ export default function QtyButton({
 							</Typography>
 						) : (
 							<Badge
-								overlap="circle"
+								overlap="circular"
 								badgeContent="+"
 								classes={{ badge: classes.badge }}
 							>

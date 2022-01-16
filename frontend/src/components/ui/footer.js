@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	"@global": {
-		// these styles are applied to all components whether they are called or not
+		// these styles are only applied when this component is MOUNTED
 		body: {
 			// to remove default <body> margin of the browser
 			margin: 0,
@@ -71,7 +71,7 @@ export default function Footer() {
 		// setting this structure as an array will make it harder to read & maping through, that's why we set it as an object
 		"Contact Us": [
 			// space between words of the key is unacceptable, that's why it has to be put as a string
-			{ label: "(+84) 369 149 942", href: "tel:(+84) 369 149 942" },
+			{ label: "0369 149 942", href: "tel:(+84) 369 149 942" },
 			{
 				label: "khoile5399@gmail.com",
 				href: "mailto:khoile5399@gmail.com",

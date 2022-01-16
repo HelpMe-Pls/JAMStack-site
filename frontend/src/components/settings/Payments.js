@@ -1,6 +1,8 @@
-import React, { useState } from "react"
+import React from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
+import Switch from "@material-ui/core/Switch"
 import Button from "@material-ui/core/Button"
 import { makeStyles } from "@material-ui/core/styles"
 
@@ -35,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	paymentContainer: {
-		borderLeft: "4px solid #fff",
+		borderLeft: ({ checkout }) => (checkout ? 0 : "4px solid #fff"),
 		position: "relative",
 		[theme.breakpoints.down("md")]: {
 			height: "30rem", // so that it matches 120rem in total (for matchesMD) with <Edit/>, <Details/> and <Location/>
@@ -46,20 +48,35 @@ const useStyles = makeStyles(theme => ({
 		position: "absolute",
 		bottom: 0,
 	},
+	switchWrapper: {
+		marginRight: 4,
+	},
+	switchLabel: {
+		color: "#fff",
+		fontWeight: 600,
+	},
 }))
 
-export default function Payments({ user }) {
-	const classes = useStyles()
-	const [slot, setSlot] = useState(0)
+export default function Payments({
+	user,
+	slot,
+	setSlot,
+	saveCard,
+	setSaveCard,
+	checkout,
+}) {
+	const classes = useStyles({ checkout })
 
-	const card = user.paymentMethods[slot]
+	const card = !user.username
+		? { last4: "", brand: "" }
+		: user.paymentMethods[slot]
 
 	return (
 		<Grid
 			item
 			container
 			direction="column"
-			lg={6}
+			lg={checkout ? 12 : 6}
 			xs={12}
 			alignItems="center"
 			justifyContent="center"
@@ -104,6 +121,25 @@ export default function Payments({ user }) {
 			</Grid>
 			<Grid item container classes={{ root: classes.slotContainer }}>
 				<Slots slot={slot} setSlot={setSlot} />
+				{checkout && (
+					<Grid item>
+						<FormControlLabel
+							classes={{
+								root: classes.switchWrapper,
+								label: classes.switchLabel,
+							}}
+							label="Save Card For Future Use"
+							labelPlacement="start"
+							control={
+								<Switch
+									checked={saveCard}
+									onChange={() => setSaveCard(!saveCard)}
+									color="secondary"
+								/>
+							}
+						/>
+					</Grid>
+				)}
 			</Grid>
 		</Grid>
 	)

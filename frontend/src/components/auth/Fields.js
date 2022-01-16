@@ -10,7 +10,8 @@ import validate from "../ui/validate"
 const useStyles = makeStyles(theme => ({
 	textField: {
 		width: ({ fullWidth, settings }) =>
-			fullWidth ? undefined : settings ? "18rem" : "25rem", // {undefined} so that it takes the ACTUAL full width (from MUI prop)
+			fullWidth ? undefined : settings ? "18rem" : "22rem", // {undefined} so that it takes the ACTUAL full width (from MUI prop)
+
 		[theme.breakpoints.down("xs")]: {
 			width: ({ fullWidth }) => (fullWidth ? undefined : "15rem"),
 		},

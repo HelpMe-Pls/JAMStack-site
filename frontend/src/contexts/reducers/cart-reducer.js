@@ -25,7 +25,7 @@ export default function cartReducer(state, action) {
 				let newQty = newCart[existingIndex].qty + action.payload.qty
 
 				if (newQty > action.payload.stock) {
-					newQty = action.payload.stock // make sure the user can't add more items than the stock
+					newQty = action.payload.stock // make sure the user can't add more items than the stock of that {name}
 				}
 
 				newCart[existingIndex] = {

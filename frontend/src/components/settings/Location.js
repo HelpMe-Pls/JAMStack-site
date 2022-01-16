@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import axios from "axios"
 import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
+import Switch from "@material-ui/core/Switch"
 import CircularProgress from "@material-ui/core/CircularProgress"
 import Chip from "@material-ui/core/Chip"
 import { makeStyles } from "@material-ui/core/styles"
@@ -18,7 +19,7 @@ import zipAdornment from "../../images/zip-adornment.svg"
 
 const useStyles = makeStyles(theme => ({
 	icon: {
-		marginBottom: "3rem",
+		marginBottom: ({ checkout }) => (checkout ? "1rem" : "3rem"),
 		[theme.breakpoints.down("xs")]: {
 			marginBottom: "1rem",
 		},
@@ -27,6 +28,16 @@ const useStyles = makeStyles(theme => ({
 		marginTop: "2rem",
 		marginBottom: "3rem",
 	},
+	switchWrapper: {
+		marginRight: 4,
+	},
+	switchLabel: {
+		color: "#fff",
+		fontWeight: 600,
+		[theme.breakpoints.down("xs")]: {
+			fontSize: "1rem",
+		},
+	},
 	fieldContainer: {
 		"& > :not(:first-child)": {
 			marginTop: "2rem",
@@ -34,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	slotContainer: {
 		position: "absolute",
-		bottom: 0,
+		bottom: ({ checkout }) => (checkout ? -8 : 0),
 	},
 	locationContainer: {
 		position: "relative",
@@ -51,12 +62,20 @@ export default function Location({
 	setChangesMade,
 	values,
 	setValues,
-	slot,
-	setSlot,
 	errors,
 	setErrors,
+	slot,
+	setSlot,
+	saveForBilling,
+	setSaveForBilling,
+	billingValues,
+	setBillingValues,
+	checkout,
+	noSlots,
 }) {
-	const classes = useStyles()
+	const classes = useStyles({ checkout })
+	const isMounted = useRef(false)
+
 	const [loading, setLoading] = useState(false)
 	const { dispatchFeedback } = useFeedback()
 
@@ -89,16 +108,19 @@ export default function Location({
 	}
 
 	useEffect(() => {
+		if (noSlots || !user.username) return
 		setValues(user.locations[slot])
 	}, [slot])
 
 	useEffect(() => {
-		// to check if there's ACTUAL changes in the input fields by comparing the current input with the info in localStorage
-		const changed = Object.keys(user.locations[slot]).some(
-			field => values[field] !== user.locations[slot][field]
-		)
+		if (!checkout) {
+			// for Settings: to check if there's ACTUAL changes in the input fields by comparing the current input with the info in localStorage
+			const changed = Object.keys(user.locations[slot]).some(
+				field => values[field] !== user.locations[slot][field]
+			)
 
-		setChangesMade(changed)
+			setChangesMade(changed)
+		}
 
 		if (values.zip.length === 5) {
 			if (values.city) return
@@ -109,6 +131,25 @@ export default function Location({
 			setValues({ ...values, city: "", state: "" })
 		}
 	}, [values])
+
+	useEffect(() => {
+		if (noSlots) {
+			// for "Billing Address"
+			isMounted.current = false
+			return
+		}
+
+		if (isMounted.current === false) {
+			isMounted.current = true
+			return
+		}
+
+		if (saveForBilling === false && isMounted.current) {
+			setValues(billingValues)
+		} else {
+			setBillingValues(values)
+		}
+	}, [saveForBilling])
 
 	const fields = {
 		street: {
@@ -128,7 +169,7 @@ export default function Location({
 			item
 			container
 			direction="column"
-			lg={6}
+			lg={checkout ? 12 : 6}
 			xs={12}
 			alignItems="center"
 			justifyContent="center"
@@ -150,12 +191,20 @@ export default function Location({
 			>
 				<Fields
 					fields={fields}
-					values={values}
-					setValues={setValues}
+					values={
+						saveForBilling === slot && !noSlots
+							? billingValues
+							: values
+					}
+					setValues={
+						saveForBilling === slot && !noSlots
+							? setBillingValues
+							: setValues
+					}
 					errors={errors}
 					setErrors={setErrors}
 					isWhite
-					disabled={!edit}
+					disabled={checkout ? false : !edit}
 				/>
 			</Grid>
 			<Grid item classes={{ root: classes.chipWrapper }}>
@@ -171,9 +220,37 @@ export default function Location({
 					/>
 				)}
 			</Grid>
-			<Grid item container classes={{ root: classes.slotContainer }}>
-				<Slots slot={slot} setSlot={setSlot} />
-			</Grid>
+			{noSlots ? null : (
+				<Grid item container classes={{ root: classes.slotContainer }}>
+					<Slots slot={slot} setSlot={setSlot} checkout={checkout} />
+					{checkout && (
+						<Grid item>
+							<FormControlLabel
+								classes={{
+									root: classes.switchWrapper,
+									label: classes.switchLabel,
+								}}
+								label="Billing"
+								labelPlacement="start"
+								control={
+									<Switch
+										checked={saveForBilling === slot}
+										onChange={() =>
+											setSaveForBilling(
+												// so that only 1 slot of the 3 slots can be saved for billing
+												saveForBilling === slot
+													? false
+													: slot
+											)
+										}
+										color="secondary"
+									/>
+								}
+							/>
+						</Grid>
+					)}
+				</Grid>
+			)}
 		</Grid>
 	)
 }
