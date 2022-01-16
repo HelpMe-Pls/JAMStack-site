@@ -186,7 +186,7 @@ export default function Confirmation({
 			adornment: <img src={zipAdornment} alt="city, state, zip code" />,
 		},
 		{
-			value: "**** **** **** 1234",
+			value: "**** **** **** 6996",
 			adornment: (
 				<img
 					src={cardAdornment}
@@ -207,7 +207,7 @@ export default function Confirmation({
 	const prices = [
 		{
 			label: "SUBTOTAL",
-			value: subtotal.toFixed(2),
+			value: subtotal.toFixed(2), // 6.6996 --> "6.69"
 		},
 		{
 			label: "SHIPPING",
@@ -220,7 +220,7 @@ export default function Confirmation({
 	]
 
 	const total = prices.reduce(
-		(total, item) => total + parseFloat(item.value),
+		(total, item) => total + parseFloat(item.value), // toFixed() returns string
 		0
 	)
 

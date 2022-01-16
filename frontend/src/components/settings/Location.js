@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import axios from "axios"
 import Grid from "@material-ui/core/Grid"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
@@ -62,17 +62,20 @@ export default function Location({
 	setChangesMade,
 	values,
 	setValues,
-	billing,
-	setBilling,
-	billingValues,
-	setBillingValues,
-	slot,
-	setSlot,
 	errors,
 	setErrors,
+	slot,
+	setSlot,
+	saveForBilling,
+	setSaveForBilling,
+	billingValues,
+	setBillingValues,
 	checkout,
+	noSlots,
 }) {
 	const classes = useStyles({ checkout })
+	const isMounted = useRef(false)
+
 	const [loading, setLoading] = useState(false)
 	const { dispatchFeedback } = useFeedback()
 
@@ -105,12 +108,13 @@ export default function Location({
 	}
 
 	useEffect(() => {
+		if (noSlots || !user.username) return
 		setValues(user.locations[slot])
 	}, [slot])
 
 	useEffect(() => {
 		if (!checkout) {
-			// to check if there's ACTUAL changes in the input fields by comparing the current input with the info in localStorage
+			// for Settings: to check if there's ACTUAL changes in the input fields by comparing the current input with the info in localStorage
 			const changed = Object.keys(user.locations[slot]).some(
 				field => values[field] !== user.locations[slot][field]
 			)
@@ -127,6 +131,25 @@ export default function Location({
 			setValues({ ...values, city: "", state: "" })
 		}
 	}, [values])
+
+	useEffect(() => {
+		if (noSlots) {
+			// for "Billing Address"
+			isMounted.current = false
+			return
+		}
+
+		if (isMounted.current === false) {
+			isMounted.current = true
+			return
+		}
+
+		if (saveForBilling === false && isMounted.current) {
+			setValues(billingValues)
+		} else {
+			setBillingValues(values)
+		}
+	}, [saveForBilling])
 
 	const fields = {
 		street: {
@@ -168,8 +191,16 @@ export default function Location({
 			>
 				<Fields
 					fields={fields}
-					values={values}
-					setValues={setValues}
+					values={
+						saveForBilling === slot && !noSlots
+							? billingValues
+							: values
+					}
+					setValues={
+						saveForBilling === slot && !noSlots
+							? setBillingValues
+							: setValues
+					}
 					errors={errors}
 					setErrors={setErrors}
 					isWhite
@@ -189,32 +220,37 @@ export default function Location({
 					/>
 				)}
 			</Grid>
-			<Grid item container classes={{ root: classes.slotContainer }}>
-				<Slots slot={slot} setSlot={setSlot} checkout={checkout} />
-				{checkout && (
-					<Grid item>
-						<FormControlLabel
-							classes={{
-								root: classes.switchWrapper,
-								label: classes.switchLabel,
-							}}
-							label="Billing"
-							labelPlacement="start"
-							control={
-								<Switch
-									checked={billing === slot}
-									onChange={() =>
-										setBilling(
-											billing === slot ? false : slot
-										)
-									}
-									color="secondary"
-								/>
-							}
-						/>
-					</Grid>
-				)}
-			</Grid>
+			{noSlots ? null : (
+				<Grid item container classes={{ root: classes.slotContainer }}>
+					<Slots slot={slot} setSlot={setSlot} checkout={checkout} />
+					{checkout && (
+						<Grid item>
+							<FormControlLabel
+								classes={{
+									root: classes.switchWrapper,
+									label: classes.switchLabel,
+								}}
+								label="Billing"
+								labelPlacement="start"
+								control={
+									<Switch
+										checked={saveForBilling === slot}
+										onChange={() =>
+											setSaveForBilling(
+												// so that only 1 slot of the 3 slots can be saved for billing
+												saveForBilling === slot
+													? false
+													: slot
+											)
+										}
+										color="secondary"
+									/>
+								}
+							/>
+						</Grid>
+					)}
+				</Grid>
+			)}
 		</Grid>
 	)
 }

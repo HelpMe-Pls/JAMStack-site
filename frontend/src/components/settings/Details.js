@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import clsx from "clsx"
 import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
-import Button from "@material-ui/core/Button"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Switch from "@material-ui/core/Switch"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
@@ -108,73 +106,26 @@ export default function Details({
 	setChangesMade,
 	values,
 	setValues,
-	slot,
-	setSlot,
 	errors,
 	setErrors,
-	checkout,
-	billing,
-	setBilling,
+	slot,
+	setSlot,
+	saveForBilling,
+	setSaveForBilling,
 	billingValues,
 	setBillingValues,
+	checkout,
 	noSlots,
 	selectedStep,
 	stepNumber,
 }) {
 	const classes = useStyles({ checkout, selectedStep, stepNumber })
-	// const isMounted = useRef(false)
+	const isMounted = useRef(false)
 
 	const [visible, setVisible] = useState(false)
 
 	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
-	useEffect(() => {
-		// if (noSlots || !user.username) return
-
-		if (checkout) {
-			// no need to save user's password at checkout
-			setValues(user.contactInfo[slot])
-		} else {
-			setValues({ ...user.contactInfo[slot], password: "********" })
-		}
-	}, [slot])
-
-	useEffect(() => {
-		if (checkout) return // so that we don't have to check "Edit" & "Save" state in the <CheckoutPortal/>
-
-		// to check if there's ACTUAL changes in the input fields by comparing the current input with the info in localStorage
-		const changed = Object.keys(user.contactInfo[slot]).some(
-			field => values[field] !== user.contactInfo[slot][field]
-		)
-
-		setChangesMade(changed)
-	}, [values])
-
-	// useEffect(() => {
-	// 	if (noSlots) {
-	// 		isMounted.current = false
-	// 		return
-	// 	}
-
-	// 	if (isMounted.current === false) {
-	// 		isMounted.current = true
-	// 		return
-	// 	}
-
-	// 	if (billing === false && isMounted.current) {
-	// 		setValues(billingValues)
-	// 	} else {
-	// 		setBillingValues(values)
-	// 	}
-	// }, [billing])
-
-	// const email_password = EmailPassword(
-	// 	false,
-	// 	false,
-	// 	visible,
-	// 	setVisible,
-	// 	true
-	// )
 	const email_password = EmailPassword(
 		false,
 		false,
@@ -184,7 +135,7 @@ export default function Details({
 	)
 	const name_phone = {
 		name: {
-			helperText: "you must enter a name",
+			helperText: "you must enter a name with more than 3 characters",
 			placeholder: "Name",
 			startAdornment: <NameAdornment color="#fff" />,
 		},
@@ -212,13 +163,56 @@ export default function Details({
 		]
 	}
 
-	// const handleValues = values => {
-	// 	if (billing === slot && !noSlots) {
-	// 		setBillingValues(values)
-	// 	}
+	const handleValues = values => {
+		if (saveForBilling === slot && !noSlots) {
+			setBillingValues(values)
+		}
 
-	// 	setValues(values)
-	// }
+		setValues(values)
+	}
+
+	useEffect(() => {
+		if (noSlots) {
+			// for "Billing Info"
+			isMounted.current = false
+			return
+		}
+
+		// for "Contact Info": to preserve the info when alternating on/off from the Switch
+		if (isMounted.current === false) {
+			isMounted.current = true
+			return
+		}
+
+		// i.e. what we DON'T want is to save the info for the current slot, then go to another slot (add some other info to that slot), then turn the switch on, and our new info (that we want to save) is replaced with the info from the previous slot
+		if (saveForBilling === false && isMounted.current) {
+			setValues(billingValues)
+		} else {
+			setBillingValues(values)
+		}
+	}, [saveForBilling]) // the effect also get executed on first render so that's why we need the useRef() i.e. skip initial render execution
+
+	useEffect(() => {
+		if (noSlots || !user.username) return
+
+		if (checkout) {
+			// no need to save user's password at checkout
+			setValues(user.contactInfo[slot])
+		} else {
+			setValues({ ...user.contactInfo[slot], password: "********" })
+		}
+	}, [slot])
+
+	useEffect(() => {
+		if (checkout) return // so that we don't have to check "Edit" & "Save" state in the <CheckoutPortal/>
+
+		//for Settings: to check if there's ACTUAL changes in the input fields by comparing the current input with the info in localStorage
+		const changed = Object.keys(user.contactInfo[slot]).some(
+			field => values[field] !== user.contactInfo[slot][field]
+		)
+
+		setChangesMade(changed)
+	}, [values])
 
 	return (
 		<Grid
@@ -254,8 +248,12 @@ export default function Details({
 				>
 					<Fields
 						fields={pair}
-						values={values}
-						setValues={setValues}
+						values={
+							saveForBilling === slot && !noSlots
+								? billingValues
+								: values
+						}
+						setValues={handleValues}
 						errors={errors}
 						setErrors={setErrors}
 						isWhite
@@ -264,118 +262,42 @@ export default function Details({
 					/>
 				</Grid>
 			))}
-			<Grid
-				item
-				container
-				justifyContent={checkout ? "space-between" : undefined}
-				classes={{ root: classes.slotContainer }}
-			>
-				<Slots slot={slot} setSlot={setSlot} checkout={checkout} />
-				{checkout && (
-					<Grid item>
-						<FormControlLabel
-							label="Billing"
-							labelPlacement="start" // label placed on the left of the Switch
-							classes={{
-								root: classes.switchWrapper,
-								label: classes.switchLabel,
-							}}
-							control={
-								<Switch
-									checked={billing === slot}
-									onChange={() =>
-										setBilling(
-											billing === slot ? false : slot
-										)
-									}
-									color="secondary"
-								/>
-							}
-						/>
-					</Grid>
-				)}
-			</Grid>
+			{noSlots ? null : (
+				<Grid
+					item
+					container
+					justifyContent={checkout ? "space-between" : undefined}
+					classes={{ root: classes.slotContainer }}
+				>
+					<Slots slot={slot} setSlot={setSlot} checkout={checkout} />
+					{checkout && (
+						<Grid item>
+							<FormControlLabel
+								label="Billing"
+								labelPlacement="start" // label placed on the left of the Switch
+								classes={{
+									root: classes.switchWrapper,
+									label: classes.switchLabel,
+								}}
+								control={
+									<Switch
+										checked={saveForBilling === slot}
+										onChange={() =>
+											setSaveForBilling(
+												// so that only 1 slot of the 3 slots can be saved for billing
+												saveForBilling === slot
+													? false
+													: slot
+											)
+										}
+										color="secondary"
+									/>
+								}
+							/>
+						</Grid>
+					)}
+				</Grid>
+			)}
 		</Grid>
-		// <Grid
-		// 	item
-		// 	container
-		// 	direction="column"
-		// 	lg={checkout ? 12 : 6}
-		// 	xs={12}
-		// 	alignItems="center"
-		// 	justify="center"
-		// 	classes={{ root: classes.detailsContainer }}
-		// >
-		// 	<Grid item>
-		// 		<img
-		// 			src={fingerprint}
-		// 			alt="details settings"
-		// 			className={classes.icon}
-		// 		/>
-		// 	</Grid>
-		// 	{fields.map((pair, i) => (
-		// 		<Grid
-		// 			container
-		// 			justify="center"
-		// 			alignItems={matchesXS || checkout ? "center" : undefined}
-		// 			key={i}
-		// 			classes={{
-		// 				root: clsx({
-		// 					[classes.fieldContainerCart]: checkout,
-		// 					[classes.fieldContainer]: !checkout,
-		// 				}),
-		// 			}}
-		// 			direction={matchesXS || checkout ? "column" : "row"}
-		// 		>
-		// 			<Fields
-		// 				fields={pair}
-		// 				values={
-		// 					billing === slot && !noSlots
-		// 						? billingValues
-		// 						: values
-		// 				}
-		// 				setValues={handleValues}
-		// 				errors={errors}
-		// 				setErrors={setErrors}
-		// 				isWhite
-		// 				disabled={checkout ? false : !edit}
-		// 				settings={!checkout}
-		// 			/>
-		// 		</Grid>
-		// 	))}
-		// 	{noSlots ? null : (
-		// 		<Grid
-		// 			item
-		// 			container
-		// 			justify={checkout ? "space-between" : undefined}
-		// 			classes={{ root: classes.slotContainer }}
-		// 		>
-		// 			<Slots slot={slot} setSlot={setSlot} checkout={checkout} />
-		// 			{checkout && (
-		// 				<Grid item>
-		// 					<FormControlLabel
-		// 						classes={{
-		// 							root: classes.switchWrapper,
-		// 							label: classes.switchLabel,
-		// 						}}
-		// 						label="Billing"
-		// 						labelPlacement="start"
-		// 						control={
-		// 							<Switch
-		// 								checked={billing === slot}
-		// 								onChange={() =>
-		// 									setBilling(
-		// 										billing === slot ? false : slot
-		// 									)
-		// 								}
-		// 								color="secondary"
-		// 							/>
-		// 						}
-		// 					/>
-		// 				</Grid>
-		// 			)}
-		// 		</Grid>
-		// 	)}
-		// </Grid>
 	)
 }

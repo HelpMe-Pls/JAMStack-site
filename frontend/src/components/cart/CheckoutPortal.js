@@ -4,7 +4,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 
 import CheckoutNavigation from "./CheckoutNavigation"
-// import BillingConfirmation from "./BillingConfirmation"
+import BillingConfirmation from "./BillingConfirmation"
 import Details from "../settings/Details"
 import Location from "../settings/Location"
 import Payments from "../settings/Payments"
@@ -43,18 +43,21 @@ export default function CheckoutPortal({ user }) {
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
 	const [selectedStep, setSelectedStep] = useState(0)
+
 	const [detailValues, setDetailValues] = useState({
 		name: "",
 		email: "",
 		phone: "",
 	})
-	// const [billingDetails, setBillingDetails] = useState({
-	// 	name: "",
-	// 	email: "",
-	// 	phone: "",
-	// })
 	const [detailSlot, setDetailSlot] = useState(0)
-	const [detailForBilling, setDetailForBilling] = useState(false)
+	const [saveDetailForBilling, setSaveDetailForBilling] = useState(false) // manage the on/off state for the Billing switch
+
+	// to confirm user's basic info for billing (if they didn't turn on the <Switch/> for any of the 3 slots)
+	const [billingDetails, setBillingDetails] = useState({
+		name: "",
+		email: "",
+		phone: "",
+	})
 
 	const [locationValues, setLocationValues] = useState({
 		street: "",
@@ -62,21 +65,15 @@ export default function CheckoutPortal({ user }) {
 		city: "",
 		state: "",
 	})
-	// const [billingLocation, setBillingLocation] = useState({
-	// 	street: "",
-	// 	zip: "",
-	// 	city: "",
-	// 	state: "",
-	// })
 	const [locationSlot, setLocationSlot] = useState(0)
-	const [locationForBilling, setLocationForBilling] = useState(false)
+	const [saveLocationForBilling, setSaveLocationForBilling] = useState(false)
 
-	const [billingSlot, setBillingSlot] = useState(0)
-	const [saveCard, setSaveCard] = useState(false)
-
-	const [errors, setErrors] = useState({})
-
-	// const [order, setOrder] = useState(null)
+	const [billingLocation, setBillingLocation] = useState({
+		street: "",
+		zip: "",
+		city: "",
+		state: "",
+	})
 
 	const [selectedShipping, setSelectedShipping] = useState(null)
 	const shippingOptions = [
@@ -85,22 +82,32 @@ export default function CheckoutPortal({ user }) {
 		{ label: "OVERNIGHT SHIPPING", price: 69.96 },
 	]
 
+	// for <Payments/> tab
+	const [billingSlot, setBillingSlot] = useState(0)
+	const [saveCard, setSaveCard] = useState(false)
+
+	const [errors, setErrors] = useState({})
+
+	// const [order, setOrder] = useState(null)
+
+	// to disable the "forward to next tab" button if there's at least one error in these fields
 	const errorHelper = (values, forBilling, billingValues, slot) => {
 		const valid = validate(values)
 
-		//If we have one slot marked as billing...
+		// If we have ONE slot marked as billing...
+		// forBilling !== undefined is coz if the "Billing Info" tab is enabled and that means forBilling === undefined
 		if (forBilling !== false && forBilling !== undefined) {
 			//...validate billing values
 			const billingValid = validate(billingValues)
 
-			//If we are currently on the same slot as marked for billing, ie billing and shipping are the same...
+			// If we are currently on the same slot as marked for billing, i.e. billing and shipping are the same...
 			if (forBilling === slot) {
 				//...then we just need to validate the one set of values because they are the same
 				return Object.keys(billingValid).some(
 					value => !billingValid[value]
 				)
 			} else {
-				//Otherwise, if we are currently on a different slot than the slot marked for billing, ie billing and shipping are different, then we need to validate both the billing values, and the shipping values
+				// Otherwise, if we are currently on a different slot with the slot marked for billing, (e.g. we marked slot 1 for billing and we're currently on slot 0), then we need to validate both the billing values, and the shipping values so we'll be able to move to the next tab from slot 0
 				return (
 					Object.keys(billingValid).some(
 						value => !billingValid[value]
@@ -108,7 +115,7 @@ export default function CheckoutPortal({ user }) {
 				)
 			}
 		} else {
-			//if no slots were marked for billing, just validate current slot
+			// if NO slots were marked for billing, just validate current slot
 			return Object.keys(valid).some(value => !valid[value])
 		}
 	}
@@ -121,40 +128,40 @@ export default function CheckoutPortal({ user }) {
 					user={user}
 					values={detailValues}
 					setValues={setDetailValues}
-					slot={detailSlot}
-					setSlot={setDetailSlot}
 					errors={errors}
 					setErrors={setErrors}
-					billing={detailForBilling}
-					setBilling={setDetailForBilling}
-					// billingValues={billingDetails}
-					// setBillingValues={setBillingDetails}
+					slot={detailSlot}
+					setSlot={setDetailSlot}
+					saveForBilling={saveDetailForBilling}
+					setSaveForBilling={setSaveDetailForBilling}
+					billingValues={billingDetails}
+					setBillingValues={setBillingDetails}
 					checkout
 				/>
 			),
 			// hasActions: true,
 			// to be used in <CheckoutNavigation/>
 			error: errorHelper(
-				detailValues
-				// detailForBilling,
-				// billingDetails,
-				// detailSlot
+				detailValues,
+				saveDetailForBilling,
+				billingDetails,
+				detailSlot
 			),
 		},
-		// {
-		// 	title: "Billing Info",
-		// 	component: (
-		// 		<Details
-		// 			// values={billingDetails}
-		// 			// setValues={setBillingDetails}
-		// 			errors={errors}
-		// 			setErrors={setErrors}
-		// 			checkout
-		// 			noSlots
-		// 		/>
-		// 	),
-		// 	// error: errorHelper(billingDetails),
-		// },
+		{
+			title: "Billing Info",
+			component: (
+				<Details
+					values={billingDetails}
+					setValues={setBillingDetails}
+					errors={errors}
+					setErrors={setErrors}
+					checkout
+					noSlots
+				/>
+			),
+			error: errorHelper(billingDetails),
+		},
 		{
 			title: "Address",
 			component: (
@@ -162,39 +169,39 @@ export default function CheckoutPortal({ user }) {
 					user={user}
 					values={locationValues}
 					setValues={setLocationValues}
-					slot={locationSlot}
-					setSlot={setLocationSlot}
-					billing={locationForBilling}
-					setBilling={setLocationForBilling}
-					// billingValues={billingLocation}
-					// setBillingValues={setBillingLocation}
 					errors={errors}
 					setErrors={setErrors}
+					slot={locationSlot}
+					setSlot={setLocationSlot}
+					saveForBilling={saveLocationForBilling}
+					setSaveForBilling={setSaveLocationForBilling}
+					billingValues={billingLocation}
+					setBillingValues={setBillingLocation}
 					checkout
 				/>
 			),
 			// hasActions: true,
 			error: errorHelper(
 				locationValues,
-				locationForBilling,
-				// billingLocation,
+				saveLocationForBilling,
+				billingLocation,
 				locationSlot
 			),
 		},
-		// {
-		// 	title: "Billing Address",
-		// 	component: (
-		// 		<Location
-		// 			// values={billingLocation}
-		// 			// setValues={setBillingLocation}
-		// 			errors={errors}
-		// 			setErrors={setErrors}
-		// 			checkout
-		// 			noSlots
-		// 		/>
-		// 	),
-		// 	// error: errorHelper(billingLocation),
-		// },
+		{
+			title: "Billing Address",
+			component: (
+				<Location
+					values={billingLocation}
+					setValues={setBillingLocation}
+					errors={errors}
+					setErrors={setErrors}
+					checkout
+					noSlots
+				/>
+			),
+			error: errorHelper(billingLocation),
+		},
 		{
 			title: "Shipping",
 			component: (
@@ -227,11 +234,9 @@ export default function CheckoutPortal({ user }) {
 					user={user}
 					// setOrder={setOrder}
 					detailValues={detailValues}
-					// billingDetails={billingDetails}
-					detailForBilling={detailForBilling}
+					billingDetails={billingDetails}
 					locationValues={locationValues}
-					// billingLocation={billingLocation}
-					locationForBilling={locationForBilling}
+					billingLocation={billingLocation}
 					shippingOptions={shippingOptions}
 					selectedShipping={selectedShipping}
 					selectedStep={selectedStep}
@@ -247,13 +252,15 @@ export default function CheckoutPortal({ user }) {
 		},
 	]
 
-	// if (detailForBilling !== false) {
-	// 	steps = steps.filter(step => step.title !== "Billing Info")
-	// }
+	// to not render the "Billing Info" and "Billing Address" if the <Switch/> is on for them
+	// but since the Switches' state are saved with the slot's index, so we have to check if it's !false (for the case where the switch is on for slot 0, and 0 !== false)
+	if (saveDetailForBilling !== false) {
+		steps = steps.filter(step => step.title !== "Billing Info")
+	}
 
-	// if (locationForBilling !== false) {
-	// 	steps = steps.filter(step => step.title !== "Billing Address")
-	// }
+	if (saveLocationForBilling !== false) {
+		steps = steps.filter(step => step.title !== "Billing Address")
+	}
 
 	useEffect(() => {
 		setErrors({})
@@ -273,13 +280,13 @@ export default function CheckoutPortal({ user }) {
 				steps={steps}
 				selectedStep={selectedStep}
 				setSelectedStep={setSelectedStep}
-				// details={detailValues}
-				// detailSlot={detailSlot}
-				// setDetails={setDetailValues}
-				// location={locationValues}
-				// setLocation={setLocationValues}
-				// locationSlot={locationSlot}
-				// setErrors={setErrors}
+				details={detailValues}
+				detailSlot={detailSlot}
+				setDetails={setDetailValues}
+				location={locationValues}
+				setLocation={setLocationValues}
+				locationSlot={locationSlot}
+				setErrors={setErrors}
 			/>
 			<Grid
 				item
@@ -290,16 +297,18 @@ export default function CheckoutPortal({ user }) {
 			>
 				{steps[selectedStep].component}
 			</Grid>
-			{/* {steps[selectedStep].title === "Confirmation" && (
+			{steps[selectedStep].title === "Confirmation" && (
+				// only render this when the "Billing Info" and/or "Billing Address" is rendered
+				// i.e. hide this component when either of the switch is on
 				<BillingConfirmation
-					detailForBilling={detailForBilling}
 					billingDetails={billingDetails}
+					saveDetailForBilling={saveDetailForBilling}
 					detailSlot={detailSlot}
-					locationForBilling={locationForBilling}
 					billingLocation={billingLocation}
+					saveLocationForBilling={saveLocationForBilling}
 					locationSlot={locationSlot}
 				/>
-			)} */}
+			)}
 		</Grid>
 	)
 }

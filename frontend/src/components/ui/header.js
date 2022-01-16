@@ -65,7 +65,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	badge: {
 		color: "#fff",
-		fontSize: "1rem",
 		backgroundColor: theme.palette.secondary.main,
 		padding: 3,
 		[theme.breakpoints.down("xs")]: {
