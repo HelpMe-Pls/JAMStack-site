@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
 	textField: {
 		width: ({ fullWidth, settings }) =>
 			fullWidth ? undefined : settings ? "18rem" : "22rem", // {undefined} so that it takes the ACTUAL full width (from MUI prop)
+
 		[theme.breakpoints.down("xs")]: {
 			width: ({ fullWidth }) => (fullWidth ? undefined : "15rem"),
 		},

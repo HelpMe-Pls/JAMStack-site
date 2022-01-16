@@ -125,7 +125,6 @@ export default function ListOfProducts({
 				setStock(-1)
 			} else if (data) {
 				setStock(data.product.variants) // stock is applied to the product, not the variant, so if we want to get the "stock" of a singular variant, it'll be data.product.variants[variant].qty
-
 				//setRating(data.product.rating)
 			}
 		}, [error, data])
