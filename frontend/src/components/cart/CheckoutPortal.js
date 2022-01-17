@@ -10,7 +10,7 @@ import Location from "../settings/Location"
 import Payments from "../settings/Payments"
 import Shipping from "./Shipping"
 import Confirmation from "./Confirmation"
-// import ThankYou from "./ThankYou"
+import ThankYou from "./ThankYou"
 import validate from "../ui/validate"
 
 const useStyles = makeStyles(theme => ({
@@ -88,7 +88,7 @@ export default function CheckoutPortal({ user }) {
 
 	const [errors, setErrors] = useState({})
 
-	// const [order, setOrder] = useState(null)
+	const [order, setOrder] = useState(null)
 
 	// to disable the "forward to next tab" button if there's at least one error in these fields
 	const errorHelper = (values, forBilling, billingValues, slot) => {
@@ -232,7 +232,7 @@ export default function CheckoutPortal({ user }) {
 			component: (
 				<Confirmation
 					user={user}
-					// setOrder={setOrder}
+					setOrder={setOrder}
 					detailValues={detailValues}
 					billingDetails={billingDetails}
 					locationValues={locationValues}
@@ -246,9 +246,9 @@ export default function CheckoutPortal({ user }) {
 		},
 		{
 			title: `Thanks, ${user.username.split(" ")[0]}!`,
-			// component: (
-			// 	<ThankYou order={order} selectedShipping={selectedShipping} />
-			// ),
+			component: (
+				<ThankYou order={order} selectedShipping={selectedShipping} />
+			),
 		},
 	]
 

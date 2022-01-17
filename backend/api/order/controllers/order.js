@@ -99,7 +99,7 @@ module.exports = {
 			order = sanitizeEntity(order, { model: strapi.models.order });
 
 			if (order.user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536") {
-				order.user = { username: "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" }; // set to that corresponding "Guest" to prevent leaking/sharing any of the other orders from other "guest" checkouts
+				order.user = { username: "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" }; // set to that corresponding "Guest" to prevent leaking/sharing any of the other orders from other "Guest" checkouts
 			}
 
 			ctx.send({ order }, 200);

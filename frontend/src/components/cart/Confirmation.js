@@ -246,7 +246,9 @@ export default function Confirmation({
 			</Grid>
 		</>
 	)
-
+	//TODO: add a handler to redirect user to AuthPortal right after they clicked on "place order" button (if they're not logged in), then after they logged in, have that product in their cart
+	// Hint: Already got it in backend\api\order\controllers\order.js
+	// maybe the checkout tab has enough info that we don't need to force the user to log in to make a purchase
 	const handleOrder = () => {
 		setLoading(true)
 
@@ -265,9 +267,10 @@ export default function Confirmation({
 					items: cart,
 				},
 				{
-					headers: !user.username
-						? undefined
-						: { Authorization: `Bearer ${user.jwt}` },
+					headers:
+						user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536"
+							? undefined
+							: { Authorization: `Bearer ${user.jwt}` },
 				}
 			)
 			.then(response => {
@@ -277,7 +280,7 @@ export default function Confirmation({
 
 				setOrder(response.data.order)
 
-				setSelectedStep(selectedStep + 1)
+				setSelectedStep(selectedStep + 1) // navigates to <ThankYou/>
 			})
 			.catch(error => {
 				setLoading(false)

@@ -217,7 +217,8 @@ export default function CheckoutNavigation({
 					</Typography>
 				</Button>
 			</Grid>
-			{steps[selectedStep].hasActions && user.username ? (
+			{steps[selectedStep].hasActions &&
+			user.username !== "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" ? (
 				<Grid item classes={{ root: classes.actions }}>
 					<Grid container>
 						<Grid item>

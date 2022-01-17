@@ -193,13 +193,14 @@ export default function Details({
 	}, [saveForBilling]) // the effect also get executed on first render so that's why we need the useRef() i.e. skip initial render execution
 
 	useEffect(() => {
-		if (noSlots || !user.username) return
+		if (noSlots || user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536")
+			return
 
 		if (checkout) {
 			// no need to save user's password at checkout
 			setValues(user.contactInfo[slot])
 		} else {
-			setValues({ ...user.contactInfo[slot], password: "********" })
+			setValues({ ...user.contactInfo[slot], password: "********" }) // spread coz we don't want to save this password: "********" to the db, it's only for display
 		}
 	}, [slot])
 

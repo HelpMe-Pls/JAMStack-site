@@ -11,12 +11,10 @@ import { useUser } from "../contexts"
 
 const useStyles = makeStyles(theme => ({
 	cartContainer: {
-		minHeight: "70vh", //Using {vh} to keep footer always at the bottom
+		minHeight: "100vh", //Using {vh} to keep footer always at the bottom
 	},
 }))
 
-//TODO: add a handler to redirect user to AuthPortal right after they clicked on "Add to cart" button (if they're not logged in), then after they logged in, have that product in their cart
-// Already got it in backend\api\order\controllers\order.js
 export default function Cart() {
 	const classes = useStyles()
 	const { user } = useUser()
