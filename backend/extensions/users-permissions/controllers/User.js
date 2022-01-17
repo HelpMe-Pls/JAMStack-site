@@ -53,7 +53,7 @@ module.exports = {
 			{ contactInfo: newInfo, locations: newLocations }
 		);
 
-		newUser = sanitizeUser(newUser); // so that we don't send sensitive data to the client
+		newUser = sanitizeUser(newUser); // so that we don't send sensitive/private data to the client
 
 		ctx.send(newUser, 200); // send updated user profile back to the client
 	},
