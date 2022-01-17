@@ -18,7 +18,7 @@ export default function userReducer(state, action) {
 
 			newState = user
 
-			return newState
+			return newState // update context
 		default:
 			return state
 	}

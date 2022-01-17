@@ -14,12 +14,14 @@ module.exports = {
 		let newInfo = [...contactInfo];
 		let newLocations = [...locations];
 
+		// <typeof> returns a string
 		if (
 			typeof details !== "undefined" &&
 			typeof detailSlot !== "undefined"
 		) {
 			newInfo[detailSlot] = details;
 		} else if (
+			// for delete request
 			typeof details === "undefined" &&
 			typeof detailSlot !== "undefined"
 		) {
@@ -32,7 +34,7 @@ module.exports = {
 		) {
 			newLocations[locationSlot] = location;
 		} else if (
-			typeof location === undefined &&
+			typeof location === "undefined" &&
 			typeof locationSlot !== "undefined"
 		) {
 			newLocations[locationSlot] = {

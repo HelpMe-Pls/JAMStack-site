@@ -295,7 +295,7 @@ export default function Confirmation({
 					case 409:
 						dispatchFeedback(
 							setSnackbar({
-								status: "error",
+								status: "info",
 								message:
 									`The following items are not available at the requested quantity. Please update your cart and try again.\n` +
 									`${error.response.data.unavailable.map(

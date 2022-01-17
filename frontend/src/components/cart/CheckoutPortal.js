@@ -139,7 +139,7 @@ export default function CheckoutPortal({ user }) {
 					checkout
 				/>
 			),
-			// hasActions: true,
+			hasActions: true,
 			// to be used in <CheckoutNavigation/>
 			error: errorHelper(
 				detailValues,
@@ -180,7 +180,7 @@ export default function CheckoutPortal({ user }) {
 					checkout
 				/>
 			),
-			// hasActions: true,
+			hasActions: true,
 			error: errorHelper(
 				locationValues,
 				saveLocationForBilling,

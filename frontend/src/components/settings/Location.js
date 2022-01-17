@@ -101,7 +101,7 @@ export default function Location({
 					setSnackbar({
 						status: "error",
 						message:
-							"There was a problem with your zipcode (or maybe your zipcode is not found on our database), please try again.",
+							"There was an error with your zipcode (or maybe your zipcode is not found on our database), please try again.",
 					})
 				)
 			})
