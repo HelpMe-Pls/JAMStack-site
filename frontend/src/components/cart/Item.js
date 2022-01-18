@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import IconButton from "@material-ui/core/IconButton"
@@ -25,9 +25,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	id: {
 		color: theme.palette.secondary.main,
-		fontSize: "1rem",
+		fontSize: "1.069rem",
 		[theme.breakpoints.down("xs")]: {
-			fontSize: "0.75rem",
+			fontSize: "0.869rem",
 		},
 	},
 	actionWrapper: {
@@ -57,7 +57,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	actionButton: {
 		[theme.breakpoints.down("xs")]: {
-			padding: "12px 6px",
+			padding: "5px 6px 15px",
 		},
 		"&:hover": {
 			backgroundColor: "transparent",
@@ -138,7 +138,10 @@ export default function Item({ item }) {
 							variant="body1"
 							classes={{ root: classes.id }}
 						>
-							ID: {item.variant.id}
+							ID:
+							{matchesXS
+								? item.variant.id.slice() // trick to display ID at full length
+								: item.variant.id}
 						</Typography>
 					</Grid>
 					<Grid item container justifyContent="flex-end" xs={5} sm>

@@ -15,10 +15,14 @@ const useStyles = makeStyles(theme => ({
 		[theme.breakpoints.down("xs")]: {
 			width: ({ fullWidth }) => (fullWidth ? undefined : "15rem"),
 		},
+		[theme.breakpoints.up("xs")]: {
+			width: ({ xs }) => (xs ? "10rem" : undefined),
+		},
 	},
 	input: {
 		color: ({ isWhite }) =>
 			isWhite ? "#fff" : theme.palette.secondary.main,
+		fontSize: ({ xs }) => (xs ? "1.25rem" : undefined),
 	},
 }))
 
@@ -33,8 +37,9 @@ export default function Fields({
 	disabled,
 	fullWidth,
 	settings,
+	xs,
 }) {
-	const classes = useStyles({ isWhite, fullWidth, settings })
+	const classes = useStyles({ isWhite, fullWidth, settings, xs })
 
 	return Object.keys(fields).map(field => {
 		const validateHelper = event => {

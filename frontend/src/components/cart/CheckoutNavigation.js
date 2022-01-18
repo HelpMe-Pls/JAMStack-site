@@ -53,10 +53,14 @@ const useStyles = makeStyles(theme => ({
 		[theme.breakpoints.down("xs")]: {
 			height: "1.5rem",
 			width: "1.5rem",
+			paddingTop: "0.069em",
 		},
 	},
 	iconButton: {
 		padding: 13.69,
+		[theme.breakpoints.down("xs")]: {
+			padding: 6,
+		},
 	},
 	actions: {
 		position: "absolute",
@@ -64,7 +68,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	text: {
 		[theme.breakpoints.down("xs")]: {
-			fontSize: "1.25rem",
+			fontSize: "1.269rem",
 		},
 	},
 	navButtons: {
@@ -77,6 +81,10 @@ const useStyles = makeStyles(theme => ({
 			//TODO: try out slick effects/anims
 			backgroundColor: "transparent",
 			transform: "scale(1.269)",
+		},
+		[theme.breakpoints.down("xs")]: {
+			paddingLeft: "1.269em",
+			paddingRight: "1.269rem",
 		},
 	},
 }))
@@ -177,7 +185,7 @@ export default function CheckoutNavigation({
 				)
 			})
 	}
-
+	//TODO: set the "Save" button to the left side of the title
 	return (
 		<Grid
 			item

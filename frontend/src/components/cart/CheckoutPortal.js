@@ -273,8 +273,8 @@ export default function CheckoutPortal({ user }) {
 			direction="column"
 			classes={{ root: classes.container }}
 			alignItems={matchesMD ? "flex-start" : "flex-end"}
-			// lg={6}
-			xs={6}
+			lg={6}
+			
 		>
 			<CheckoutNavigation
 				steps={steps}

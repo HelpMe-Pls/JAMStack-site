@@ -234,7 +234,7 @@ export default function Confirmation({
 				item
 				xs={10}
 				classes={{ root: classes.centerText }}
-				zeroMinWidth
+				zeroMinWidth // to display ... when the field is too long
 			>
 				<Typography
 					noWrap

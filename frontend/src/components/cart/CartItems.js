@@ -9,7 +9,7 @@ export default function CartItems() {
 	const { cart } = useCart()
 
 	return (
-		<Grid item container direction="column" xs={6}>
+		<Grid item container direction="column" lg={6}>
 			{cart.map(item => (
 				<Item item={item} key={item.variant.id} />
 			))}

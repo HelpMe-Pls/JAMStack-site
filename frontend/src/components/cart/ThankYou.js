@@ -15,13 +15,13 @@ const useStyles = makeStyles(theme => ({
 	},
 	detailsText: {
 		[theme.breakpoints.down("xs")]: {
-			fontSize: "1rem",
+			fontSize: "1.169rem",
 		},
 	},
 	order: {
 		fontWeight: 600,
 		[theme.breakpoints.down("xs")]: {
-			fontSize: "1rem",
+			fontSize: "1.269rem",
 		},
 	},
 	shopText: {
