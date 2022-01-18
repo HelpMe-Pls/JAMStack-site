@@ -49,13 +49,18 @@ const useStyles = makeStyles(theme => ({
 	delete: {
 		height: "2rem",
 		width: "2rem",
+		marginTop: "-0.069rem",
 		[theme.breakpoints.down("xs")]: {
 			height: "1.5rem",
 			width: "1.5rem",
+			paddingTop: "0.069em",
 		},
 	},
 	iconButton: {
-		padding: 6,
+		padding: 13.69,
+		[theme.breakpoints.down("xs")]: {
+			padding: 6,
+		},
 	},
 	actions: {
 		position: "absolute",
@@ -63,7 +68,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	text: {
 		[theme.breakpoints.down("xs")]: {
-			fontSize: "1.25rem",
+			fontSize: "1.269rem",
 		},
 	},
 	navButtons: {
@@ -77,6 +82,10 @@ const useStyles = makeStyles(theme => ({
 			backgroundColor: "transparent",
 			transform: "scale(1.269)",
 		},
+		[theme.breakpoints.down("xs")]: {
+			paddingLeft: "1.269em",
+			paddingRight: "1.269rem",
+		},
 	},
 }))
 
@@ -84,98 +93,99 @@ export default function CheckoutNavigation({
 	steps,
 	selectedStep,
 	setSelectedStep,
-	// details,
-	// setDetails,
-	// detailSlot,
-	// location,
-	// setLocation,
-	// locationSlot,
-	// setErrors,
+	details,
+	setDetails,
+	detailSlot,
+	location,
+	setLocation,
+	locationSlot,
+	setErrors,
 }) {
 	const classes = useStyles({ steps, selectedStep })
 	const [loading, setLoading] = useState(null)
 	const { dispatchFeedback } = useFeedback()
 	const { user, dispatchUser } = useUser()
 
-	// const handleAction = action => {
-	// 	if (steps[selectedStep].error && action !== "delete") {
-	// 		dispatchFeedback(
-	// 			setSnackbar({
-	// 				status: "error",
-	// 				message: "All fields must be valid before saving",
-	// 			})
-	// 		)
-	// 		return
-	// 	}
+	const handleAction = action => {
+		if (steps[selectedStep].error && action !== "delete") {
+			dispatchFeedback(
+				setSnackbar({
+					status: "error",
+					message: "All fields must be valid before saving",
+				})
+			)
+			return
+		}
 
-	// 	setLoading(action)
+		setLoading(action)
 
-	// 	const isDetails = steps[selectedStep].title === "Contact Info"
-	// 	const isLocation = steps[selectedStep].title === "Address"
+		const isDetails = steps[selectedStep].title === "Contact Info"
+		const isLocation = steps[selectedStep].title === "Address"
 
-	// 	axios
-	// 		.post(
-	// 			process.env.GATSBY_STRAPI_URL +
-	// 				"/users-permissions/set-settings",
-	// 			{
-	// 				details:
-	// 					isDetails && action !== "delete" ? details : undefined,
-	// 				detailSlot: isDetails ? detailSlot : undefined,
-	// 				location:
-	// 					isLocation && action !== "delete"
-	// 						? location
-	// 						: undefined,
-	// 				locationSlot: isLocation ? locationSlot : undefined,
-	// 			},
-	// 			{
-	// 				headers: { Authorization: `Bearer ${user.jwt}` },
-	// 			}
-	// 		)
-	// 		.then(response => {
-	// 			setLoading(null)
-	// 			dispatchFeedback(
-	// 				setSnackbar({
-	// 					status: "sucess",
-	// 					message: `Information ${
-	// 						action === "delete" ? "Deleted" : "Saved"
-	// 					} Successfully.`,
-	// 				})
-	// 			)
-	// 			dispatchUser(
-	// 				setUser({
-	// 					...response.data,
-	// 					jwt: user.jwt,
-	// 					onboarding: true,
-	// 				})
-	// 			)
+		axios
+			.post(
+				process.env.GATSBY_STRAPI_URL +
+					"/users-permissions/set-settings",
+				{
+					details:
+						isDetails && action !== "delete" ? details : undefined, // {undefined}: checkout the comment "for delete request" in backend\extensions\users-permissions\controllers\User.js
+					detailSlot: isDetails ? detailSlot : undefined,
+					location:
+						isLocation && action !== "delete"
+							? location
+							: undefined,
+					locationSlot: isLocation ? locationSlot : undefined,
+				},
+				{
+					headers: { Authorization: `Bearer ${user.jwt}` },
+				}
+			)
+			.then(response => {
+				setLoading(null)
+				dispatchFeedback(
+					setSnackbar({
+						status: "success",
+						message: `Information ${
+							action === "delete" ? "Deleted" : "Saved"
+						} Successfully.`,
+					})
+				)
+				dispatchUser(
+					setUser({
+						...response.data,
+						jwt: user.jwt,
+						onboarding: true,
+					})
+				)
 
-	// 			if (action === "delete") {
-	// 				setErrors({})
-	// 				if (isDetails) {
-	// 					setDetails({ name: "", email: "", phone: "" })
-	// 				} else if (isLocation) {
-	// 					setLocation({
-	// 						street: "",
-	// 						zip: "",
-	// 						city: "",
-	// 						state: "",
-	// 					})
-	// 				}
-	// 			}
-	// 		})
-	// 		.catch(error => {
-	// 			setLoading(null)
-	// 			dispatchFeedback(
-	// 				setSnackbar({
-	// 					status: "error",
-	// 					message: `There was a problem ${
-	// 						action === "delete" ? "deleting" : "saving"
-	// 					} your information, please try again.`,
-	// 				})
-	// 			)
-	// 		})
-	// }
-
+				if (action === "delete") {
+					setErrors({})
+					if (isDetails) {
+						// to clear the fields in the "Contact Info"
+						setDetails({ name: "", email: "", phone: "" })
+					} else if (isLocation) {
+						setLocation({
+							street: "",
+							zip: "",
+							city: "",
+							state: "",
+						})
+					}
+				}
+			})
+			.catch(error => {
+				setLoading(null)
+				dispatchFeedback(
+					setSnackbar({
+						status: "error",
+						message: `There was a problem ${
+							action === "delete" ? "deleting" : "saving"
+						} your information, please try again.`,
+					})
+				)
+			})
+	}
+	//TODO: set the "Save" button to the left side of the title
 	return (
 		<Grid
 			item
@@ -215,7 +225,8 @@ export default function CheckoutNavigation({
 					</Typography>
 				</Button>
 			</Grid>
-			{steps[selectedStep].hasActions && user.username ? (
+			{steps[selectedStep].hasActions &&
+			user.username !== "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" ? (
 				<Grid item classes={{ root: classes.actions }}>
 					<Grid container>
 						<Grid item>
@@ -224,7 +235,7 @@ export default function CheckoutNavigation({
 							) : (
 								<IconButton
 									classes={{ root: classes.iconButton }}
-									// onClick={() => handleAction("save")}
+									onClick={() => handleAction("save")}
 								>
 									<img
 										src={save}
@@ -240,7 +251,7 @@ export default function CheckoutNavigation({
 							) : (
 								<IconButton
 									classes={{ root: classes.iconButton }}
-									// onClick={() => handleAction("delete")}
+									onClick={() => handleAction("delete")}
 								>
 									<span className={classes.delete}>
 										<Delete color="#fff" />

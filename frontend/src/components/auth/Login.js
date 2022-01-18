@@ -177,7 +177,7 @@ export default function Login({
 				setSuccess(true)
 				dispatchFeedback(
 					setSnackbar({
-						status: "success",
+						status: "info",
 						message: "Reset Code Sent, please check your email",
 					})
 				)

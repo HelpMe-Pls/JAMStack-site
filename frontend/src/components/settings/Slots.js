@@ -54,8 +54,9 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 }))
-export default function Slots({ slot, setSlot, checkout, noLabel }) {
-	const classes = useStyles()
+
+export default function Slots({ slot, setSlot, checkout }) {
+	const classes = useStyles({ checkout })
 
 	return (
 		<Grid item container xs>

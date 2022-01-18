@@ -67,9 +67,10 @@ export default function Payments({
 }) {
 	const classes = useStyles({ checkout })
 
-	const card = !user.username
-		? { last4: "", brand: "" }
-		: user.paymentMethods[slot]
+	const card =
+		user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536"
+			? { last4: "", brand: "" }
+			: user.paymentMethods[slot]
 
 	return (
 		<Grid
@@ -120,26 +121,27 @@ export default function Payments({
 				)}
 			</Grid>
 			<Grid item container classes={{ root: classes.slotContainer }}>
-				<Slots slot={slot} setSlot={setSlot} />
-				{checkout && (
-					<Grid item>
-						<FormControlLabel
-							classes={{
-								root: classes.switchWrapper,
-								label: classes.switchLabel,
-							}}
-							label="Save Card For Future Use"
-							labelPlacement="start"
-							control={
-								<Switch
-									checked={saveCard}
-									onChange={() => setSaveCard(!saveCard)}
-									color="secondary"
-								/>
-							}
-						/>
-					</Grid>
-				)}
+				<Slots slot={slot} setSlot={setSlot} noLabel />
+				{checkout &&
+					user.username !== "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" && (
+						<Grid item>
+							<FormControlLabel
+								classes={{
+									root: classes.switchWrapper,
+									label: classes.switchLabel,
+								}}
+								label="Save Card For Future Use"
+								labelPlacement="start"
+								control={
+									<Switch
+										checked={saveCard}
+										onChange={() => setSaveCard(!saveCard)}
+										color="secondary"
+									/>
+								}
+							/>
+						</Grid>
+					)}
 			</Grid>
 		</Grid>
 	)

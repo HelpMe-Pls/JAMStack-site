@@ -116,6 +116,7 @@ export default function QtyButton({
 		}
 	}
 
+	//TODO: if the user clicked this multiple times, increase the qty as well
 	const handleCart = () => {
 		setSuccess(true)
 

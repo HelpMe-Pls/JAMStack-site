@@ -10,7 +10,7 @@ import Location from "../settings/Location"
 import Payments from "../settings/Payments"
 import Shipping from "./Shipping"
 import Confirmation from "./Confirmation"
-// import ThankYou from "./ThankYou"
+import ThankYou from "./ThankYou"
 import validate from "../ui/validate"
 
 const useStyles = makeStyles(theme => ({
@@ -139,7 +139,7 @@ export default function CheckoutPortal({ user }) {
 					checkout
 				/>
 			),
-			// hasActions: true,
+			hasActions: true,
 			// to be used in <CheckoutNavigation/>
 			error: errorHelper(
 				detailValues,
@@ -273,8 +273,7 @@ export default function CheckoutPortal({ user }) {
 			direction="column"
 			classes={{ root: classes.container }}
 			alignItems={matchesMD ? "flex-start" : "flex-end"}
-			// lg={6}
-			xs={6}
+			lg={6}
 		>
 			<CheckoutNavigation
 				steps={steps}

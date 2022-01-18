@@ -101,14 +101,15 @@ export default function Location({
 					setSnackbar({
 						status: "error",
 						message:
-							"There was a problem with your zipcode (or maybe your zipcode is not found on our database), please try again.",
+							"There was an error with your zipcode (or maybe your zipcode is not found on our database), please try again.",
 					})
 				)
 			})
 	}
 
 	useEffect(() => {
-		if (noSlots || !user.username) return
+		if (noSlots || user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536")
+			return
 		setValues(user.locations[slot])
 	}, [slot])
 

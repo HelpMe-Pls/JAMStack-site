@@ -7,7 +7,7 @@ const UserContext = createContext()
 export const useUser = () => useContext(UserContext)
 
 export function UserWrapper({ children }) {
-	const defaultUser = {}
+	const defaultUser = { username: "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" }
 	const storedUser = JSON.parse(localStorage.getItem("user")) //JSON.parse to get the user "object"
 	const [user, dispatchUser] = useReducer(
 		userReducer,

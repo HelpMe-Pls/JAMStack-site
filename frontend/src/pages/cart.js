@@ -11,7 +11,7 @@ import { useUser } from "../contexts"
 
 const useStyles = makeStyles(theme => ({
 	cartContainer: {
-		minHeight: "70vh", //Using {vh} to keep footer always at the bottom
+		minHeight: "100vh", //Using {vh} to keep footer always at the bottom
 	},
 }))
 
