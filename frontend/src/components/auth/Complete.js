@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
+import { Link } from "gatsby"
 
 import { setUser } from "../../contexts/actions"
 
@@ -58,7 +59,7 @@ export default function Complete({ user, dispatchUser }) {
 			</Grid>
 			<Grid item container justifyContent="flex-end">
 				<Grid item classes={{ root: classes.shopContainer }}>
-					<Button>
+					<Button component={Link} to="/hats">
 						<Typography
 							variant="h3"
 							classes={{ root: classes.text }}

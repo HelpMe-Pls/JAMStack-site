@@ -10,36 +10,30 @@
 // ru#EQS69mYeN!@@dAU$Ch%DTf5PO
 
 const { sanitizeEntity } = require("strapi-utils");
+const stripe = require("stripe")(process.env.STRIPE_SK);
 const GUEST_ID = "61e50e5e3ccbc84880b0ed54";
 
+const sanitizeUser = (user) =>
+	sanitizeEntity(user, {
+		model: strapi.query("user", "users-permissions").model,
+	});
+
 module.exports = {
-	async place(ctx) {
+	async process(ctx) {
 		const {
-			shippingAddress,
-			billingAddress,
-			shippingInfo,
-			billingInfo,
-			shippingOption,
-			subtotal,
-			tax,
-			total,
 			items,
+			total,
+			shippingOption,
+			idempotencyKey,
+			storedIntent,
+			email,
+			savedCard,
 		} = ctx.request.body;
-
-		let orderCustomer;
-
-		if (ctx.state.user) {
-			orderCustomer = ctx.state.user.id;
-		} else {
-			// user is not logged in
-			orderCustomer = GUEST_ID;
-		}
 
 		let serverTotal = 0;
 		let unavailable = [];
 
 		await Promise.all(
-			// creates an isolated async-await block to validate & set the order
 			items.map(async (clientItem) => {
 				const serverItem = await strapi.services.variant.findOne({
 					id: clientItem.variant.id,
@@ -50,22 +44,17 @@ module.exports = {
 						id: serverItem.id,
 						qty: serverItem.qty,
 					});
-				} else {
-					await strapi.services.variant.update(
-						{ id: clientItem.variant.id },
-						{ qty: serverItem.qty - clientItem.qty }
-					);
 				}
 
 				serverTotal += serverItem.price * clientItem.qty; // get {price} from server to make sure the order is legit (i.e. to make sure the {price} is not manipulated by the client)
 			})
 		);
 
-		// from this point and on: only executed after everything in Promise.all() has completed SUCCESSFULLY
+		//only executed after everything in Promise.all has completed SUCCESSFULLY
 		const shippingOptions = [
 			{ label: "FREE SHIPPING", price: 0 },
-			{ label: "2-DAY SHIPPING", price: 6.99 },
-			{ label: "OVERNIGHT SHIPPING", price: 69.96 },
+			{ label: "2-DAY SHIPPING", price: 9.99 },
+			{ label: "OVERNIGHT SHIPPING", price: 29.99 },
 		];
 
 		const shippingValid = shippingOptions.find(
@@ -77,32 +66,185 @@ module.exports = {
 
 		if (
 			shippingValid === undefined ||
-			(serverTotal * 1.069 + shippingValid.price).toFixed(2) !== total
+			(serverTotal * 1.075 + shippingValid.price).toFixed(2) !== total
 		) {
 			ctx.send({ error: "Invalid Cart" }, 400);
 		} else if (unavailable.length > 0) {
 			ctx.send({ unavailable }, 409);
 		} else {
-			let order = await strapi.services.order.create({
-				shippingAddress,
-				billingAddress,
-				shippingInfo,
-				billingInfo,
-				shippingOption,
-				subtotal,
-				tax,
-				total,
-				items,
-				user: orderCustomer,
-			});
+			if (storedIntent) {
+				const update = await stripe.paymentIntents.update(
+					storedIntent,
+					{ amount: total * 100 },
+					{ idempotencyKey }
+				);
 
-			order = sanitizeEntity(order, { model: strapi.models.order });
+				ctx.send({
+					client_secret: update.client_secret,
+					intentID: update.id,
+				});
+			} else {
+				let saved;
 
-			if (order.user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536") {
-				order.user = { username: "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" }; // set to that corresponding "Guest" to prevent leaking/sharing any of the other orders from other "Guest" checkouts
+				if (savedCard) {
+					const stripeMethods = await stripe.paymentMethods.list({
+						customer: ctx.state.user.stripeID,
+						type: "card",
+					});
+
+					saved = stripeMethods.data.find(
+						(method) => method.card.last4 === savedCard
+					);
+				}
+
+				const intent = await stripe.paymentIntents.create(
+					{
+						amount: total * 100,
+						currency: "usd",
+						customer: ctx.state.user
+							? ctx.state.user.stripeID
+							: undefined,
+						receipt_email: email,
+						payment_method: saved ? saved.id : undefined,
+					},
+					{ idempotencyKey }
+				);
+
+				ctx.send({
+					client_secret: intent.client_secret,
+					intentID: intent.id,
+				});
 			}
-
-			ctx.send({ order }, 200);
 		}
+	},
+
+	async finalize(ctx) {
+		const {
+			shippingAddress,
+			billingAddress,
+			shippingInfo,
+			billingInfo,
+			shippingOption,
+			subtotal,
+			tax,
+			total,
+			items,
+			transaction,
+			paymentMethod,
+			saveCard,
+			cardSlot,
+		} = ctx.request.body;
+
+		let orderCustomer;
+
+		if (ctx.state.user) {
+			orderCustomer = ctx.state.user.id;
+		} else {
+			// user is not logged in
+			orderCustomer = GUEST_ID;
+		}
+
+		await Promise.all(
+			// creates an isolated async-await block to validate & set the order
+			items.map(async (clientItem) => {
+				const serverItem = await strapi.services.variant.findOne({
+					id: clientItem.variant.id,
+				});
+
+				await strapi.services.variant.update(
+					{ id: clientItem.variant.id },
+					{ qty: serverItem.qty - clientItem.qty }
+				);
+			})
+		);
+
+		if (saveCard && ctx.state.user) {
+			let newMethods = [...ctx.state.user.paymentMethods];
+
+			newMethods[cardSlot] = paymentMethod;
+
+			await strapi.plugins["users-permissions"].services.user.edit(
+				{ id: orderCustomer },
+				{ paymentMethods: newMethods }
+			);
+		}
+
+		var order = await strapi.services.order.create({
+			shippingAddress,
+			billingAddress,
+			shippingInfo,
+			billingInfo,
+			shippingOption,
+			subtotal,
+			tax,
+			total,
+			items,
+			transaction,
+			paymentMethod,
+			user: orderCustomer,
+		});
+
+		order = sanitizeEntity(order, { model: strapi.models.order });
+
+		const confirmation = await strapi.services.order.confirmationEmail(
+			order
+		);
+
+		await strapi.plugins["email"].services.email.send({
+			to: order.billingInfo.email,
+			subject: "VAR-X Order Confirmation",
+			html: confirmation,
+		});
+
+		if (order.user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536") {
+			order.user = { username: "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" }; // set to that corresponding "Guest" to prevent leaking/sharing any of the other orders from other "Guest" checkouts
+		}
+
+		ctx.send({ order }, 200);
+	},
+
+	async removeCard(ctx) {
+		const { card } = ctx.request.body;
+		const { stripeID } = ctx.state.user;
+
+		const stripeMethods = await stripe.paymentMethods.list({
+			customer: stripeID,
+			type: "card",
+		});
+
+		const stripeCard = stripeMethods.data.find(
+			(method) => method.card.last4 === card
+		);
+
+		await stripe.paymentMethods.detach(stripeCard.id);
+
+		let newMethods = [...ctx.state.user.paymentMethods];
+
+		const cardSlot = newMethods.findIndex(
+			(method) => method.last4 === card
+		);
+
+		newMethods[cardSlot] = { brand: "", last4: "" };
+
+		const newUser = await strapi.plugins[
+			"users-permissions"
+		].services.user.edit(
+			{ id: ctx.state.user.id },
+			{ paymentMethods: newMethods }
+		);
+
+		ctx.send({ user: sanitizeUser(newUser) }, 200);
+	},
+
+	async history(ctx) {
+		const orders = await strapi.services.order.find({
+			user: ctx.state.user.id,
+		});
+
+		const cleanOrders = orders.map((order) =>
+			sanitizeEntity(order, { model: strapi.models.order })
+		);
+
+		ctx.send({ orders: cleanOrders }, 200);
 	},
 };
