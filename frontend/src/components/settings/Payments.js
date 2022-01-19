@@ -228,7 +228,7 @@ export default function Payments({
 			lg={checkout ? 12 : 6}
 			xs={12}
 			alignItems="center"
-			justify="center"
+			justifyContent="center"
 			classes={{ root: classes.paymentContainer }}
 		>
 			<Grid item>
@@ -241,7 +241,7 @@ export default function Payments({
 			<Grid
 				item
 				container
-				justify="center"
+				justifyContent="center"
 				classes={{
 					root: clsx({
 						[classes.numberWrapper]: checkout && matchesXS,
@@ -297,7 +297,7 @@ export default function Payments({
 			<Grid
 				item
 				container
-				justify="space-between"
+				justifyContent="space-between"
 				classes={{ root: classes.slotContainer }}
 			>
 				<Slots slot={slot} setSlot={setSlot} noLabel />

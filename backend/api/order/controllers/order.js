@@ -24,8 +24,8 @@ module.exports = {
 			items,
 			total,
 			shippingOption,
-			idempotencyKey,
-			storedIntent,
+			idempotencyKey, // prevent duplicate requests
+			storedIntent, // in case the user has not make a purchase and come back to previously set-up cart
 			email,
 			savedCard,
 		} = ctx.request.body;
@@ -53,8 +53,8 @@ module.exports = {
 		//only executed after everything in Promise.all has completed SUCCESSFULLY
 		const shippingOptions = [
 			{ label: "FREE SHIPPING", price: 0 },
-			{ label: "2-DAY SHIPPING", price: 9.99 },
-			{ label: "OVERNIGHT SHIPPING", price: 29.99 },
+			{ label: "2-DAY SHIPPING", price: 6.99 },
+			{ label: "OVERNIGHT SHIPPING", price: 69.96 },
 		];
 
 		const shippingValid = shippingOptions.find(
@@ -66,7 +66,7 @@ module.exports = {
 
 		if (
 			shippingValid === undefined ||
-			(serverTotal * 1.075 + shippingValid.price).toFixed(2) !== total
+			(serverTotal * 1.069 + shippingValid.price).toFixed(2) !== total
 		) {
 			ctx.send({ error: "Invalid Cart" }, 400);
 		} else if (unavailable.length > 0) {
@@ -75,7 +75,7 @@ module.exports = {
 			if (storedIntent) {
 				const update = await stripe.paymentIntents.update(
 					storedIntent,
-					{ amount: total * 100 },
+					{ amount: total * 100 }, // 1$ === 100cents, so we *100 to get dollar
 					{ idempotencyKey }
 				);
 
@@ -84,6 +84,7 @@ module.exports = {
 					intentID: update.id,
 				});
 			} else {
+				// create NEW paymentIntent
 				let saved;
 
 				if (savedCard) {
@@ -103,7 +104,7 @@ module.exports = {
 						currency: "usd",
 						customer: ctx.state.user
 							? ctx.state.user.stripeID
-							: undefined,
+							: undefined, // "guest" user
 						receipt_email: email,
 						payment_method: saved ? saved.id : undefined,
 					},
@@ -192,7 +193,7 @@ module.exports = {
 
 		await strapi.plugins["email"].services.email.send({
 			to: order.billingInfo.email,
-			subject: "VAR-X Order Confirmation",
+			subject: "LOCO Order Confirmation",
 			html: confirmation,
 		});
 

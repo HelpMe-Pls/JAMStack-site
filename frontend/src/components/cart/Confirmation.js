@@ -365,10 +365,11 @@ export default function Confirmation({
 
 	useEffect(() => {
 		if (!order && cart.length !== 0 && selectedStep === stepNumber) {
+			// !order coz if there's already exist an {order}, we'd want to clearCart()
 			const storedIntent = localStorage.getItem("intentID")
-			const idempotencyKey = uuidv4()
+			const idempotencyKey = uuidv4() // prevent duplicate requests
 
-			setClientSecret(null)
+			setClientSecret(null) // make sure to clear any existing paymentIntent b4 creating a new one
 
 			axios
 				.post(
@@ -518,7 +519,9 @@ export default function Confirmation({
 						disabled: classes.disabled,
 					}}
 					onClick={handleOrder}
-					disabled={cart.length === 0 || loading || !clientSecret}
+					disabled={
+						cart.length === 0 || loading || !clientSecret // coz we need {clientSecret} to confirm the payment
+					}
 				>
 					<Grid
 						container

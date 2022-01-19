@@ -40,7 +40,7 @@ export default function BillingConfirmation({
 	]
 
 	return (
-		<Grid item container justify="flex-end">
+		<Grid item container justifyContent="flex-end">
 			{fields.map(field =>
 				field.hidden ? null : (
 					<Grid
