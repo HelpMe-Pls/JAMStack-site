@@ -187,18 +187,18 @@ module.exports = {
 
 		order = sanitizeEntity(order, { model: strapi.models.order });
 
-		const confirmation = await strapi.services.order.confirmationEmail(
-			order
-		);
+		// const confirmation = await strapi.services.order.confirmationEmail(
+		// 	order
+		// );
 
-		await strapi.plugins["email"].services.email.send({
-			to: order.billingInfo.email,
-			subject: "LOCO Order Confirmation",
-			html: confirmation,
-		});
+		// await strapi.plugins["email"].services.email.send({
+		// 	to: order.billingInfo.email,
+		// 	subject: "LOCO Order Confirmation",
+		// 	html: confirmation,
+		// });
 
 		if (order.user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536") {
-			order.user = { username: "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" }; // set to that corresponding "Guest" to prevent leaking/sharing any of the other orders from other "Guest" checkouts
+			order.user = { username: "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" }; // set to that corresponding "Guest" to prevent leaking/sharing any of the other orders from other onboarding "Guest" checkouts
 		}
 
 		ctx.send({ order }, 200);

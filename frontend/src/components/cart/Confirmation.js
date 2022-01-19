@@ -270,7 +270,7 @@ export default function Confirmation({
 
 		const idempotencyKey = uuidv4()
 
-		const cardElement = elements.getElement(CardElement)
+		const cardElmt = elements.getElement(CardElement)
 
 		const result = await stripe.confirmCardPayment(
 			clientSecret,
@@ -278,7 +278,7 @@ export default function Confirmation({
 				payment_method: savedCard
 					? undefined
 					: {
-							card: cardElement,
+							card: cardElmt,
 							billing_details: {
 								address: {
 									city: billingLocation.city,
@@ -304,7 +304,7 @@ export default function Confirmation({
 		} else if (result.paymentIntent.status === "succeeded") {
 			axios
 				.post(
-					process.env.GATSBY_STRAPI_URL + "/orders/finalize",
+					process.env.GATSBY_STRAPI_URL + "/orders/finalize", // create & save order to Strapi
 					{
 						shippingAddress: locationValues,
 						billingAddress: billingLocation,
@@ -315,6 +315,10 @@ export default function Confirmation({
 						tax: tax.toFixed(2),
 						total: total.toFixed(2),
 						items: cart,
+						transaction: result.paymentIntent.id,
+						paymentMethod: card,
+						saveCard,
+						cardSlot,
 					},
 					{
 						headers:
@@ -332,6 +336,7 @@ export default function Confirmation({
 					setLoading(false)
 					dispatchCart(clearCart())
 
+					// to clear the purchase instance
 					localStorage.removeItem("intentID")
 					setClientSecret(null)
 
@@ -339,16 +344,21 @@ export default function Confirmation({
 
 					setSelectedStep(selectedStep + 1) // navigates to <ThankYou/>
 				})
+
+				// error when saving the order to Strapi (i.e. already charged the customer but have failed to save the order to db)
+				// well... there are actually other cases that still fall into this .catch, but, whatever
 				.catch(error => {
 					setLoading(false)
 					console.error(error)
 
+					// to have a look for that particular order
 					console.log(
 						"FAILED PAYMENT INTENT",
 						result.paymentIntent.id
 					)
 					console.log("FAILED CART", cart)
 
+					// already charged the customer so we need to clear the intentID
 					localStorage.removeItem("intentID")
 					setClientSecret(null)
 
@@ -365,7 +375,7 @@ export default function Confirmation({
 
 	useEffect(() => {
 		if (!order && cart.length !== 0 && selectedStep === stepNumber) {
-			// !order coz if there's already exist an {order}, we'd want to clearCart()
+			// !order coz if there's already exist an {order} i.e. the user already made a purchase, we'd want to clearCart()
 			const storedIntent = localStorage.getItem("intentID")
 			const idempotencyKey = uuidv4() // prevent duplicate requests
 
@@ -433,7 +443,7 @@ export default function Confirmation({
 					}
 				})
 		}
-	}, [cart, selectedStep, stepNumber])
+	}, [cart, selectedStep, stepNumber]) // since we're rendering all of the {steps} at once (actually just hiding those steps that are not selected), we have to include {selectedStep} and {stepNumber} in the deps array to execute the effect accordingly
 
 	return (
 		<Grid
@@ -449,7 +459,7 @@ export default function Confirmation({
 							item
 							container
 							alignItems="center"
-							key={field.value}
+							key={i}
 							classes={{
 								root: clsx(classes.fieldRow, {
 									[classes.darkBackground]: i % 2 !== 0,
