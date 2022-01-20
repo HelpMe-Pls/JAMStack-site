@@ -13,6 +13,11 @@ const useStyles = makeStyles(theme => ({
 	cartContainer: {
 		minHeight: "100vh", //Using {vh} to keep footer always at the bottom
 	},
+	name: {
+		[theme.breakpoints.down("xs")]: {
+			fontSize: "3rem",
+		},
+	},
 }))
 
 export default function Cart() {
@@ -28,7 +33,11 @@ export default function Cart() {
 				classes={{ root: classes.cartContainer }}
 			>
 				<Grid item>
-					<Typography variant="h1" align="center">
+					<Typography
+						variant="h1"
+						align="center"
+						classes={{ root: classes.name }}
+					>
 						{user.username}'s Cart
 					</Typography>
 				</Grid>

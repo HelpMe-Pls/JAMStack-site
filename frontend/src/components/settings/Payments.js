@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 		marginBottom: "5rem",
 		[theme.breakpoints.down("xs")]: {
 			marginBottom: ({ checkout }) => (checkout ? "1rem" : undefined),
-			fontSize: ({ checkout }) => (checkout ? "1.5rem" : undefined),
+			fontSize: ({ checkout }) => (checkout ? "1.69rem" : undefined),
 		},
 	},
 	removeCard: {
@@ -44,6 +44,7 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.primary.main,
 		fontFamily: "Philosopher",
 		fontStyle: "italic",
+		padding: ({ checkout }) => (checkout ? "0px 12px" : undefined),
 	},
 	icon: {
 		marginBottom: "3rem",
@@ -72,7 +73,7 @@ const useStyles = makeStyles(theme => ({
 		color: "#fff",
 		fontWeight: 600,
 		[theme.breakpoints.down("xs")]: {
-			fontSize: "1.25rem",
+			fontSize: "1.069rem",
 		},
 	},
 	form: {
@@ -95,6 +96,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+//TODO: somehow when navigates from the Confirmation tab back to Payments, and switch the cardSLots, and if there were no savedCards, then we're unable to move forward to Confirmation again ?
 export default function Payments({
 	user,
 	slot,
