@@ -83,11 +83,13 @@ module.exports = {
 					client_secret: update.client_secret,
 					intentID: update.id,
 				});
-			} else {
-				// create NEW paymentIntent
+			}
+			// create NEW paymentIntent (at Confirmation tab)
+			else {
 				let saved;
 
 				if (savedCard) {
+					// to get that corresponding card from Stripe
 					const stripeMethods = await stripe.paymentMethods.list({
 						customer: ctx.state.user.stripeID,
 						type: "card",
@@ -160,6 +162,7 @@ module.exports = {
 		);
 
 		if (saveCard && ctx.state.user) {
+			// save card to db
 			let newMethods = [...ctx.state.user.paymentMethods];
 
 			newMethods[cardSlot] = paymentMethod;
@@ -217,7 +220,7 @@ module.exports = {
 			(method) => method.card.last4 === card
 		);
 
-		await stripe.paymentMethods.detach(stripeCard.id);
+		await stripe.paymentMethods.detach(stripeCard.id); // remove card from Stripe
 
 		let newMethods = [...ctx.state.user.paymentMethods];
 
@@ -225,7 +228,7 @@ module.exports = {
 			(method) => method.last4 === card
 		);
 
-		newMethods[cardSlot] = { brand: "", last4: "" };
+		newMethods[cardSlot] = { brand: "", last4: "" }; // remove card from Strapi
 
 		const newUser = await strapi.plugins[
 			"users-permissions"

@@ -23,8 +23,8 @@
       "type": "boolean"
     },
     "category": {
-      "model": "category",
-      "via": "products"
+      "via": "products",
+      "model": "category"
     },
     "variants": {
       "via": "product",

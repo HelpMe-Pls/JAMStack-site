@@ -194,6 +194,7 @@ export default function Details({
 
 	useEffect(() => {
 		if (noSlots || user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536")
+			//TODO: try to replace this with !user.jwt
 			return
 
 		if (checkout) {
