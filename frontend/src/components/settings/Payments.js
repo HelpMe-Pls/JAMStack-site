@@ -76,7 +76,7 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	form: {
-		width: "69%",
+		width: "75%",
 		borderBottom: "2px solid #fff",
 		height: "2rem",
 		marginTop: "-1rem",
@@ -119,7 +119,7 @@ export default function Payments({
 	const { dispatchUser } = useUser()
 
 	const card =
-		user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536"
+		user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" //TODO: try to replace this with !user.jwt
 			? { last4: "", brand: "" }
 			: user.paymentMethods[slot]
 
@@ -140,13 +140,14 @@ export default function Payments({
 				setLoading(false)
 
 				dispatchUser(
+					// update context with the user's empty paymentMethods sent from backend\api\order\controllers\order.js\removeCard()
 					setUser({
 						...response.data.user,
 						jwt: user.jwt,
 						onboarding: true,
 					})
 				)
-				setCardError(true)
+				setCardError(true) // so that the user has to enter new card details to be able to move to the next tab
 				setCard({ brand: "", last4: "" })
 			})
 			.catch(error => {
@@ -171,10 +172,10 @@ export default function Payments({
 
 	const handleCardChange = async event => {
 		if (event.complete) {
-			const cardElement = elements.getElement(CardElement)
+			const cardElmt = elements.getElement(CardElement)
 			const { error, paymentMethod } = await stripe.createPaymentMethod({
 				type: "card",
-				card: cardElement,
+				card: cardElmt,
 			})
 
 			setCard({
@@ -193,8 +194,8 @@ export default function Payments({
 				options={{
 					style: {
 						base: {
-							fontSize: "20px",
-							fontFamily: "Montserrat",
+							fontSize: "19px",
+							fontFamily: "Lucida Console",
 							color: "#fff",
 							iconColor: "#fff",
 							"::placeholder": {
@@ -209,7 +210,7 @@ export default function Payments({
 	)
 
 	useEffect(() => {
-		if (!checkout || !user.jwt) return
+		if (!checkout || !user.jwt) return // for Setting & "guest" users
 
 		if (user.paymentMethods[slot].last4 !== "") {
 			setCard(user.paymentMethods[slot])
@@ -259,9 +260,9 @@ export default function Payments({
 							card.last4
 								? `${card.brand.toUpperCase()} **** **** **** ${
 										card.last4
-								  }`
+								  }` // exists a saved card
 								: checkout
-								? null
+								? null // this case we already rendered <cardWrapper/>
 								: "Add A New Card During Checkout" // for Settings
 						}
 					</Typography>
@@ -321,13 +322,14 @@ export default function Payments({
 								control={
 									<Switch
 										disabled={
+											// already exists a saved card
 											user.paymentMethods[slot].last4 !==
 											""
 										}
 										checked={
 											user.paymentMethods[slot].last4 !==
 											""
-												? true
+												? true // already exists a saved card
 												: saveCard
 										}
 										onChange={() => setSaveCard(!saveCard)}

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
 import clsx from "clsx"
 import Grid from "@material-ui/core/Grid"
-// import { Elements } from "@stripe/react-stripe-js"
-// import { loadStripe } from "@stripe/stripe-js"
+import { Elements } from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
 import { makeStyles } from "@material-ui/core/styles"
 
 import Details from "./Details"
@@ -21,14 +21,14 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-// const stripePromise = loadStripe(process.env.GATSBY_STRIPE_PK)
+const stripePromise = loadStripe(process.env.GATSBY_STRIPE_PK)
 
 export default function Settings({ setSelectedSetting }) {
 	const classes = useStyles()
 	const { user, dispatchUser } = useUser()
 	const [edit, setEdit] = useState(false)
 	const [changesMade, setChangesMade] = useState(false)
-	// const hasSubscriptionActive = user.subscriptions.length > 0
+	const hasSubscriptionActive = user.subscriptions?.length > 0
 
 	//###### Values, Slots & Errors are lifted to this component so that when the user clicks "Save", it'll grab all these states from all those child components and be able to actually "save"
 	const [detailValues, setDetailValues] = useState({
@@ -80,12 +80,15 @@ export default function Settings({ setSelectedSetting }) {
 					edit={edit}
 					setChangesMade={setChangesMade}
 				/>
-				<Payments
-					user={user}
-					edit={edit}
-					slot={billingSlot}
-					setSlot={setBillingSlot}
-				/>
+				<Elements stripe={stripePromise}>
+					<Payments
+						user={user}
+						edit={edit}
+						slot={billingSlot}
+						setSlot={setBillingSlot}
+						hasSubscriptionActive={hasSubscriptionActive}
+					/>
+				</Elements>
 			</Grid>
 			<Grid
 				container
@@ -119,18 +122,5 @@ export default function Settings({ setSelectedSetting }) {
 				/>
 			</Grid>
 		</>
-		// {/* <Grid container classes={{ root: classes.sectionContainer }}>
-
-		// 	<Elements stripe={stripePromise}>
-		// 		<Payments
-		// 			user={user}
-		// 			edit={edit}
-		// 			slot={billingSlot}
-		// 			setSlot={setBillingSlot}
-		// 			hasSubscriptionActive={hasSubscriptionActive}
-		// 		/>
-		// 	</Elements>
-		// </Grid>
-		//*/}
 	)
 }
