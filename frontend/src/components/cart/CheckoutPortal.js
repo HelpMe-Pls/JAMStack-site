@@ -94,7 +94,7 @@ export default function CheckoutPortal({ user }) {
 
 	const [errors, setErrors] = useState({})
 
-	// const [order, setOrder] = useState(null)
+	const [order, setOrder] = useState(null)
 
 	// to disable the "forward to next tab" button if there's at least one error in these fields
 	const errorHelper = (values, forBilling, billingValues, slot) => {
