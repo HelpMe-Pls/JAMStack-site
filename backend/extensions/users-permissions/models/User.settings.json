@@ -65,6 +65,9 @@
     "orders": {
       "via": "user",
       "collection": "order"
+    },
+    "stripeID": {
+      "type": "string"
     }
   }
 }
