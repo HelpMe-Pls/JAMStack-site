@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.secondary.main,
 		marginLeft: "-0.25rem",
 		[theme.breakpoints.down("xs")]: {
-			fontSize: ({ checkout }) => (checkout ? "1.5rem" : undefined),
+			fontSize: ({ checkout }) => (checkout ? "1.5rem" : "1.69rem"),
 		},
 	},
 	slotWrapper: {

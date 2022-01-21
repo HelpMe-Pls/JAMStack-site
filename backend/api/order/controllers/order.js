@@ -246,10 +246,10 @@ module.exports = {
 			user: ctx.state.user.id,
 		});
 
-		const cleanOrders = orders.map((order) =>
+		const sanitizedOrders = orders.map((order) =>
 			sanitizeEntity(order, { model: strapi.models.order })
 		);
 
-		ctx.send({ orders: cleanOrders }, 200);
+		ctx.send({ orders: sanitizedOrders }, 200);
 	},
 };

@@ -23,8 +23,8 @@ const useStyles = makeStyles(theme => ({
 		color: "#fff",
 		marginBottom: "5rem",
 		[theme.breakpoints.down("xs")]: {
-			marginBottom: ({ checkout }) => (checkout ? "1rem" : undefined),
-			fontSize: ({ checkout }) => (checkout ? "1.69rem" : undefined),
+			marginBottom: ({ checkout }) => (checkout ? "1rem" : "1rem"),
+			fontSize: ({ checkout }) => (checkout ? "1.69rem" : "1.69rem"),
 		},
 	},
 	removeCard: {
@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 			backgroundColor: "#fff",
 		},
 		[theme.breakpoints.down("xs")]: {
-			marginLeft: ({ checkout }) => (checkout ? 0 : undefined),
+			marginLeft: ({ checkout }) => (checkout ? 0 : 0),
 		},
 	},
 	removeCardText: {
@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.primary.main,
 		fontFamily: "Philosopher",
 		fontStyle: "italic",
-		padding: ({ checkout }) => (checkout ? "0px 12px" : undefined),
+		padding: ({ checkout }) => (checkout ? "0px 12px" : "0px 12px"),
 	},
 	icon: {
 		marginBottom: "3rem",
@@ -53,13 +53,13 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	paymentContainer: {
-		borderLeft: ({ checkout }) => (checkout ? 0 : "4px solid #fff"),
+		borderLeft: ({ checkout }) => (checkout ? "0px" : "4px solid #fff"),
 		display: ({ checkout, selectedStep, stepNumber }) =>
 			checkout && selectedStep !== stepNumber ? "none" : "flex",
 		position: "relative",
 		[theme.breakpoints.down("md")]: {
-			height: "30rem", // so that it matches 120rem in total (for matchesMD) with <Edit/>, <Details/> and <Location/>
-			borderLeft: 0,
+			height: ({ checkout }) => (!checkout ? "30rem" : "100%"), // so that it matches 120rem in total (for matchesMD) with <Edit/>, <Details/> and <Location/>
+			borderLeft: ({ checkout }) => (checkout ? 0 : 0), // I have no idea y I had to pass in the {checkout} here, but if I don't, then the borderLeft still persists at <Setting/>
 		},
 	},
 	slotContainer: {
