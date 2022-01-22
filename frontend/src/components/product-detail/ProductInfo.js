@@ -19,8 +19,8 @@ import Swatches from "../product-list/Swatches"
 import QtyButton from "../product-list/QtyButton"
 import { colorIndex } from "../product-list/ProductFrameGrid"
 
-// import { UserContext, FeedbackContext } from "../../contexts"
-// import { setSnackbar } from "../../contexts/actions"
+import { useUser, useFeedback } from "../../contexts"
+import { setSnackbar } from "../../contexts/actions"
 
 const useStyles = makeStyles(theme => ({
 	background: {
@@ -118,16 +118,19 @@ export const getStockDisplay = (stock, variant) => {
 
 export default function ProductInfo({
 	name,
+	setAddReview,
 	description,
 	variants,
 	selectedVariant,
 	setSelectedVariant,
 	stock,
 	// rating,
-	// setEdit,
 }) {
 	const classes = useStyles()
 	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
+
+	const { user, dispatchUser } = useUser()
+	const { dispatchFeedback } = useFeedback()
 
 	const [selectedSize, setSelectedSize] = useState(
 		variants[selectedVariant].size // to display corresponding size of that variant at initial render
@@ -149,6 +152,23 @@ export default function ProductInfo({
 		}
 	})
 	// Setting the display image as the first color (colors[0]) in the swatches when the user switches the size
+
+	const handleAddReview = () => {
+		if (user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536") {
+			dispatchFeedback(
+				setSnackbar({
+					status: "error",
+					message: "You must be LOGGED IN to leave a review.",
+				})
+			)
+			return
+		}
+
+		setAddReview(true)
+		const reviewRef = document.getElementById("reviews")
+		reviewRef.scrollIntoView({ behavior: "smooth" })
+	}
+
 	useEffect(() => {
 		setSelectedColor(null)
 
@@ -238,7 +258,7 @@ export default function ProductInfo({
 								<Rating star={4.5} />
 							</Grid>
 							<Grid item>
-								<Button>
+								<Button onClick={handleAddReview}>
 									<Typography
 										variant="body2"
 										classes={{ root: classes.reviewButton }}

@@ -23,9 +23,9 @@ const useStyles = makeStyles(theme => ({
 	rating: {
 		cursor: "pointer",
 	},
+	stars: { marginTop: "0.85rem" },
 	review: {
-		// marginBottom: "3rem",
-		marginTop: "0.5rem",
+		marginBottom: "3rem",
 	},
 	reviewButtonText: {
 		color: "#fff",
@@ -60,9 +60,9 @@ const useStyles = makeStyles(theme => ({
 
 export default function ProductReview({
 	product,
-	// review,
+	review,
 	// setReviews,
-	// setEdit,
+	setAddReview,
 	// reviews,
 	// user,
 }) {
@@ -81,8 +81,10 @@ export default function ProductReview({
 	// const [values, setValues] = useState({ message: found ? found.text : "" })
 	const [tempRating, setTempRating] = useState(0)
 	const [rating, setRating] = useState(
-		// review ? review.rating : found ? found.rating :
-		null
+		review
+			? review.rating
+			: // found ? found.rating :
+			  null
 	)
 	const [loading, setLoading] = useState(null)
 
@@ -130,7 +132,7 @@ export default function ProductReview({
 						status: "error",
 						message: `There was a problem ${
 							option === "delete" ? "removing" : "leaving"
-						} your review. Please login and try again.`,
+						} your review. Please try again later.`,
 					})
 				)
 			})
@@ -180,7 +182,7 @@ export default function ProductReview({
 		// 		}
 
 		// 		setReviews(newReviews)
-		// 		setEdit(false)
+		// 		setAddReview(false)
 		// 	})
 		// 	.catch(error => {
 		// 		setLoading(null)
@@ -202,31 +204,37 @@ export default function ProductReview({
 	// 	: !rating
 
 	return (
-		<Grid item container direction="column">
+		<Grid
+			item
+			container
+			direction="column"
+			classes={{ root: classes.review }}
+		>
 			<Grid item container justifyContent="space-between">
 				<Grid item>
 					<Typography variant="h4" classes={{ root: classes.light }}>
-						{user.username}
+						{
+							// {review.user.username} is from apollo\queries.js
+							review ? review.user.username : user.username
+						}
 					</Typography>
 				</Grid>
 				<Grid
 					item
 					classes={{
-						root: classes.rating,
-						// clsx({ [classes.rating]: !review })
+						root: clsx(classes.stars, {
+							[classes.rating]: !review,
+						}),
 					}}
 					ref={ratingRef}
-					onClick={() =>
-						// review ? null :
-						setRating(tempRating)
-					}
+					onClick={() => (review ? null : setRating(tempRating))}
 					onMouseLeave={() => {
 						if (tempRating > rating) {
 							setTempRating(rating)
 						}
 					}}
 					onMouseMove={e => {
-						// if (review) return
+						if (review) return
 
 						const hoverRating = // explanation at lecture 385 @7:30
 							((ratingRef.current.getBoundingClientRect().left -
@@ -249,41 +257,59 @@ export default function ProductReview({
 					variant="h5"
 					classes={{ root: clsx(classes.date, classes.light) }}
 				>
-					{new Date().toLocaleDateString("en-GB")}
+					{review
+						? new Date(review.createdAt).toLocaleString("en-GB", {
+								day: "numeric",
+								month: "numeric",
+								year: "numeric",
+						  })
+						: new Date().toLocaleDateString("en-GB")}
 				</Typography>
 			</Grid>
 			<Grid item>
-				<Fields
-					values={values}
-					setValues={setValues}
-					fields={fields}
-					fullWidth
-					noError
-				/>
+				{review ? (
+					<Typography variant="body1">{review.text}</Typography>
+				) : (
+					<Fields
+						values={values}
+						setValues={setValues}
+						fields={fields}
+						fullWidth
+						noError
+					/>
+				)}
 			</Grid>
-			<Grid item container classes={{ root: classes.buttonContainer }}>
-				<Grid item>
-					{loading === "leave-review" ? (
-						<CircularProgress />
-					) : (
-						<Button
-							onClick={handleReview}
-							disabled={!rating}
-							variant="contained"
-							color="primary"
-						>
-							<span className={classes.reviewButtonText}>
-								Leave a review
+			{review ? null : (
+				<Grid
+					item
+					container
+					classes={{ root: classes.buttonContainer }}
+				>
+					<Grid item>
+						{loading === "leave-review" ? (
+							<CircularProgress />
+						) : (
+							<Button
+								onClick={handleReview}
+								disabled={!rating}
+								variant="contained"
+								color="primary"
+							>
+								<span className={classes.reviewButtonText}>
+									Leave a review
+								</span>
+							</Button>
+						)}
+					</Grid>
+					<Grid item>
+						<Button onClick={() => setAddReview(false)}>
+							<span className={classes.cancelButtonText}>
+								Cancel
 							</span>
 						</Button>
-					)}
+					</Grid>
 				</Grid>
-				<Grid item>
-					<Button>
-						<span className={classes.cancelButtonText}>Cancel</span>
-					</Button>
-				</Grid>
-			</Grid>
+			)}
 		</Grid>
 		// <Grid
 		// 	item
@@ -314,17 +340,7 @@ export default function ProductReview({
 		// 		</Typography>
 		// 	</Grid>
 		// 	<Grid item>
-		// 		{review ? (
-		// 			<Typography variant="body1">{review.text}</Typography>
-		// 		) : (
-		// 			<Fields
-		// 				values={values}
-		// 				setValues={setValues}
-		// 				fields={fields}
-		// 				fullWidth
-		// 				noError
-		// 			/>
-		// 		)}
+		//
 		// 	</Grid>
 		// 	{review ? null : (
 		// 		<Grid
@@ -366,7 +382,7 @@ export default function ProductReview({
 		// 				</Grid>
 		// 			) : null}
 		// 			<Grid item>
-		// 				<Button onClick={() => setEdit(false)}>
+		// 				<Button onClick={() => setAddReview(false)}>
 		// 					<span className={classes.cancelButtonText}>
 		// 						Cancel
 		// 					</span>

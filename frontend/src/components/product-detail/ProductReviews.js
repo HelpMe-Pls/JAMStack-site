@@ -7,7 +7,7 @@ import { useQuery } from "@apollo/client"
 
 import ProductReview from "./ProductReview"
 // import { StyledPagination } from "../../templates/ProductList"
-// import { GET_REVIEWS } from "../../apollo/queries"
+import { GET_REVIEWS } from "../../apollo/queries"
 
 const useStyles = makeStyles(theme => ({
 	reviews: {
@@ -18,35 +18,51 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function ProductReviews({ product, edit, setEdit }) {
+export default function ProductReviews({ product, addReview, setAddReview }) {
 	const classes = useStyles()
 	// const { user } = useUser()
-	// const [reviews, setReviews] = useState([])
+	const [reviews, setReviews] = useState([])
 	// const [page, setPage] = useState(1)
 
-	// const { data } = useQuery(GET_REVIEWS, {
-	// 	variables: {
-	// 		id: product,
-	// 	},
-	// })
+	const { data } = useQuery(GET_REVIEWS, {
+		variables: {
+			id: product,
+		},
+	})
 
-	// useEffect(() => {
-	// 	if (data) {
-	// 		setReviews(data.product.reviews)
-	// 	}
-	// }, [data])
+	useEffect(() => {
+		if (data) {
+			setReviews(data.product.reviews)
+		}
+	}, [data])
 
 	// const reviewsPerPage = 15
 	// const numPages = Math.ceil(reviews.length / reviewsPerPage)
 
 	return (
 		<Grid
+			id="reviews" // for handleAddReview() in components/product-detail/ProductInfo.js
 			item
 			container
 			direction="column"
 			classes={{ root: classes.reviews }}
 		>
-			<ProductReview product={product} />
+			{addReview && (
+				<ProductReview
+					// user={user}
+					// reviews={reviews}
+					// setReviews={setReviews}
+					product={product}
+					setAddReview={setAddReview}
+				/>
+			)}
+			{reviews.map(review => (
+				<ProductReview
+					key={review.id}
+					product={product}
+					review={review}
+				/>
+			))}
 		</Grid>
 		// <Grid
 		// 	id="reviews"
@@ -57,18 +73,9 @@ export default function ProductReviews({ product, edit, setEdit }) {
 		// 		root: classes.reviews,
 		// 	}}
 		// >
-		// 	{edit && (
-		// 		<ProductReview
-		// 			user={user}
-		// 			reviews={reviews}
-		// 			setReviews={setReviews}
-		// 			product={product}
-		// 			setEdit={setEdit}
-		// 		/>
-		// 	)}{" "}
 		// 	{reviews
 		// 		.filter(review =>
-		// 			edit ? review.user.username !== user.username : review
+		// 			addReview ? review.user.username !== user.username : review
 		// 		)
 		// 		.slice((page - 1) * reviewsPerPage, page * reviewsPerPage)
 		// 		.map(review => (

@@ -14,7 +14,7 @@ import { GET_DETAILS } from "../apollo/queries"
 //import { colorIndex } from "../components/product-list/ProductFrameGrid"
 
 export default function ProductDetail({
-	pageContext: { name, id, category, description, product, variants },
+	pageContext: { name, id, description, product, variants },
 }) {
 	const [selectedVariant, setSelectedVariant] = useState(0)
 	const [selectedImage, setSelectedImage] = useState(0) //TODO: lecture 178 @8:36
@@ -23,7 +23,7 @@ export default function ProductDetail({
 
 	const [stock, setStock] = useState(null)
 	// const [rating, setRating] = useState(0)
-	// const [edit, setEdit] = useState(false)
+	const [addReview, setAddReview] = useState(false)
 
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 
@@ -40,11 +40,12 @@ export default function ProductDetail({
 			? JSON.parse(window.localStorage.getItem("recentlyViewed"))
 			: null
 
+	// ???
 	// const imageIndex = colorIndex(
 	// 	product,
 	// 	variants[selectedVariant],
 	// 	variants[selectedVariant].color
-	// ) ?
+	// )
 
 	useEffect(() => {
 		const styledVariant = variants.find(variant => variant.style === style) // always returns a white male || female shirt
@@ -66,11 +67,11 @@ export default function ProductDetail({
 			if (
 				// check this so that in case we refresh the page, we'll not add that same product into recentlyViewed
 				!recentlyViewed.some(
-					product =>
-						product.name === name &&
+					item =>
+						item.name === name &&
 						// Male & Female product would have the same name, so we have to check
 						// their index to make sure it's the right variant
-						product.selectedVariant === variantIndex
+						item.selectedVariant === variantIndex
 				)
 			) {
 				recentlyViewed.push({
@@ -122,6 +123,7 @@ export default function ProductDetail({
 					/>
 					<ProductInfo
 						name={name}
+						setAddReview={setAddReview}
 						description={description}
 						variants={variants}
 						selectedVariant={selectedVariant}
@@ -132,7 +134,8 @@ export default function ProductDetail({
 				<RecentlyViewed products={recentlyViewedProducts} />
 				<ProductReviews
 					product={id}
-					// edit={edit} setEdit={setEdit}
+					addReview={addReview}
+					setAddReview={setAddReview}
 				/>
 			</Grid>
 		</Layout>
