@@ -26,10 +26,6 @@
     "products": {
       "collection": "product",
       "via": "category"
-    },
-    "paymentMethod": {
-      "type": "json",
-      "required": true
     }
   }
 }

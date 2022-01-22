@@ -20,7 +20,7 @@ export default function validate(input) {
 		street: val =>
 			/^(\d+) ?([A-Za-z](?= ))? (.*?) ([^ ]+?) ?((?<= )APT)? ?((?<= )\d*)?$/.test(
 				val
-			),
+			), //TODO: just set it to true
 
 		zip: val => /^\d{5}(-\d{4})?$/.test(val),
 		// zip: val => /[0-9]{6}/g.test(val),	// to make this work for Viet Nam, you'll have to also update backend\extensions\users-permissions\models\User.js

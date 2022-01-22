@@ -122,7 +122,10 @@ export default function ThankYou({
 						</Typography>
 					</Grid>
 					<Grid item>
-						<Button classes={{ root: classes.detailsButton }}>
+						<Button
+							classes={{ root: classes.detailsButton }}
+							//TODO: link Detail to <OrderDetailItem/> or sth
+						>
 							<Typography
 								variant="body2"
 								classes={{ root: classes.detailsText }}

@@ -9,7 +9,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery"
 import useResizeAware from "react-resize-aware"
 
 import Settings from "./Settings"
-// import OrderHistory from "./OrderHistory"
+import OrderHistory from "./OrderHistory"
 // import Favorites from "./Favorites"
 // import Subscriptions from "./Subscriptions"
 import { useUser } from "../../contexts"
@@ -118,7 +118,7 @@ export default function SettingsPortal() {
 		{
 			label: "Order History",
 			icon: orderHistoryIcon,
-			// component: OrderHistory,
+			component: OrderHistory,
 		},
 		{
 			label: "Favorites",

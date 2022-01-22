@@ -20,8 +20,8 @@ const useStyles = makeStyles(theme => ({
 		width: 25.173,
 	},
 	icon: {
-		marginTop: ({ checkout }) => (checkout ? "-2rem" : undefined),
-		marginBottom: ({ checkout }) => (checkout ? "1rem" : "3rem"),
+		marginTop: ({ checkout }) => (checkout ? "-2rem" : "-2.69rem"),
+		marginBottom: ({ checkout }) => (checkout ? "1rem" : "1.69rem"),
 		[theme.breakpoints.down("xs")]: {
 			marginBottom: "0.69rem",
 		},

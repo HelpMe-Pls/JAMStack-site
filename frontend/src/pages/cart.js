@@ -13,6 +13,11 @@ const useStyles = makeStyles(theme => ({
 	cartContainer: {
 		minHeight: "100vh", //Using {vh} to keep footer always at the bottom
 	},
+	name: {
+		[theme.breakpoints.down("xs")]: {
+			fontSize: "3rem",
+		},
+	},
 }))
 
 //TODO: add a handler to redirect user to AuthPortal right after they clicked on "Add to cart" button (if they're not logged in), then after they logged in, have that product in their cart
@@ -29,7 +34,11 @@ export default function Cart() {
 				classes={{ root: classes.cartContainer }}
 			>
 				<Grid item>
-					<Typography variant="h1" align="center">
+					<Typography
+						variant="h1"
+						align="center"
+						classes={{ root: classes.name }}
+					>
 						{user.username}'s Cart
 					</Typography>
 				</Grid>

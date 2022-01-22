@@ -345,6 +345,7 @@ export default function Confirmation({
 					setOrder(response.data.order)
 
 					setSelectedStep(selectedStep + 1) // navigates to <ThankYou/>
+					//TODO: dispatchFeedback(to check email for order receipt)
 				})
 
 				// error when saving the order to Strapi (i.e. already charged the customer but have failed to save the order to db)
