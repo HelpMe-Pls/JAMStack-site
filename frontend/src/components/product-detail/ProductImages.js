@@ -56,7 +56,7 @@ export default function ProductImages({
 					<>
 						<Grid
 							item
-							key={image.url}
+							key={i}
 							classes={{ root: classes.imageItem }}
 						>
 							<IconButton onClick={() => setSelectedImage(i)}>

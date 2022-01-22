@@ -46,7 +46,7 @@ export default function ProductReviews({ product, edit, setEdit }) {
 			direction="column"
 			classes={{ root: classes.reviews }}
 		>
-			<ProductReview />
+			<ProductReview product={product} />
 		</Grid>
 		// <Grid
 		// 	id="reviews"

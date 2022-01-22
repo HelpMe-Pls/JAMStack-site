@@ -58,21 +58,20 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function ProductReview() {
-	// {
-	// product,
+export default function ProductReview({
+	product,
 	// review,
 	// setReviews,
 	// setEdit,
 	// reviews,
 	// user,
-	// }
+}) {
 	const classes = useStyles()
 	const { user } = useUser()
 
 	const [values, setValues] = useState({ message: "" })
 
-	// const { dispatchFeedback } = useFeedback()
+	const { dispatchFeedback } = useFeedback()
 	const ratingRef = useRef(null)
 
 	// const found = !review
@@ -81,10 +80,11 @@ export default function ProductReview() {
 
 	// const [values, setValues] = useState({ message: found ? found.text : "" })
 	const [tempRating, setTempRating] = useState(0)
-	// const [rating, setRating] = useState(
-	// 	review ? review.rating : found ? found.rating : null
-	// )
-	// const [loading, setLoading] = useState(null)
+	const [rating, setRating] = useState(
+		// review ? review.rating : found ? found.rating :
+		null
+	)
+	const [loading, setLoading] = useState(null)
 
 	const fields = {
 		message: {
@@ -93,70 +93,109 @@ export default function ProductReview() {
 		},
 	}
 
-	// const handleReview = option => {
-	// 	setLoading(option === "delete" ? "delete-review" : "leave-review")
+	const handleReview = option => {
+		setLoading(
+			// option === "delete" ? "delete-review" :
+			"leave-review"
+		)
 
-	// 	const axiosFunction =
-	// 		option === "delete" ? axios.delete : found ? axios.put : axios.post
-	// 	const route =
-	// 		found || option === "delete" ? `/reviews/${found.id}` : "/reviews"
+		axios
+			.post(
+				process.env.GATSBY_STRAPI_URL + "/reviews",
+				{ text: values.message, product, rating },
+				{
+					headers: { Authorization: `Bearer ${user.jwt}` },
+				}
+			)
+			.then(response => {
+				setLoading(null)
 
-	// 	const auth = { Authorization: `Bearer ${user.jwt}` }
+				dispatchFeedback(
+					setSnackbar({
+						status: "success",
+						message: `${
+							option === "delete"
+								? "Review Deleted"
+								: "Product Reviewed"
+						} Successfully`,
+					})
+				)
+			})
+			.catch(error => {
+				setLoading(null)
+				console.error(error)
 
-	// 	axiosFunction(
-	// 		process.env.GATSBY_STRAPI_URL + route,
-	// 		{
-	// 			text: values.message,
-	// 			product,
-	// 			rating,
-	// 			headers: option === "delete" ? auth : undefined,
-	// 		},
-	// 		{
-	// 			headers: auth,
-	// 		}
-	// 	)
-	// 		.then(response => {
-	// 			setLoading(null)
+				dispatchFeedback(
+					setSnackbar({
+						status: "error",
+						message: `There was a problem ${
+							option === "delete" ? "removing" : "leaving"
+						} your review. Please login and try again.`,
+					})
+				)
+			})
 
-	// 			dispatchFeedback(
-	// 				setSnackbar({
-	// 					status: "success",
-	// 					message: `${
-	// 						option === "delete"
-	// 							? "Review Deleted"
-	// 							: "Product Reviewed"
-	// 					} Successfully`,
-	// 				})
-	// 			)
+		// const axiosFunction =
+		// 	option === "delete" ? axios.delete : found ? axios.put : axios.post
+		// const route =
+		// 	found || option === "delete" ? `/reviews/${found.id}` : "/reviews"
 
-	// 			let newReviews = [...reviews]
-	// 			const reviewIndex = newReviews.indexOf(found)
+		// const auth = { Authorization: `Bearer ${user.jwt}` }
 
-	// 			if (option === "delete") {
-	// 				newReviews = newReviews.filter(review => review !== found)
-	// 			} else if (found) {
-	// 				newReviews[reviewIndex] = response.data
-	// 			} else {
-	// 				newReviews = [response.data, ...newReviews]
-	// 			}
+		// axiosFunction(
+		// 	process.env.GATSBY_STRAPI_URL + route,
+		// 	{
+		// 		text: values.message,
+		// 		product,
+		// 		rating,
+		// 		headers: option === "delete" ? auth : undefined,
+		// 	},
+		// 	{
+		// 		headers: auth,
+		// 	}
+		// )
+		// 	.then(response => {
+		// 		setLoading(null)
 
-	// 			setReviews(newReviews)
-	// 			setEdit(false)
-	// 		})
-	// 		.catch(error => {
-	// 			setLoading(null)
-	// 			console.error(error)
+		// 		dispatchFeedback(
+		// 			setSnackbar({
+		// 				status: "success",
+		// 				message: `${
+		// 					option === "delete"
+		// 						? "Review Deleted"
+		// 						: "Product Reviewed"
+		// 				} Successfully`,
+		// 			})
+		// 		)
 
-	// 			dispatchFeedback(
-	// 				setSnackbar({
-	// 					status: "error",
-	// 					message: `There was a problem ${
-	// 						option === "delete" ? "removing" : "leaving"
-	// 					} your review. Please try again.`,
-	// 				})
-	// 			)
-	// 		})
-	// }
+		// 		let newReviews = [...reviews]
+		// 		const reviewIndex = newReviews.indexOf(found)
+
+		// 		if (option === "delete") {
+		// 			newReviews = newReviews.filter(review => review !== found)
+		// 		} else if (found) {
+		// 			newReviews[reviewIndex] = response.data
+		// 		} else {
+		// 			newReviews = [response.data, ...newReviews]
+		// 		}
+
+		// 		setReviews(newReviews)
+		// 		setEdit(false)
+		// 	})
+		// 	.catch(error => {
+		// 		setLoading(null)
+		// 		console.error(error)
+
+		// 		dispatchFeedback(
+		// 			setSnackbar({
+		// 				status: "error",
+		// 				message: `There was a problem ${
+		// 					option === "delete" ? "removing" : "leaving"
+		// 				} your review. Please try again.`,
+		// 			})
+		// 		)
+		// 	})
+	}
 
 	// const buttonDisabled = found
 	// 	? found.text === values.message && found.rating === rating
@@ -164,7 +203,7 @@ export default function ProductReview() {
 
 	return (
 		<Grid item container direction="column">
-			<Grid item container justify="space-between">
+			<Grid item container justifyContent="space-between">
 				<Grid item>
 					<Typography variant="h4" classes={{ root: classes.light }}>
 						{user.username}
@@ -177,12 +216,15 @@ export default function ProductReview() {
 						// clsx({ [classes.rating]: !review })
 					}}
 					ref={ratingRef}
-					// onClick={() => (review ? null : setRating(tempRating))}
-					// onMouseLeave={() => {
-					// 	if (tempRating > rating) {
-					// 		setTempRating(rating)
-					// 	}
-					// }}
+					onClick={() =>
+						// review ? null :
+						setRating(tempRating)
+					}
+					onMouseLeave={() => {
+						if (tempRating > rating) {
+							setTempRating(rating)
+						}
+					}}
 					onMouseMove={e => {
 						// if (review) return
 
@@ -197,10 +239,7 @@ export default function ProductReview() {
 					}}
 				>
 					<Rating
-						star={
-							// rating > tempRating ? rating :
-							tempRating
-						}
+						star={rating > tempRating ? rating : tempRating}
 						size={2.5}
 					/>
 				</Grid>
@@ -224,11 +263,20 @@ export default function ProductReview() {
 			</Grid>
 			<Grid item container classes={{ root: classes.buttonContainer }}>
 				<Grid item>
-					<Button variant="contained" color="primary">
-						<span className={classes.reviewButtonText}>
-							Leave a review
-						</span>
-					</Button>
+					{loading === "leave-review" ? (
+						<CircularProgress />
+					) : (
+						<Button
+							onClick={handleReview}
+							disabled={!rating}
+							variant="contained"
+							color="primary"
+						>
+							<span className={classes.reviewButtonText}>
+								Leave a review
+							</span>
+						</Button>
+					)}
 				</Grid>
 				<Grid item>
 					<Button>

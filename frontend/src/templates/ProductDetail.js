@@ -131,7 +131,8 @@ export default function ProductDetail({
 				</Grid>
 				<RecentlyViewed products={recentlyViewedProducts} />
 				<ProductReviews
-				// product={id} edit={edit} setEdit={setEdit}
+					product={id}
+					// edit={edit} setEdit={setEdit}
 				/>
 			</Grid>
 		</Layout>
