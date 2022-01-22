@@ -8,7 +8,7 @@ import Layout from "../components/ui/layout"
 import ProductImages from "../components/product-detail/ProductImages"
 import ProductInfo from "../components/product-detail/ProductInfo"
 import RecentlyViewed from "../components/product-detail/RecentlyViewed"
-//import ProductReviews from "../components/product-detail/ProductReviews"
+import ProductReviews from "../components/product-detail/ProductReviews"
 
 import { GET_DETAILS } from "../apollo/queries"
 //import { colorIndex } from "../components/product-list/ProductFrameGrid"
@@ -130,6 +130,9 @@ export default function ProductDetail({
 					/>
 				</Grid>
 				<RecentlyViewed products={recentlyViewedProducts} />
+				<ProductReviews
+				// product={id} edit={edit} setEdit={setEdit}
+				/>
 			</Grid>
 		</Layout>
 	)

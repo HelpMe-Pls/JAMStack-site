@@ -23,15 +23,22 @@
       "type": "boolean"
     },
     "category": {
-      "via": "products",
-      "model": "category"
+      "model": "category",
+      "via": "products"
     },
     "variants": {
-      "via": "product",
-      "collection": "variant"
+      "collection": "variant",
+      "via": "product"
     },
     "promo": {
       "type": "boolean"
+    },
+    "reviews": {
+      "collection": "review",
+      "via": "product"
+    },
+    "rating": {
+      "type": "decimal"
     }
   }
 }

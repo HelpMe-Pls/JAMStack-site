@@ -37,10 +37,21 @@ export default function Rating({ star, size }) {
 			}
 			{
 				// there can only ONE half star for each rating so there's no need to map
-				star % 1 !== 0 ? <img src={halfStar} alt="half-star" /> : null
+				star % 1 !== 0 ? (
+					<img
+						src={halfStar}
+						alt="half-star"
+						className={classes.size}
+					/>
+				) : null
 			}
 			{[...Array(empStar)].map((ele, i) => (
-				<img src={emptyStar} alt="empty-star" key={`${i}-empty`} />
+				<img
+					src={emptyStar}
+					alt="empty-star"
+					key={`${i}-empty`}
+					className={classes.size}
+				/>
 			))}
 		</>
 	)
