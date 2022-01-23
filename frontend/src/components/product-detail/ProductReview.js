@@ -10,7 +10,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import Rating from "../home/Rating"
 import Fields from "../auth/Fields"
 
-import { useFeedback, useUser } from "../../contexts"
+import { useFeedback } from "../../contexts"
 import { setSnackbar } from "../../contexts/actions"
 
 const useStyles = makeStyles(theme => ({
@@ -42,7 +42,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	delete: {
 		backgroundColor: theme.palette.error.main,
-		marginLeft: "0.5rem",
+		marginTop: "-0.05rem",
+		marginLeft: "1rem",
+		marginRight: "0.5rem",
 		"&:hover": {
 			backgroundColor: theme.palette.error.dark,
 		},
@@ -59,32 +61,28 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function ProductReview({
+	user,
 	product,
+	reviews,
 	review,
-	// setReviews,
+	setReviews,
 	setAddReview,
-	// reviews,
-	// user,
 }) {
 	const classes = useStyles()
-	const { user } = useUser()
-
-	const [values, setValues] = useState({ message: "" })
 
 	const { dispatchFeedback } = useFeedback()
 	const ratingRef = useRef(null)
 
-	// const found = !review
-	// 	? reviews.find(review => review.user.username === user.username)
-	// 	: null
+	const foundForEdit = !review // if the user already left a review, and then clicks on the "Leave a Review" button (from ProductInfo.js), then look for the existing review of that user to prepare for editing
+		? reviews.find(item => item.user.username === user.username)
+		: null
 
-	// const [values, setValues] = useState({ message: found ? found.text : "" })
+	const [values, setValues] = useState({
+		message: foundForEdit ? foundForEdit.text : "",
+	})
 	const [tempRating, setTempRating] = useState(0)
 	const [rating, setRating] = useState(
-		review
-			? review.rating
-			: // found ? found.rating :
-			  null
+		review ? review.rating : foundForEdit ? foundForEdit.rating : null
 	)
 	const [loading, setLoading] = useState(null)
 
@@ -96,32 +94,64 @@ export default function ProductReview({
 	}
 
 	const handleReview = option => {
-		setLoading(
-			// option === "delete" ? "delete-review" :
-			"leave-review"
-		)
+		setLoading(option === "delete" ? "delete-review" : "leave-review")
 
-		axios
-			.post(
-				process.env.GATSBY_STRAPI_URL + "/reviews",
-				{ text: values.message, product, rating },
-				{
-					headers: { Authorization: `Bearer ${user.jwt}` },
-				}
-			)
+		const axiosFunction =
+			option === "delete"
+				? axios.delete
+				: foundForEdit
+				? axios.put
+				: axios.post
+		const route =
+			foundForEdit || option === "delete"
+				? `/reviews/${foundForEdit.id}`
+				: "/reviews"
+
+		const auth = { Authorization: `Bearer ${user.jwt}` }
+
+		axiosFunction(
+			process.env.GATSBY_STRAPI_URL + route,
+			{
+				text: values.message,
+				product,
+				rating,
+				headers: option === "delete" ? auth : undefined, // coz DELETE request only need a header (text, product, rating is ignored)
+			},
+			{
+				headers: auth,
+			}
+		)
 			.then(response => {
+				// the response only contains the updated review (SINGULAR)
 				setLoading(null)
 
 				dispatchFeedback(
 					setSnackbar({
 						status: "success",
 						message: `${
-							option === "delete"
+							option === "delete" //TODO: add Edit option and set its message to "Review updated successfully"
 								? "Review Deleted"
 								: "Product Reviewed"
 						} Successfully`,
 					})
 				)
+				let newReviews = [...reviews]
+				const reviewIndex = newReviews.indexOf(foundForEdit)
+
+				if (option === "delete") {
+					newReviews = newReviews.filter(
+						item => item !== foundForEdit
+					)
+				} else if (foundForEdit) {
+					// update the edited review to the list of reviews
+					newReviews[reviewIndex] = response.data
+				} else {
+					// update the list of reviews for first time leaving a new review
+					newReviews = [response.data, ...newReviews]
+				}
+
+				setReviews(newReviews)
+				setAddReview(false)
 			})
 			.catch(error => {
 				setLoading(null)
@@ -136,72 +166,12 @@ export default function ProductReview({
 					})
 				)
 			})
-
-		// const axiosFunction =
-		// 	option === "delete" ? axios.delete : found ? axios.put : axios.post
-		// const route =
-		// 	found || option === "delete" ? `/reviews/${found.id}` : "/reviews"
-
-		// const auth = { Authorization: `Bearer ${user.jwt}` }
-
-		// axiosFunction(
-		// 	process.env.GATSBY_STRAPI_URL + route,
-		// 	{
-		// 		text: values.message,
-		// 		product,
-		// 		rating,
-		// 		headers: option === "delete" ? auth : undefined,
-		// 	},
-		// 	{
-		// 		headers: auth,
-		// 	}
-		// )
-		// 	.then(response => {
-		// 		setLoading(null)
-
-		// 		dispatchFeedback(
-		// 			setSnackbar({
-		// 				status: "success",
-		// 				message: `${
-		// 					option === "delete"
-		// 						? "Review Deleted"
-		// 						: "Product Reviewed"
-		// 				} Successfully`,
-		// 			})
-		// 		)
-
-		// 		let newReviews = [...reviews]
-		// 		const reviewIndex = newReviews.indexOf(found)
-
-		// 		if (option === "delete") {
-		// 			newReviews = newReviews.filter(review => review !== found)
-		// 		} else if (found) {
-		// 			newReviews[reviewIndex] = response.data
-		// 		} else {
-		// 			newReviews = [response.data, ...newReviews]
-		// 		}
-
-		// 		setReviews(newReviews)
-		// 		setAddReview(false)
-		// 	})
-		// 	.catch(error => {
-		// 		setLoading(null)
-		// 		console.error(error)
-
-		// 		dispatchFeedback(
-		// 			setSnackbar({
-		// 				status: "error",
-		// 				message: `There was a problem ${
-		// 					option === "delete" ? "removing" : "leaving"
-		// 				} your review. Please try again.`,
-		// 			})
-		// 		)
-		// 	})
 	}
 
-	// const buttonDisabled = found
-	// 	? found.text === values.message && found.rating === rating
-	// 	: !rating
+	const buttonDisabled = foundForEdit
+		? // disable the button if the user has not edit their review
+		  foundForEdit.text === values.message && foundForEdit.rating === rating
+		: !rating
 
 	return (
 		<Grid
@@ -213,10 +183,9 @@ export default function ProductReview({
 			<Grid item container justifyContent="space-between">
 				<Grid item>
 					<Typography variant="h4" classes={{ root: classes.light }}>
-						{
-							// {review.user.username} is from apollo\queries.js
-							review ? review.user.username : user.username
-						}
+						{review
+							? review.user.username // from apollo\queries.js
+							: user.username}
 					</Typography>
 				</Grid>
 				<Grid
@@ -258,7 +227,7 @@ export default function ProductReview({
 					classes={{ root: clsx(classes.date, classes.light) }}
 				>
 					{review
-						? new Date(review.createdAt).toLocaleString("en-GB", {
+						? new Date(review.updatedAt).toLocaleString("en-GB", {
 								day: "numeric",
 								month: "numeric",
 								year: "numeric",
@@ -270,6 +239,7 @@ export default function ProductReview({
 				{review ? (
 					<Typography variant="body1">{review.text}</Typography>
 				) : (
+					// Add new review
 					<Fields
 						values={values}
 						setValues={setValues}
@@ -280,6 +250,7 @@ export default function ProductReview({
 				)}
 			</Grid>
 			{review ? null : (
+				// Add new review
 				<Grid
 					item
 					container
@@ -291,16 +262,33 @@ export default function ProductReview({
 						) : (
 							<Button
 								onClick={handleReview}
-								disabled={!rating}
+								disabled={buttonDisabled}
 								variant="contained"
 								color="primary"
 							>
 								<span className={classes.reviewButtonText}>
-									Leave a review
+									{foundForEdit ? "Edit" : "Leave"} Review
 								</span>
 							</Button>
 						)}
 					</Grid>
+					{foundForEdit ? (
+						<Grid item>
+							{loading === "delete-review" ? (
+								<CircularProgress />
+							) : (
+								<Button
+									onClick={() => handleReview("delete")}
+									variant="contained"
+									classes={{ root: classes.delete }}
+								>
+									<span className={classes.reviewButtonText}>
+										Delete
+									</span>
+								</Button>
+							)}
+						</Grid>
+					) : null}
 					<Grid item>
 						<Button onClick={() => setAddReview(false)}>
 							<span className={classes.cancelButtonText}>
@@ -311,85 +299,5 @@ export default function ProductReview({
 				</Grid>
 			)}
 		</Grid>
-		// <Grid
-		// 	item
-		// 	container
-		// 	direction="column"
-		// 	classes={{ root: classes.review }}
-		// >
-		// 	<Grid item container justify="space-between">
-		// 		<Grid item>
-		// 			<Typography variant="h4" classes={{ root: classes.light }}>
-		// 				{review ? review.user.username : user.username}
-		// 			</Typography>
-		// 		</Grid>
-		//
-		// 	</Grid>
-		// 	<Grid item>
-		// 		<Typography
-		// 			variant="h5"
-		// 			classes={{ root: clsx(classes.date, classes.light) }}
-		// 		>
-		// 			{review
-		// 				? new Date(review.updatedAt).toLocaleString([], {
-		// 						day: "numeric",
-		// 						month: "numeric",
-		// 						year: "numeric",
-		// 				  })
-		// 				: new Date().toLocaleDateString()}
-		// 		</Typography>
-		// 	</Grid>
-		// 	<Grid item>
-		//
-		// 	</Grid>
-		// 	{review ? null : (
-		// 		<Grid
-		// 			item
-		// 			container
-		// 			classes={{ root: classes.buttonContainer }}
-		// 		>
-		// 			<Grid item>
-		// 				{loading === "leave-review" ? (
-		// 					<CircularProgress />
-		// 				) : (
-		// 					<Button
-		// 						onClick={handleReview}
-		// 						disabled={buttonDisabled}
-		// 						variant="contained"
-		// 						color="primary"
-		// 					>
-		// 						<span className={classes.reviewButtonText}>
-		// 							{found ? "Edit" : "Leave"} Review
-		// 						</span>
-		// 					</Button>
-		// 				)}
-		// 			</Grid>
-		// 			{found ? (
-		// 				<Grid item>
-		// 					{loading === "delete-review" ? (
-		// 						<CircularProgress />
-		// 					) : (
-		// 						<Button
-		// 							onClick={() => handleReview("delete")}
-		// 							variant="contained"
-		// 							classes={{ root: classes.delete }}
-		// 						>
-		// 							<span className={classes.reviewButtonText}>
-		// 								Delete
-		// 							</span>
-		// 						</Button>
-		// 					)}
-		// 				</Grid>
-		// 			) : null}
-		// 			<Grid item>
-		// 				<Button onClick={() => setAddReview(false)}>
-		// 					<span className={classes.cancelButtonText}>
-		// 						Cancel
-		// 					</span>
-		// 				</Button>
-		// 			</Grid>
-		// 		</Grid>
-		// 	)}
-		// </Grid>
 	)
 }

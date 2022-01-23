@@ -129,7 +129,7 @@ export default function ProductInfo({
 	const classes = useStyles()
 	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
-	const { user, dispatchUser } = useUser()
+	const { user } = useUser()
 	const { dispatchFeedback } = useFeedback()
 
 	const [selectedSize, setSelectedSize] = useState(

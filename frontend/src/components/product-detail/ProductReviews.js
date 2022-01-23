@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/core/styles"
 import { useQuery } from "@apollo/client"
 
-// import { useUser } from "../../contexts"
+import { useUser } from "../../contexts"
 
 import ProductReview from "./ProductReview"
 // import { StyledPagination } from "../../templates/ProductList"
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function ProductReviews({ product, addReview, setAddReview }) {
 	const classes = useStyles()
-	// const { user } = useUser()
+	const { user } = useUser()
 	const [reviews, setReviews] = useState([])
 	// const [page, setPage] = useState(1)
 
@@ -49,20 +49,26 @@ export default function ProductReviews({ product, addReview, setAddReview }) {
 		>
 			{addReview && (
 				<ProductReview
-					// user={user}
-					// reviews={reviews}
-					// setReviews={setReviews}
+					user={user} // to be served in ProductReview >> foundForEdit
+					reviews={reviews}
+					setReviews={setReviews}
 					product={product}
 					setAddReview={setAddReview}
 				/>
 			)}
-			{reviews.map(review => (
-				<ProductReview
-					key={review.id}
-					product={product}
-					review={review}
-				/>
-			))}
+			{reviews
+				// so that when an user edit their review, we don't show the previous version of it in the list of reviews
+				.filter(review =>
+					addReview ? review.user.username !== user.username : review
+				)
+				.map(review => (
+					<ProductReview
+						key={review.id}
+						product={product}
+						reviews={reviews}
+						review={review}
+					/>
+				))}
 		</Grid>
 		// <Grid
 		// 	id="reviews"

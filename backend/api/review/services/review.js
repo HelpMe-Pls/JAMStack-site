@@ -17,7 +17,7 @@ module.exports = {
 		let average = total / product.reviews.length;
 
 		if (product.reviews.length === 0) {
-			average = 0;
+			average = 0; // fixes NaN error for status 400
 		}
 
 		await strapi.services.product.update(
