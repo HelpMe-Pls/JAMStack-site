@@ -6,7 +6,9 @@ import { useQuery } from "@apollo/client"
 import { useUser } from "../../contexts"
 
 import ProductReview from "./ProductReview"
-// import { StyledPagination } from "../../templates/ProductList"
+
+import { StyledPagination } from "../../templates/ProductList"
+
 import { GET_REVIEWS } from "../../apollo/queries"
 
 const useStyles = makeStyles(theme => ({
@@ -22,7 +24,7 @@ export default function ProductReviews({ product, addReview, setAddReview }) {
 	const classes = useStyles()
 	const { user } = useUser()
 	const [reviews, setReviews] = useState([])
-	// const [page, setPage] = useState(1)
+	const [page, setPage] = useState(1)
 
 	const { data } = useQuery(GET_REVIEWS, {
 		variables: {
@@ -36,12 +38,12 @@ export default function ProductReviews({ product, addReview, setAddReview }) {
 		}
 	}, [data])
 
-	// const reviewsPerPage = 15
-	// const numPages = Math.ceil(reviews.length / reviewsPerPage)
+	const reviewsPerPage = 15
+	const totalPages = Math.ceil(reviews.length / reviewsPerPage)
 
 	return (
 		<Grid
-			id="reviews" // for handleAddReview() in components/product-detail/ProductInfo.js
+			id="reviews" // for handleAddReview() in ProductInfo.js
 			item
 			container
 			direction="column"
@@ -49,7 +51,7 @@ export default function ProductReviews({ product, addReview, setAddReview }) {
 		>
 			{addReview && (
 				<ProductReview
-					user={user} // to be served in ProductReview >> foundForEdit
+					user={user} // to be served in ProductReview.js >> foundForEdit
 					reviews={reviews}
 					setReviews={setReviews}
 					product={product}
@@ -61,6 +63,8 @@ export default function ProductReviews({ product, addReview, setAddReview }) {
 				.filter(review =>
 					addReview ? review.user.username !== user.username : review
 				)
+				// get the number of reviews to display on a page
+				.slice((page - 1) * reviewsPerPage, page * reviewsPerPage)
 				.map(review => (
 					<ProductReview
 						key={review.id}
@@ -69,42 +73,19 @@ export default function ProductReviews({ product, addReview, setAddReview }) {
 						review={review}
 					/>
 				))}
+			<Grid item container justifyContent="flex-end">
+				<Grid item>
+					<StyledPagination
+						classes={{
+							root: classes.pagination,
+						}}
+						count={totalPages}
+						page={page}
+						onChange={(_e, newPage) => setPage(newPage)}
+						color="primary"
+					/>
+				</Grid>
+			</Grid>
 		</Grid>
-		// <Grid
-		// 	id="reviews"
-		// 	item
-		// 	container
-		// 	direction="column"
-		// 	classes={{
-		// 		root: classes.reviews,
-		// 	}}
-		// >
-		// 	{reviews
-		// 		.filter(review =>
-		// 			addReview ? review.user.username !== user.username : review
-		// 		)
-		// 		.slice((page - 1) * reviewsPerPage, page * reviewsPerPage)
-		// 		.map(review => (
-		// 			<ProductReview
-		// 				reviews={reviews}
-		// 				key={review.id}
-		// 				product={product}
-		// 				review={review}
-		// 			/>
-		// 		))}
-		// 	<Grid item container justify="flex-end">
-		// 		<Grid item>
-		// 			<StyledPagination
-		// 				classes={{
-		// 					root: classes.pagination,
-		// 				}}
-		// 				count={numPages}
-		// 				page={page}
-		// 				onChange={(e, newPage) => setPage(newPage)}
-		// 				color="primary"
-		// 			/>
-		// 		</Grid>
-		// 	</Grid>
-		// </Grid>
 	)
 }

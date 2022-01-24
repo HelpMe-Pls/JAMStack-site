@@ -82,9 +82,7 @@ export default function ListOfProducts({
 		const [stock, setStock] = useState(null)
 		// const [rating, setRating] = useState(0)
 
-		const hasStyles = product.variants.some(
-			variant => variant.style !== null
-		)
+		const hasStyles = product.variants.some(item => item.style !== null)
 
 		let colors = []
 		let sizes = []
@@ -154,6 +152,7 @@ export default function ListOfProducts({
 			classes={{ root: classes.productContainer }}
 		>
 			{content
+				// get the number of products to display on a page
 				.slice((page - 1) * productsPerPage, page * productsPerPage)
 				.map(item => (
 					<FrameHelper
