@@ -11,7 +11,7 @@ import { StyledPagination } from "../../templates/ProductList"
 
 import { GET_REVIEWS } from "../../apollo/queries"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	reviews: {
 		padding: "0 3rem",
 	},

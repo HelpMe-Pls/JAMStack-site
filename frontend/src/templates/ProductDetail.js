@@ -22,7 +22,7 @@ export default function ProductDetail({
 	// watch how the QuickView got the right image and try to replicate that
 
 	const [stock, setStock] = useState(null)
-	// const [rating, setRating] = useState(0)
+	const [rating, setRating] = useState(0)
 	const [addReview, setAddReview] = useState(false)
 
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
@@ -108,7 +108,7 @@ export default function ProductDetail({
 			setStock(-1)
 		} else if (data) {
 			setStock(data.product.variants)
-			//setRating(data.product.rating)
+			setRating(data.product.rating)
 		}
 	}, [error, data])
 
@@ -123,6 +123,7 @@ export default function ProductDetail({
 					/>
 					<ProductInfo
 						name={name}
+						rating={rating}
 						setAddReview={setAddReview}
 						description={description}
 						variants={variants}

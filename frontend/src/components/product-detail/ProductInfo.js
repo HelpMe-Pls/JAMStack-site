@@ -118,13 +118,13 @@ export const getStockDisplay = (stock, variant) => {
 
 export default function ProductInfo({
 	name,
+	rating,
 	setAddReview,
 	description,
 	variants,
 	selectedVariant,
 	setSelectedVariant,
 	stock,
-	// rating,
 }) {
 	const classes = useStyles()
 	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
@@ -255,7 +255,7 @@ export default function ProductInfo({
 								</Typography>
 							</Grid>
 							<Grid item>
-								<Rating star={4.5} />
+								<Rating star={rating} />
 							</Grid>
 							<Grid item>
 								<Button onClick={handleAddReview}>

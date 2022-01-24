@@ -135,13 +135,13 @@ export default function AuthPortal() {
 						{steps.map((Step, i) =>
 							selectedStep === i ? (
 								<Step.component
+									key={Step.label}
 									setSelectedStep={setSelectedStep}
 									steps={steps}
 									user={user}
 									dispatchUser={dispatchUser}
 									feedback={feedback}
 									dispatchFeedback={dispatchFeedback}
-									key={Step.label}
 								/>
 							) : null
 						)}

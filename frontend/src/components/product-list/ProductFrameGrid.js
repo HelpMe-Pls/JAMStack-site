@@ -110,6 +110,7 @@ export const colorIndex = (product, variant, color) => {
 export default function ProductFrameGrid({
 	product,
 	variant,
+	rating,
 	sizes,
 	selectedSize,
 	setSelectedSize,
@@ -186,9 +187,10 @@ export default function ProductFrameGrid({
 				url={imgURL}
 				imageIndex={imageIndex}
 				name={productName}
+				variant={variant}
+				rating={rating}
 				price={variant.price}
 				product={product}
-				variant={variant}
 				hasStyles={hasStyles}
 				stock={stock}
 			/>
