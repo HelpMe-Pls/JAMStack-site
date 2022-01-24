@@ -53,24 +53,19 @@ export default function ProductImages({
 			</Grid>
 			<Grid item container justifyContent="center">
 				{images.map((image, i) => (
-					<>
-						<Grid
-							item
-							key={image.url}
-							classes={{ root: classes.imageItem }}
-						>
-							<IconButton onClick={() => setSelectedImage(i)}>
-								<img
-									src={
-										process.env.GATSBY_STRAPI_URL +
-										image.url
-									}
-									alt={`product_small${i}`}
-									className={classes.small}
-								/>
-							</IconButton>
-						</Grid>
-					</>
+					<Grid
+						item
+						classes={{ root: classes.imageItem }}
+						key={image.url}
+					>
+						<IconButton onClick={() => setSelectedImage(i)}>
+							<img
+								src={process.env.GATSBY_STRAPI_URL + image.url}
+								alt={`product_small${i}`}
+								className={classes.small}
+							/>
+						</IconButton>
+					</Grid>
 				))}
 			</Grid>
 		</Grid>

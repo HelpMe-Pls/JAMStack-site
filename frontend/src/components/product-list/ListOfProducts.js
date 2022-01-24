@@ -80,11 +80,9 @@ export default function ListOfProducts({
 		const [selectedColor, setSelectedColor] = useState(null)
 		const [selectedVariant, setSelectedVariant] = useState(null)
 		const [stock, setStock] = useState(null)
-		// const [rating, setRating] = useState(0)
+		const [rating, setRating] = useState(0)
 
-		const hasStyles = product.variants.some(
-			variant => variant.style !== null
-		)
+		const hasStyles = product.variants.some(item => item.style !== null)
 
 		let colors = []
 		let sizes = []
@@ -125,20 +123,21 @@ export default function ListOfProducts({
 				setStock(-1)
 			} else if (data) {
 				setStock(data.product.variants) // stock is applied to the product, not the variant, so if we want to get the "stock" of a singular variant, it'll be data.product.variants[variant].qty
-				//setRating(data.product.rating)
+				setRating(data.product.rating)
 			}
 		}, [error, data])
 
 		return (
 			<Frame
+				product={product}
+				variant={selectedVariant || variant} // {variant} is for initial render, {selectedVariant} for subsequential renders
+				rating={rating}
 				sizes={sizes}
 				selectedSize={selectedSize || variant.size}
 				setSelectedSize={setSelectedSize}
 				colors={colors}
 				selectedColor={selectedColor}
 				setSelectedColor={setSelectedColor}
-				product={product}
-				variant={selectedVariant || variant} //{variant} is for initial render, {selectedVariant} for subsequential renders
 				hasStyles={hasStyles}
 				stock={stock}
 			></Frame>
@@ -154,6 +153,7 @@ export default function ListOfProducts({
 			classes={{ root: classes.productContainer }}
 		>
 			{content
+				// get the number of products to display on a page
 				.slice((page - 1) * productsPerPage, page * productsPerPage)
 				.map(item => (
 					<FrameHelper

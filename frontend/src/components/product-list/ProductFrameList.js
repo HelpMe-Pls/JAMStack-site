@@ -62,6 +62,7 @@ const useStyles = makeStyles(theme => ({
 export default function ProductFrameList({
 	product,
 	variant,
+	rating,
 	sizes,
 	selectedSize,
 	setSelectedSize,
@@ -136,7 +137,7 @@ export default function ProductFrameList({
 						</Typography>
 					</Grid>
 					<Grid item>
-						<Rating star={3.5} />
+						<Rating star={rating} />
 					</Grid>
 					<Grid item>
 						<Chip

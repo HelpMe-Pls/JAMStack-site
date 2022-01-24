@@ -92,6 +92,7 @@ export default function QuickView({
 	variant,
 	url,
 	name,
+	rating,
 	price,
 	sizes,
 	stock,
@@ -154,7 +155,7 @@ export default function QuickView({
 							>
 								<Grid item>
 									<Typography variant="h4">{name}</Typography>
-									<Rating star={4} />
+									<Rating star={rating} />
 								</Grid>
 								<Grid item>
 									<Typography
