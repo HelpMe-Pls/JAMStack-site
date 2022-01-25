@@ -84,7 +84,7 @@ module.exports = {
 		const favorites = await strapi.services.favorite.find({ user });
 		newUser.favorites = favorites.map((favorite) => ({
 			id: favorite.id,
-			product: favorite.product.id,
+			variant: favorite.variant.id,
 		}));
 		const subscriptions = await strapi.services.subscription.find({ user });
 		newUser.subscriptions = subscriptions.map((subscription) => {

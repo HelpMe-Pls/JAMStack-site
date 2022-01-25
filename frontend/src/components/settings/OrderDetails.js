@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid"
 import Chip from "@material-ui/core/Chip"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
+import Hidden from "@material-ui/core/Hidden"
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
@@ -66,7 +67,7 @@ export default function OrderDetails({ orders, open, setOpen }) {
 		typeof navigator !== "undefined" &&
 		/iPad|iPhone|iPod/.test(navigator.userAgent)
 
-	const order = orders.find(order => order.id === open)
+	const order = orders.find(odr => odr.id === open)
 
 	const prices = [
 		{ label: "Subtotal", value: order?.subtotal },
@@ -92,13 +93,15 @@ export default function OrderDetails({ orders, open, setOpen }) {
 			disableBackdropTransition={!iOS}
 			disableDiscovery={iOS}
 		>
-			<Grid
-				item
-				classes={{ root: classes.spacer }}
-				component={Button}
-				disableRipple
-				onClick={() => setOpen(null)}
-			/>
+			<Hidden smUp>
+				<Grid
+					item
+					classes={{ root: classes.spacer }}
+					component={Button}
+					disableRipple
+					onClick={() => setOpen(null)}
+				/>
+			</Hidden>
 			<Grid
 				container
 				direction="column"

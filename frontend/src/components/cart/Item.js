@@ -1,4 +1,5 @@
 import React from "react"
+import clsx from "clsx"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import IconButton from "@material-ui/core/IconButton"
@@ -11,7 +12,8 @@ import QtyButton from "../product-list/QtyButton"
 import { useCart } from "../../contexts"
 import { removeFromCart } from "../../contexts/actions"
 
-import FavoriteIcon from "../../images/Favorite"
+import FavoriteIcon from "../ui/favorite"
+// import SubscriptionIcon from "../ui/subscription"
 import SubscribeIcon from "../../images/Subscription"
 import DeleteIcon from "../../images/Delete"
 
@@ -63,12 +65,15 @@ const useStyles = makeStyles(theme => ({
 			backgroundColor: "transparent",
 		},
 	},
+	actionContainer: {
+		marginBottom: "-0.5rem",
+	},
 }))
 
 export default function Item({ item }) {
 	const classes = useStyles()
 	const theme = useTheme()
-	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
+	const matchesXS = useMediaQuery(thm => thm.breakpoints.down("xs"))
 	const { dispatchCart } = useCart()
 
 	const handleDelete = () => {
@@ -76,8 +81,25 @@ export default function Item({ item }) {
 	}
 
 	const actions = [
-		{ icon: FavoriteIcon, color: theme.palette.secondary.main },
+		{
+			component: FavoriteIcon,
+			props: {
+				color: theme.palette.secondary.main,
+				size: matchesXS ? 2 : 3,
+				buttonClass: clsx(classes.actionButton, classes.favoriteIcon),
+				variant: item.variant.id,
+			},
+		},
 		{ icon: SubscribeIcon, color: theme.palette.secondary.main },
+		// {
+		// 	component: SubscriptionIcon,
+		// 	props: {
+		// 		color: theme.palette.secondary.main,
+		// 		isCart: item,
+		// 		size: matchesXS ? 2 : 3,
+		// 		cartFrequency: frequency,
+		// 	},
+		// },
 		{
 			icon: DeleteIcon,
 			color: theme.palette.error.main,
@@ -144,24 +166,36 @@ export default function Item({ item }) {
 								: item.variant.id}
 						</Typography>
 					</Grid>
-					<Grid item container justifyContent="flex-end" xs={5} sm>
+					<Grid
+						item
+						container
+						justifyContent="flex-end"
+						xs={5}
+						sm
+						classes={{ root: classes.actionContainer }}
+					>
 						{actions.map((action, i) => (
 							<Grid item key={i}>
-								<IconButton
-									disableRipple
-									onClick={() => action.clicked()}
-									classes={{ root: classes.actionButton }}
-								>
-									<span
-										className={classes.actionWrapper}
-										style={{
-											height: action.size,
-											width: action.size,
-										}}
+								{action.component ? (
+									<action.component {...action.props} />
+								) : (
+									// Delete icon
+									<IconButton
+										disableRipple
+										onClick={() => action.clicked()}
+										classes={{ root: classes.actionButton }}
 									>
-										<action.icon color={action.color} />
-									</span>
-								</IconButton>
+										<span
+											className={classes.actionWrapper}
+											style={{
+												height: action.size,
+												width: action.size,
+											}}
+										>
+											<action.icon color={action.color} />
+										</span>
+									</IconButton>
+								)}
 							</Grid>
 						))}
 					</Grid>
