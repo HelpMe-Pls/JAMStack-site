@@ -86,11 +86,11 @@ module.exports = {
 			id: favorite.id,
 			variant: favorite.variant.id,
 		}));
-		const subscriptions = await strapi.services.subscription.find({ user });
-		newUser.subscriptions = subscriptions.map((subscription) => {
-			delete subscription.user;
-			return subscription;
-		});
+		// const subscriptions = await strapi.services.subscription.find({ user });
+		// newUser.subscriptions = subscriptions.map((subscription) => {
+		// 	delete subscription.user;
+		// 	return subscription;
+		// });
 
 		ctx.body = newUser;
 	},

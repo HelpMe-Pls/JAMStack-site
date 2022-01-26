@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import axios from "axios"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
@@ -14,10 +14,10 @@ import SettingsGrid from "./SettingsGrid.js"
 
 import Delete from "../../images/Delete"
 
-import { UserContext, FeedbackContext } from "../../contexts"
+import { useFeedback, useUser } from "../../contexts"
 import { setSnackbar, setUser } from "../../contexts/actions"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	container: {
 		height: "100%",
 		width: "100%",
@@ -47,8 +47,8 @@ export default function Favorites({ setSelectedSetting }) {
 	const [selectedSizes, setSelectedSizes] = useState({})
 	const [selectedColors, setSelectedColors] = useState({})
 	const [loading, setLoading] = useState(null)
-	const { user, dispatchUser } = useContext(UserContext)
-	const { dispatchFeedback } = useContext(FeedbackContext)
+	const { user, dispatchUser } = useUser()
+	const { dispatchFeedback } = useFeedback()
 
 	const setSelectedHelper = (selectedFunction, values, value, row) => {
 		selectedFunction({ ...values, [row]: value })
@@ -261,7 +261,7 @@ export default function Favorites({ setSelectedSetting }) {
 			width: 500,
 			sortable: false,
 			disableColumnMenu: true,
-			renderCell: ({ value, row }) => (
+			renderCell: ({ row }) => (
 				<IconButton
 					onClick={() => handleDelete(row.id)}
 					disabled={!!loading}

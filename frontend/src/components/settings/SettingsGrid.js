@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
 		width: "100%",
 	},
 	header: {
-		height: "8rem",
+		height: "5rem",
 		width: "100%",
 		backgroundColor: theme.palette.secondary.main,
 	},
@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
 		width: "4rem",
 	},
 	"@global": {
+		//TODO: convert to JSS
 		".MuiDataGrid-root .MuiDataGrid-colCellTitle": {
 			fontWeight: 600,
 		},
@@ -28,20 +29,20 @@ const useStyles = makeStyles(theme => ({
 			display: "none",
 		},
 		".MuiDataGrid-root .MuiDataGrid-colCellTitleContainer": {
-			"justify-content": "center",
+			justifyContent: "center",
 		},
 		".MuiDataGrid-root .MuiDataGrid-colCellMoving": {
-			"background-color": "transparent",
+			backgroundColor: "transparent",
 		},
 		".MuiDataGrid-root .MuiDataGrid-cell": {
 			"white-space": "pre-wrap",
 			"max-height": "100% !important",
 			"line-height": "initial !important",
 			padding: "1rem",
-			"padding-right": "calc(1rem + 26px)",
+			"padding-right": "calc(1rem + 26px)", // to take the Title's dropdown button into account
 			display: "flex",
-			"justify-content": "center",
 			"align-items": "center",
+			justifyContent: "center",
 			"font-weight": 600,
 			"border-bottom": "2px solid #fff",
 		},
@@ -49,7 +50,7 @@ const useStyles = makeStyles(theme => ({
 			"max-height": "100% !important",
 		},
 		".MuiDataGrid-root .MuiDataGrid-footer": {
-			"margin-top": "-11rem",
+			"margin-top": "-8.069rem",
 		},
 		".MuiTablePagination-caption": {
 			color: "#fff",
@@ -65,7 +66,7 @@ const useStyles = makeStyles(theme => ({
 			border: "none",
 		},
 		".MuiDataGrid-root .MuiDataGrid-overlay": {
-			bottom: "8rem",
+			bottom: "5rem",
 		},
 	},
 }))

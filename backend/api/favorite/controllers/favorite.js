@@ -44,6 +44,7 @@ module.exports = {
 		});
 
 		await Promise.all(
+			// get ALL variants of the corresponding product so we can access the full list of styles, sizes,...
 			favorites.map(async (favorite, i) => {
 				const variants = await strapi.services.variant.find({
 					product: favorite.variant.product,
@@ -54,6 +55,7 @@ module.exports = {
 					delete variant.updated_by;
 				});
 
+				// add a new field called "variants" to each {favorite}
 				favorites[i].variants = variants;
 				delete favorites[i].user;
 				delete favorites[i].updated_by;
