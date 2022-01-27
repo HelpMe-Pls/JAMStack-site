@@ -42,22 +42,28 @@ const useStyles = makeStyles(() => ({
 
 export default function Favorites({ setSelectedSetting }) {
 	const classes = useStyles()
+
+	// the full list of favorites
 	const [products, setProducts] = useState([])
+
+	// the properties of each favorite item (on a row)
 	const [selectedVariants, setSelectedVariants] = useState({})
 	const [selectedSizes, setSelectedSizes] = useState({})
 	const [selectedColors, setSelectedColors] = useState({})
+
 	const [loading, setLoading] = useState(null)
 	const { user, dispatchUser } = useUser()
 	const { dispatchFeedback } = useFeedback()
 
 	const setSelectedHelper = (selectedFunction, values, value, row) => {
-		selectedFunction({ ...values, [row]: value })
+		selectedFunction({ ...values, [row]: value }) // {values} is the remaining fields
 
 		const { variants } = products.find(favorite => favorite.id === row)
-		const selectedVariant = selectedVariants[row]
+		const selectedVariant = selectedVariants[row] // object
 
 		let newVariant
 
+		//changing color (color in hex format)
 		if (value.includes("#")) {
 			newVariant = variants.find(
 				variant =>
@@ -65,12 +71,14 @@ export default function Favorites({ setSelectedSetting }) {
 					variant.style === variants[selectedVariant].style &&
 					variant.color === value
 			)
-		} else {
+		}
+		// changing size
+		else {
 			let newColors = []
 
+			// get the colors for the corresponding styles & sizes
 			variants.map(variant => {
 				if (
-					!newColors.includes(variant.color) &&
 					variant.size === value &&
 					variants[selectedVariant].style === variant.style
 				) {
@@ -78,6 +86,7 @@ export default function Favorites({ setSelectedSetting }) {
 				}
 			})
 
+			// get the variant with appropriate size,style,color
 			newVariant = variants.find(
 				variant =>
 					variant.size === value &&
@@ -92,70 +101,14 @@ export default function Favorites({ setSelectedSetting }) {
 		})
 	}
 
-	const createData = data =>
-		data.map(item => {
-			const selectedVariant = selectedVariants[item.id]
-
-			return {
-				item: {
-					name: item.variants[selectedVariant].product.name.split(
-						" "
-					)[0],
-					image: item.variants[selectedVariant].images[0].url,
-				},
-				variant: { all: item.variants, current: item.variant },
-				quantity: item.variants,
-				price: item.variants[selectedVariant].price,
-				id: item.id,
-			}
-		})
-
-	const handleDelete = row => {
-		setLoading(row)
-
-		axios
-			.delete(process.env.GATSBY_STRAPI_URL + `/favorites/${row}`, {
-				headers: { Authorization: `Bearer ${user.jwt}` },
-			})
-			.then(response => {
-				setLoading(null)
-
-				const newProducts = products.filter(
-					product => product.id !== row
-				)
-				const newFavorites = user.favorites.filter(
-					favorite => favorite.id !== row
-				)
-				setProducts(newProducts)
-				dispatchUser(setUser({ ...user, favorites: newFavorites }))
-
-				dispatchFeedback(
-					setSnackbar({
-						status: "success",
-						message: "Product Removed From Favorites.",
-					})
-				)
-			})
-			.catch(error => {
-				setLoading(null)
-				console.error(error)
-
-				dispatchFeedback(
-					setSnackbar({
-						status: "error",
-						message:
-							"There was a problem removing this product from your favorites. Please try again.",
-					})
-				)
-			})
-	}
-
 	const columns = [
 		{
 			field: "item",
 			headerName: "Item",
 			width: 250,
-			renderCell: ({ value }) => (
+			renderCell: (
+				{ value } // {value} is the corresponding object with {name,image} from createData(), how it works it implemented by MUI
+			) => (
 				<Grid container direction="column">
 					<Grid item>
 						<img
@@ -188,7 +141,7 @@ export default function Favorites({ setSelectedSetting }) {
 					sizes.push(variant.size)
 
 					if (
-						!colors.includes(variant.color) &&
+						// to show only the available color(s) of the corresponding size & style
 						variant.size === selectedSizes[row.id] &&
 						variant.style === value.current.style
 					) {
@@ -278,8 +231,69 @@ export default function Favorites({ setSelectedSetting }) {
 		},
 	]
 
+	const createData = data =>
+		data.map(item => {
+			const selectedVariant = selectedVariants[item.id]
+
+			return {
+				item: {
+					name: item.variants[selectedVariant].product.name.split(
+						" "
+					)[0],
+					image: item.variants[selectedVariant].images[0].url,
+				},
+				variant: { all: item.variants, current: item.variant },
+				quantity: item.variants,
+				price: item.variants[selectedVariant].price,
+				id: item.id,
+			}
+		})
+
 	const rows =
 		Object.keys(selectedVariants).length > 0 ? createData(products) : []
+
+	const handleDelete = row => {
+		setLoading(row)
+
+		axios
+			.delete(process.env.GATSBY_STRAPI_URL + `/favorites/${row}`, {
+				headers: { Authorization: `Bearer ${user.jwt}` },
+			})
+			.then(response => {
+				setLoading(null)
+
+				// remove the favorite item from the list
+				const newProducts = products.filter(
+					product => product.id !== row
+				)
+
+				// remove the favorite item from the user's profile
+				const newFavorites = user.favorites.filter(
+					favorite => favorite.id !== row
+				)
+				setProducts(newProducts)
+				dispatchUser(setUser({ ...user, favorites: newFavorites }))
+
+				dispatchFeedback(
+					setSnackbar({
+						status: "info",
+						message: "Product Removed From Favorites.",
+					})
+				)
+			})
+			.catch(error => {
+				setLoading(null)
+				console.error(error)
+
+				dispatchFeedback(
+					setSnackbar({
+						status: "error",
+						message:
+							"There was a problem removing this product from your favorites. Please try again.",
+					})
+				)
+			})
+	}
 
 	useEffect(() => {
 		axios
@@ -293,6 +307,7 @@ export default function Favorites({ setSelectedSetting }) {
 				let newSizes = {}
 				let newColors = {}
 
+				// a single row
 				response.data.forEach(favorite => {
 					const found = favorite.variants.find(
 						variant => variant.id === favorite.variant.id
@@ -311,9 +326,9 @@ export default function Favorites({ setSelectedSetting }) {
 					}
 				})
 
-				setSelectedVariants(newVariants)
 				setSelectedSizes(newSizes)
 				setSelectedColors(newColors)
+				setSelectedVariants(newVariants)
 			})
 			.catch(error => {
 				console.error(error)

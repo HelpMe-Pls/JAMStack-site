@@ -144,7 +144,6 @@ export default function ProductInfo({
 
 		if (
 			// show only the available color(s) of a specific size
-			!colors.includes(variant.color) &&
 			variant.size === selectedSize &&
 			variant.style === variants[selectedVariant].style
 		) {

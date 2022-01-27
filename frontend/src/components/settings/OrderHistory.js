@@ -67,9 +67,9 @@ export default function OrderHistory({ setSelectedSetting }) {
 			field: "status",
 			headerName: "Status",
 			width: 250,
-			renderCell: ({ value }) => (
-				<Chip label={value} classes={{ label: classes.chipLabel }} />
-			),
+			renderCell: (
+				{ value } // {value} is the corresponding {item.status} from createData(), how it works it implemented by MUI
+			) => <Chip label={value} classes={{ label: classes.chipLabel }} />,
 		},
 		{ field: "date", headerName: "Date", width: 250, type: "date" },
 		{
@@ -87,6 +87,7 @@ export default function OrderHistory({ setSelectedSetting }) {
 			field: "",
 			width: 350,
 			sortable: false,
+			disableColumnMenu: true,
 			renderCell: () => (
 				<IconButton>
 					<img src={detailsIcon} alt="order details" />
