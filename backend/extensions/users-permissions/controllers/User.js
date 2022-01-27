@@ -70,27 +70,28 @@ module.exports = {
 		ctx.send("Password Successfully Changed", 200); // the {password} is not attached to the user's profile so we don't need to include it in the send()
 	},
 
-	// async me(ctx) {
-	// 	const user = ctx.state.user;
+	async me(ctx) {
+		const user = ctx.state.user;
 
-	// 	if (!user) {
-	// 		return ctx.badRequest(null, [
-	// 			{ messages: [{ id: "No authorization header was found" }] },
-	// 		]);
-	// 	}
+		if (!user) {
+			return ctx.badRequest(null, [
+				{ messages: [{ id: "No authorization header was found" }] },
+			]);
+		}
 
-	// 	let newUser = { ...sanitizeUser(user) };
-	// 	const favorites = await strapi.services.favorite.find({ user });
-	// 	const subscriptions = await strapi.services.subscription.find({ user });
-	// 	newUser.favorites = favorites.map((favorite) => ({
-	// 		variant: favorite.variant.id,
-	// 		id: favorite.id,
-	// 	}));
-	// 	newUser.subscriptions = subscriptions.map((subscription) => {
-	// 		delete subscription.user;
-	// 		return subscription;
-	// 	});
+		// sanitize then manually update favorite & subscription
+		let newUser = { ...sanitizeUser(user) };
+		const favorites = await strapi.services.favorite.find({ user });
+		newUser.favorites = favorites.map((favorite) => ({
+			id: favorite.id,
+			variant: favorite.variant.id,
+		}));
+		// const subscriptions = await strapi.services.subscription.find({ user });
+		// newUser.subscriptions = subscriptions.map((subscription) => {
+		// 	delete subscription.user;
+		// 	return subscription;
+		// });
 
-	// 	ctx.body = newUser;
-	// },
+		ctx.body = newUser;
+	},
 };

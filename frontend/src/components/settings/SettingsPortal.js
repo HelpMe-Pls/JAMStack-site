@@ -10,7 +10,7 @@ import useResizeAware from "react-resize-aware"
 
 import Settings from "./Settings"
 import OrderHistory from "./OrderHistory"
-// import Favorites from "./Favorites"
+import Favorites from "./Favorites"
 // import Subscriptions from "./Subscriptions"
 import { useUser } from "../../contexts"
 import { setUser } from "../../contexts/actions"
@@ -21,6 +21,29 @@ import orderHistoryIcon from "../../images/order-history.svg"
 import favoritesIcon from "../../images/favorite.svg"
 import subscriptionIcon from "../../images/subscription.svg"
 import background from "../../images/repeating-smallest.svg"
+
+//TODO: re-organize files of settings into folders:
+/**
+ * settings
+ * 		info (folder):
+ * 			Settings
+ * 			Details
+ * 			Location
+ * 			Payments
+ * 			Edit
+ * 			Confirmation
+ * 		order-history (folder):
+ * 			OrderHistory
+ * 			OrderDetails
+ * 			OrderDetailItem
+ * 		favorites (folder):
+ * 			Favorites
+ * 		subscriptions (folder):
+ * 			Subscriptions
+ * 		SettingsPortal.js
+ * 		SettingsGrid.js
+ * 		Slots.js
+ */
 
 const useStyles = makeStyles(theme => ({
 	name: {
@@ -123,7 +146,7 @@ export default function SettingsPortal() {
 		{
 			label: "Favorites",
 			icon: favoritesIcon,
-			// component: Favorites
+			component: Favorites,
 		},
 		{
 			label: "Subscriptions",

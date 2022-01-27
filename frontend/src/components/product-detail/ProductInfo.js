@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useContext } from "react"
-import axios from "axios"
-import CircularProgress from "@material-ui/core/CircularProgress"
+import React, { useState, useEffect } from "react"
 import Button from "@material-ui/core/Button"
 import Grid from "@material-ui/core/Grid"
 import Chip from "@material-ui/core/Chip"
@@ -10,9 +8,8 @@ import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 
 import Rating from "../home/Rating"
-import favorite from "../../images/favorite.svg"
 import subscription from "../../images/subscription.svg"
-// import Favorite from "../ui/favorite"
+import Favorite from "../ui/favorite"
 // import Subscription from "../ui/subscription"
 import Sizes from "../product-list/Sizes"
 import Swatches from "../product-list/Swatches"
@@ -53,8 +50,11 @@ const useStyles = makeStyles(theme => ({
 		height: "4rem",
 		width: "4rem",
 	},
-	iconWrapper: {
+	subscriptionWrapper: {
 		margin: "0.5rem 1rem",
+	},
+	favoriteWrapper: {
+		margin: "0.6rem 1rem 0 0",
 	},
 	sectionContainer: {
 		height: "calc(100% / 3)",
@@ -144,7 +144,6 @@ export default function ProductInfo({
 
 		if (
 			// show only the available color(s) of a specific size
-			!colors.includes(variant.color) &&
 			variant.size === selectedSize &&
 			variant.style === variants[selectedVariant].style
 		) {
@@ -211,14 +210,14 @@ export default function ProductInfo({
 				justifyContent="flex-end"
 				classes={{ root: classes.background }}
 			>
-				<Grid item>
-					<img
-						src={favorite}
-						alt="add item to favorites"
-						className={classes.icon}
+				<Grid item classes={{ root: classes.favoriteWrapper }}>
+					<Favorite
+						size={4}
+						variant={variants[selectedVariant].id}
+						noPadding
 					/>
 				</Grid>
-				<Grid item>
+				<Grid item classes={{ root: classes.subscriptionWrapper }}>
 					<img
 						src={subscription}
 						alt="add item to subscriptions"

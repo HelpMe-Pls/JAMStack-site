@@ -126,6 +126,7 @@ export default function ProductDetail({
 						rating={rating}
 						setAddReview={setAddReview}
 						description={description}
+						product={id}
 						variants={variants}
 						selectedVariant={selectedVariant}
 						setSelectedVariant={setSelectedVariant}
