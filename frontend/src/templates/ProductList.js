@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-//TODO: rename boilerplate.js to StyledPagination.js and move this there, also fix its import
+//TODO: rename boilerplate.js to StyledPagination.js and move this there, also fix its imports/exports
 export const StyledPagination = props => {
 	// closure
 	const StyledPaginationItem = styled(PaginationItem)(({ theme }) => ({
