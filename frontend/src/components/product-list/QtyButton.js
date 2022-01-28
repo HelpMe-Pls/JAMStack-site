@@ -14,25 +14,30 @@ import Cart from "../../images/Cart"
 
 const useStyles = makeStyles(theme => ({
 	qtyText: {
-		color: ({ isCart }) => (isCart ? theme.palette.secondary.main : "#fff"),
+		color: ({ white }) => (white ? theme.palette.secondary.main : "#fff"),
 	},
 	mainGroup: {
 		height: "3rem",
 	},
 	editButtons: {
 		height: "1.525rem",
-		borderRadius: 0,
-		backgroundColor: ({ isCart }) =>
-			isCart ? "#fff" : theme.palette.secondary.main,
-		borderLeft: ({ isCart }) =>
-			`2px solid ${isCart ? theme.palette.secondary.main : "#fff"}`,
-		borderRight: "2px solid #fff",
+
+		backgroundColor: ({ white }) =>
+			white ? "#fff" : theme.palette.secondary.main,
+		borderLeft: ({ white }) =>
+			`2px solid ${white ? theme.palette.secondary.main : "#fff"}`,
+		borderRight: ({ round }) => (round ? 0 : "2px solid #fff"),
 		borderBottom: "none",
 		borderTop: "none",
+		borderRadius: ({ round }) => (round ? "0px 50px 50px 0px" : 0),
+		"&:hover": {
+			backgroundColor: ({ white }) =>
+				white ? "#fff" : theme.palette.secondary.light,
+		},
 	},
 	endButtons: {
-		backgroundColor: ({ isCart }) =>
-			isCart ? "#fff" : theme.palette.secondary.main,
+		backgroundColor: ({ white }) =>
+			white ? "#fff" : theme.palette.secondary.main,
 		borderRadius: 50,
 		border: "none",
 	},
@@ -44,13 +49,13 @@ const useStyles = makeStyles(theme => ({
 		marginTop: "-0.3rem",
 	},
 	minusButton: {
-		borderTop: ({ isCart }) =>
-			`2px solid ${isCart ? theme.palette.secondary.main : "#fff"}`,
+		borderTop: ({ white }) =>
+			`2px solid ${white ? theme.palette.secondary.main : "#fff"}`,
 	},
 	qtyButton: {
 		"&:hover": {
-			backgroundColor: ({ isCart }) =>
-				isCart ? "#fff" : theme.palette.secondary.main,
+			backgroundColor: ({ white }) =>
+				white ? "#fff" : theme.palette.secondary.main,
 		},
 	},
 	badge: {
@@ -80,22 +85,32 @@ export default function QtyButton({
 	name, //product's name
 	isCart, // to hide the "Add to cart" button if we're already in the "Cart" page
 	white,
-	hideCartButton,
+	hideCartButton, // for "subscription" button
 	round,
 	override,
 }) {
-	const classes = useStyles({ isCart })
+	const classes = useStyles({ white, round })
 
 	const { cart, dispatchCart } = useCart()
-	const existingItem = cart.find(
-		item => item.variant === variants[selectedVariant]
-	)
+	const existingItem = isCart
+		? cart.find(item => item.variant === variants[selectedVariant])
+		: null
 
-	const [qty, setQty] = useState(isCart ? existingItem.qty : 1)
+	const [qty, setQtyState] = useState(isCart ? existingItem.qty : 1)
 	const [success, setSuccess] = useState(false)
 
-	// stock[selectedVariant].qty: the {qty} is from apollo\queries.js
+	let setQty
 
+	if (override) {
+		setQty = val => {
+			override.setValue(val)
+			setQtyState(val)
+		}
+	} else {
+		setQty = setQtyState
+	}
+
+	// stock[selectedVariant].qty: the {qty} is from apollo\queries.js
 	const handleChange = direction => {
 		if (qty === stock[selectedVariant].qty && direction === "up")
 			return null
@@ -199,7 +214,7 @@ export default function QtyButton({
 						</Typography>
 					</Button>
 				</ButtonGroup>
-				{isCart ? null : (
+				{hideCartButton ? null : (
 					<Button
 						onClick={handleCart}
 						disabled={

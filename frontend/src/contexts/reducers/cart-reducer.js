@@ -1,6 +1,8 @@
 import {
 	ADD_TO_CART,
 	REMOVE_FROM_CART,
+	CHANGE_FREQUENCY,
+	TOGGLE_SUBSCRIPTION,
 	CLEAR_CART,
 } from "../actions/action-types"
 
@@ -22,16 +24,16 @@ export default function cartReducer(state, action) {
 	switch (action.type) {
 		case ADD_TO_CART:
 			if (existingIndex !== -1) {
-				let newQty = newCart[existingIndex].qty + action.payload.qty
+				let updatedQty = newCart[existingIndex].qty + action.payload.qty
 
-				if (newQty > action.payload.stock) {
-					newQty = action.payload.stock // make sure the user can't add more items than the stock of that {name}
+				if (updatedQty > action.payload.stock) {
+					updatedQty = action.payload.stock // make sure the user can't add more items than the stock of that {name}
 				}
 
 				newCart[existingIndex] = {
 					// update the existing item in the cart with its new qty
 					...newCart[existingIndex],
-					qty: newQty,
+					qty: updatedQty,
 				}
 			} else {
 				// there's no such variant in the state, so we add it as a new one
@@ -58,6 +60,21 @@ export default function cartReducer(state, action) {
 
 			saveData(newCart)
 
+			return newCart
+		case CHANGE_FREQUENCY:
+			newCart[existingIndex].subscription = action.payload.frequency
+			saveData(newCart)
+			return newCart
+		case TOGGLE_SUBSCRIPTION:
+			const existingSubscription = !!newCart[existingIndex].subscription
+
+			if (existingSubscription) {
+				delete newCart[existingIndex].subscription
+			} else {
+				newCart[existingIndex].subscription = action.payload.frequency
+			}
+
+			saveData(newCart)
 			return newCart
 		case CLEAR_CART:
 			localStorage.removeItem("cart")

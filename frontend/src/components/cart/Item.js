@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import clsx from "clsx"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
@@ -10,11 +10,11 @@ import { makeStyles, useTheme } from "@material-ui/core/styles"
 import QtyButton from "../product-list/QtyButton"
 
 import { useCart } from "../../contexts"
-import { removeFromCart } from "../../contexts/actions"
+import { removeFromCart, changeFrequency } from "../../contexts/actions"
 
 import FavoriteIcon from "../ui/favorite"
-// import SubscriptionIcon from "../ui/subscription"
-import SubscribeIcon from "../../images/Subscription"
+import SubscriptionIcon from "../ui/subscription"
+import SelectFrequency from "../ui/select-frequency"
 import DeleteIcon from "../../images/Delete"
 
 const useStyles = makeStyles(theme => ({
@@ -43,13 +43,13 @@ const useStyles = makeStyles(theme => ({
 	},
 	infoContainer: {
 		width: "35rem",
-		height: "8rem",
+		height: ({ subscription }) => (subscription ? "10rem" : "8rem"),
 		marginLeft: "1rem",
 		position: "relative",
 	},
 	chipWrapper: {
 		position: "absolute",
-		top: "3.5rem",
+		top: ({ subscription }) => (subscription ? "4.25rem" : "3.5rem"),
 	},
 	itemContainer: {
 		margin: "2rem 0 2rem 2rem",
@@ -71,13 +71,20 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function Item({ item }) {
-	const classes = useStyles()
+	const classes = useStyles({ subscription: item.subscription })
 	const theme = useTheme()
 	const matchesXS = useMediaQuery(thm => thm.breakpoints.down("xs"))
+
+	const [frequency, setFrequency] = useState(item.subscription || "Month")
 	const { dispatchCart } = useCart()
 
 	const handleDelete = () => {
 		dispatchCart(removeFromCart(item.variant, item.qty))
+	}
+
+	const handleFrequency = newFrequency => {
+		dispatchCart(changeFrequency(item.variant, newFrequency))
+		setFrequency(newFrequency)
 	}
 
 	const actions = [
@@ -90,16 +97,15 @@ export default function Item({ item }) {
 				variant: item.variant.id,
 			},
 		},
-		{ icon: SubscribeIcon, color: theme.palette.secondary.main },
-		// {
-		// 	component: SubscriptionIcon,
-		// 	props: {
-		// 		color: theme.palette.secondary.main,
-		// 		isCart: item,
-		// 		size: matchesXS ? 2 : 3,
-		// 		cartFrequency: frequency,
-		// 	},
-		// },
+		{
+			component: SubscriptionIcon,
+			props: {
+				color: theme.palette.secondary.main,
+				isCart: item,
+				size: matchesXS ? 2 : 3,
+				cartFrequency: frequency,
+			},
+		},
 		{
 			icon: DeleteIcon,
 			color: theme.palette.error.main,
@@ -143,12 +149,31 @@ export default function Item({ item }) {
 							variants={[item.variant]}
 							stock={[{ qty: item.stock }]}
 							isCart
+							white
+							hideCartButton
 						/>
 					</Grid>
 				</Grid>
 				<Grid item classes={{ root: classes.chipWrapper }}>
 					<Chip label={`$${item.variant.price}`} />
 				</Grid>
+				{item.subscription ? (
+					<Grid item>
+						<SelectFrequency
+							chip={
+								<Chip
+									classes={{
+										root: classes.chipRoot,
+										label: classes.chipLabel,
+									}}
+									label={`Every ${frequency}`}
+								/>
+							}
+							value={frequency}
+							setValue={handleFrequency}
+						/>
+					</Grid>
+				) : null}
 				<Grid
 					item
 					container
