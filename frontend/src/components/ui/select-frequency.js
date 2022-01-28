@@ -29,7 +29,11 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-export default function SelectFrequency({ value, setValue, chip }) {
+export default function SelectFrequency({
+	value,
+	setValue,
+	chip, // to pass in customized <Chip/>
+}) {
 	const classes = useStyles()
 
 	const frequencies = [

@@ -78,7 +78,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	chipLabel: {
 		[theme.breakpoints.down("xs")]: {
-			fontSize: "1.25rem",
+			fontSize: "1.15rem",
 		},
 	},
 }))
@@ -88,6 +88,7 @@ export default function Item({ item }) {
 	const theme = useTheme()
 	const matchesXS = useMediaQuery(thm => thm.breakpoints.down("xs"))
 
+	// ||"Month" so that if there were no subscription for that item, it'll be set to "Month"
 	const [frequency, setFrequency] = useState(item.subscription || "Month")
 	const { dispatchCart } = useCart()
 
@@ -96,6 +97,7 @@ export default function Item({ item }) {
 	}
 
 	const handleFrequency = newFrequency => {
+		// {newFrequency} === event.target.value as defined in select-frequency.js
 		dispatchCart(changeFrequency(item.variant, newFrequency))
 		setFrequency(newFrequency)
 	}
@@ -105,7 +107,7 @@ export default function Item({ item }) {
 			component: FavoriteIcon,
 			props: {
 				color: theme.palette.secondary.main,
-				size: matchesXS ? 2 : 3,
+				size: matchesXS ? 1.69 : 3,
 				buttonClass: clsx(classes.actionButton, classes.favoriteIcon),
 				variant: item.variant.id,
 			},
@@ -115,14 +117,14 @@ export default function Item({ item }) {
 			props: {
 				color: theme.palette.secondary.main,
 				isCart: item,
-				size: matchesXS ? 2 : 3,
-				cartFrequency: frequency,
+				size: matchesXS ? 1.69 : 3,
+				cartFrequency: frequency, // to maintain the frequency between toggles
 			},
 		},
 		{
 			icon: DeleteIcon,
 			color: theme.palette.error.main,
-			size: matchesXS ? "1.75rem" : "2.5rem",
+			size: matchesXS ? "1.5rem" : "2.5rem",
 			clicked: handleDelete,
 		},
 	]

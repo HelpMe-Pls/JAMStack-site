@@ -43,6 +43,7 @@ export default function cartReducer(state, action) {
 			saveData(newCart) // save to localStorage
 
 			return newCart // save to React's context
+
 		case REMOVE_FROM_CART:
 			const newQty = newCart[existingIndex].qty - action.payload.qty
 
@@ -61,21 +62,26 @@ export default function cartReducer(state, action) {
 			saveData(newCart)
 
 			return newCart
+
 		case CHANGE_FREQUENCY:
 			newCart[existingIndex].subscription = action.payload.frequency
 			saveData(newCart)
 			return newCart
+
 		case TOGGLE_SUBSCRIPTION:
 			const existingSubscription = !!newCart[existingIndex].subscription
 
+			// turn off subscription (the item is still in the cart)
 			if (existingSubscription) {
 				delete newCart[existingIndex].subscription
 			} else {
+				// turn it on (with the same value of the last toggle)
 				newCart[existingIndex].subscription = action.payload.frequency
 			}
 
 			saveData(newCart)
 			return newCart
+
 		case CLEAR_CART:
 			localStorage.removeItem("cart")
 
