@@ -35,7 +35,6 @@ const useStyles = makeStyles(theme => ({
 	actionWrapper: {
 		height: "3rem",
 		width: "3rem",
-		marginBottom: -8,
 		[theme.breakpoints.down("xs")]: {
 			height: "2rem",
 			width: "2rem",
@@ -59,14 +58,28 @@ const useStyles = makeStyles(theme => ({
 	},
 	actionButton: {
 		[theme.breakpoints.down("xs")]: {
-			padding: "5px 6px 15px",
+			padding: "12px 6px",
 		},
 		"&:hover": {
 			backgroundColor: "transparent",
 		},
 	},
+	chipRoot: {
+		marginLeft: "1rem",
+		"&:hover": {
+			cursor: "pointer",
+		},
+	},
 	actionContainer: {
 		marginBottom: "-0.5rem",
+	},
+	favoriteIcon: {
+		marginTop: 2,
+	},
+	chipLabel: {
+		[theme.breakpoints.down("xs")]: {
+			fontSize: "1.25rem",
+		},
 	},
 }))
 
@@ -154,26 +167,33 @@ export default function Item({ item }) {
 						/>
 					</Grid>
 				</Grid>
-				<Grid item classes={{ root: classes.chipWrapper }}>
-					<Chip label={`$${item.variant.price}`} />
-				</Grid>
-				{item.subscription ? (
+				<Grid
+					item
+					container
+					alignItems="center"
+					classes={{ root: classes.chipWrapper }}
+				>
 					<Grid item>
-						<SelectFrequency
-							chip={
-								<Chip
-									classes={{
-										root: classes.chipRoot,
-										label: classes.chipLabel,
-									}}
-									label={`Every ${frequency}`}
-								/>
-							}
-							value={frequency}
-							setValue={handleFrequency}
-						/>
+						<Chip label={`$${item.variant.price}`} />
 					</Grid>
-				) : null}
+					{item.subscription ? (
+						<Grid item>
+							<SelectFrequency
+								chip={
+									<Chip
+										classes={{
+											root: classes.chipRoot,
+											label: classes.chipLabel,
+										}}
+										label={`Every ${frequency}`}
+									/>
+								}
+								value={frequency}
+								setValue={handleFrequency}
+							/>
+						</Grid>
+					) : null}
+				</Grid>
 				<Grid
 					item
 					container
@@ -185,7 +205,7 @@ export default function Item({ item }) {
 							variant="body1"
 							classes={{ root: classes.id }}
 						>
-							ID:
+							ID:{" "}
 							{matchesXS
 								? item.variant.id.slice() // trick to display ID at full length
 								: item.variant.id}

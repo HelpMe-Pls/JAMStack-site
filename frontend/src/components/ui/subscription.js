@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 			fontSize: "3.25rem",
 		},
 		[theme.breakpoints.down("xs")]: {
-			fontSize: "2rem",
+			fontSize: "1.69rem",
 		},
 	},
 	dialog: {
@@ -111,7 +111,7 @@ export default function Subscription({
 			dispatchFeedback(
 				setSnackbar({
 					status: "error",
-					message: "You must be logged in to create a subscription.",
+					message: "You must be LOGGED IN to create a subscription.",
 				})
 			)
 		} else {
@@ -152,6 +152,7 @@ export default function Subscription({
 							<QtyButton
 								stock={stock}
 								selectedVariant={selectedVariant}
+								// explanation in lecture 425 @3:07
 								override={{ value: qty, setValue: setQty }}
 								white
 								round
@@ -183,7 +184,7 @@ export default function Subscription({
 							onClick={handleCart}
 							color="secondary"
 							classes={{ root: classes.cartButton }}
-							disabled={qty === 0}
+							disabled={qty === 0} // disabled for out of stock products
 						>
 							<Typography
 								variant="h1"

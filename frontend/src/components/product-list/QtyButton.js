@@ -87,7 +87,7 @@ export default function QtyButton({
 	white,
 	hideCartButton, // for "subscription" button
 	round,
-	override,
+	override, // for cart's quantity in "subscription"
 }) {
 	const classes = useStyles({ white, round })
 
@@ -103,6 +103,7 @@ export default function QtyButton({
 
 	if (override) {
 		setQty = val => {
+			// {val} is the {qty} from subscription.js
 			override.setValue(val)
 			setQtyState(val)
 		}

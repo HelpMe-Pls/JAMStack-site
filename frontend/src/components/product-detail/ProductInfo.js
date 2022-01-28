@@ -65,6 +65,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	name: {
 		color: "#fff",
+		[theme.breakpoints.down("xs")]: {
+			fontSize: "4rem",
+		},
 	},
 	reviewButton: {
 		textTransform: "none",

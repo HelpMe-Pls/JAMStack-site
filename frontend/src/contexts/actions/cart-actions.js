@@ -6,10 +6,10 @@ import {
 	CLEAR_CART,
 } from "./action-types"
 
-export const addToCart = (variant, qty, name, stock) => ({
+export const addToCart = (variant, qty, name, stock, subscription) => ({
 	// {stock} is from Apollo, not from the {variant}, so we have to explicitly list it here to be able to access it
 	type: ADD_TO_CART,
-	payload: { variant, qty, name, stock },
+	payload: { variant, qty, name, stock, subscription },
 })
 
 export const removeFromCart = (variant, qty) => ({
