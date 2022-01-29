@@ -50,6 +50,7 @@ module.exports = {
 						currency: "usd",
 						customer: subscription.user.stripeID,
 						payment_method: paymentMethod.id,
+						// last 2 fields are for subscription's automatic charges
 						off_session: true,
 						confirm: true,
 					});
@@ -78,7 +79,6 @@ module.exports = {
 						subscription: subscription.id,
 					});
 
-					const frequencies = await strapi.services.order.frequency();
 					const confirmation =
 						await strapi.services.order.confirmationEmail(order);
 
@@ -88,6 +88,8 @@ module.exports = {
 						html: confirmation,
 					});
 
+					// update "next_delivery" date for consecutive deliveries
+					const frequencies = await strapi.services.order.frequency();
 					const frequency = frequencies.find(
 						(option) => option.value === subscription.frequency
 					);
@@ -95,8 +97,8 @@ module.exports = {
 					await strapi.services.subscription.update(
 						{ id: subscription.id },
 						{
-							next_delivery: frequency.delivery(),
 							last_delivery: new Date(),
+							next_delivery: frequency.delivery(),
 						}
 					);
 				} catch (error) {
