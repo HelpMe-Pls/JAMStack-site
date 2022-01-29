@@ -147,12 +147,35 @@ module.exports = {
 			orderCustomer = GUEST_ID;
 		}
 
+		const frequencies = await strapi.services.order.frequency();
+
 		await Promise.all(
 			// creates an isolated async-await block to validate & set the order
 			items.map(async (clientItem) => {
 				const serverItem = await strapi.services.variant.findOne({
 					id: clientItem.variant.id,
 				});
+
+				if (clientItem.subscription) {
+					const frequency = frequencies.find(
+						(option) => option.label === clientItem.subscription
+					);
+
+					await strapi.services.subscription.create({
+						user: orderCustomer,
+						variant: clientItem.variant.id,
+						name: clientItem.name,
+						frequency: frequency.value,
+						last_delivery: new Date(),
+						next_delivery: frequency.delivery(),
+						quantity: clientItem.qty,
+						paymentMethod,
+						shippingAddress,
+						billingAddress,
+						shippingInfo,
+						billingInfo,
+					});
+				}
 
 				await strapi.services.variant.update(
 					{ id: clientItem.variant.id },

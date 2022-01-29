@@ -53,6 +53,7 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	paymentContainer: {
+		height: "100%",
 		borderLeft: ({ checkout }) => (checkout ? "0px" : "4px solid #fff"),
 		display: ({ checkout, selectedStep, stepNumber }) =>
 			checkout && selectedStep !== stepNumber ? "none" : "flex",
@@ -108,6 +109,8 @@ export default function Payments({
 	selectedStep,
 	stepNumber,
 	setCard,
+	hasSubscriptionActive,
+	hasSubscriptionCart,
 }) {
 	const classes = useStyles({ checkout, selectedStep, stepNumber })
 	const stripe = useStripe()
@@ -126,6 +129,26 @@ export default function Payments({
 			: user.paymentMethods[slot]
 
 	const removeCard = () => {
+		const remainingSavedCards = user.paymentMethods.filter(
+			method => method.last4 !== ""
+		)
+		const subscriptionPayment = user.subscriptions.find(
+			subscription => subscription.paymentMethod.last4 === card.last4
+		)
+
+		if (
+			(hasSubscriptionActive && remainingSavedCards.length === 1) ||
+			subscriptionPayment
+		) {
+			dispatchFeedback(
+				setSnackbar({
+					status: "warning",
+					message:
+						"You cannot remove your last card with an active subscription. Please add another card first.",
+				})
+			)
+			return
+		}
 		setLoading(true)
 
 		axios
@@ -175,7 +198,7 @@ export default function Payments({
 	const handleCardChange = async event => {
 		if (event.complete) {
 			const cardElmt = elements.getElement(CardElement)
-			const { error, paymentMethod } = await stripe.createPaymentMethod({
+			const { paymentMethod } = await stripe.createPaymentMethod({
 				type: "card",
 				card: cardElmt,
 			})
@@ -326,11 +349,11 @@ export default function Payments({
 										disabled={
 											// already exists a saved card
 											user.paymentMethods[slot].last4 !==
-											""
+												"" || hasSubscriptionCart
 										}
 										checked={
 											user.paymentMethods[slot].last4 !==
-											""
+												"" || hasSubscriptionCart
 												? true // already exists a saved card
 												: saveCard
 										}

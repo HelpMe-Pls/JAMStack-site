@@ -81,16 +81,18 @@ module.exports = {
 
 		// sanitize then manually update favorite & subscription
 		let newUser = { ...sanitizeUser(user) };
+
 		const favorites = await strapi.services.favorite.find({ user });
 		newUser.favorites = favorites.map((favorite) => ({
 			id: favorite.id,
 			variant: favorite.variant.id,
 		}));
-		// const subscriptions = await strapi.services.subscription.find({ user });
-		// newUser.subscriptions = subscriptions.map((subscription) => {
-		// 	delete subscription.user;
-		// 	return subscription;
-		// });
+
+		const subscriptions = await strapi.services.subscription.find({ user });
+		newUser.subscriptions = subscriptions.map((subscription) => {
+			delete subscription.user; // coz we already sending back the same user
+			return subscription;
+		});
 
 		ctx.body = newUser;
 	},

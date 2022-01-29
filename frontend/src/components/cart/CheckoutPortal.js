@@ -15,6 +15,8 @@ import Confirmation from "./Confirmation"
 import ThankYou from "./ThankYou"
 import validate from "../ui/validate"
 
+import { useCart } from "../../contexts"
+
 const useStyles = makeStyles(theme => ({
 	stepContainer: {
 		width: "40rem",
@@ -45,6 +47,10 @@ const stripePromise = loadStripe(process.env.GATSBY_STRIPE_PK)
 export default function CheckoutPortal({ user }) {
 	const classes = useStyles()
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
+
+	const { cart } = useCart()
+	const hasSubscriptionCart = cart.some(item => item.subscription)
+	const hasSubscriptionActive = user.subscriptions.length > 0
 
 	const [selectedStep, setSelectedStep] = useState(0)
 
@@ -89,7 +95,7 @@ export default function CheckoutPortal({ user }) {
 	// for <Payments/> tab
 	const [cardSlot, setCardSlot] = useState(0)
 	const [card, setCard] = useState({ brand: "", last4: "" })
-	const [saveCard, setSaveCard] = useState(false)
+	const [saveCard, setSaveCard] = useState(hasSubscriptionCart)
 	const [cardError, setCardError] = useState(true)
 
 	const [errors, setErrors] = useState({})
@@ -236,6 +242,8 @@ export default function CheckoutPortal({ user }) {
 					setSaveCard={setSaveCard}
 					setCardError={setCardError}
 					selectedStep={selectedStep}
+					hasSubscriptionCart={hasSubscriptionCart}
+					hasSubscriptionActive={hasSubscriptionActive}
 					checkout
 				/>
 			),

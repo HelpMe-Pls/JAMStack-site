@@ -194,7 +194,7 @@ export default function OrderDetails({ orders, open, setOpen }) {
 						key={price.label}
 						item
 						container
-						justify="space-between"
+						justifyContent="space-between"
 						classes={{ root: classes.prices }}
 					>
 						<Grid item>

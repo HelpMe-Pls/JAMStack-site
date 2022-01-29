@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState } from "react"
 import clsx from "clsx"
 import Grid from "@material-ui/core/Grid"
 import Dialog from "@material-ui/core/Dialog"
@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 			fontSize: "3.25rem",
 		},
 		[theme.breakpoints.down("xs")]: {
-			fontSize: "2rem",
+			fontSize: "1.69rem",
 		},
 	},
 	dialog: {
@@ -107,14 +107,13 @@ export default function Subscription({
 			return
 		}
 
-		if (user.username === "Guest") {
+		if (user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536") {
 			dispatchFeedback(
 				setSnackbar({
 					status: "error",
-					message: "You must be logged in to create a subscription.",
+					message: "You must be LOGGED IN to create a subscription.",
 				})
 			)
-			return
 		} else {
 			setOpen(true)
 		}
@@ -131,8 +130,8 @@ export default function Subscription({
 				</span>
 			</IconButton>
 			<Dialog
-				fullScreen={matchesXS}
 				fullWidth
+				fullScreen={matchesXS}
 				maxWidth="md"
 				open={open}
 				onClose={() => setOpen(false)}
@@ -142,7 +141,7 @@ export default function Subscription({
 					<Grid
 						item
 						container
-						justify="space-between"
+						justifyContent="space-between"
 						alignItems="center"
 						classes={{ root: clsx(classes.row, classes.dark) }}
 					>
@@ -153,6 +152,7 @@ export default function Subscription({
 							<QtyButton
 								stock={stock}
 								selectedVariant={selectedVariant}
+								// explanation in lecture 425 @3:07
 								override={{ value: qty, setValue: setQty }}
 								white
 								round
@@ -164,7 +164,7 @@ export default function Subscription({
 						item
 						container
 						alignItems={matchesXS ? "flex-start" : "center"}
-						justify="space-between"
+						justifyContent="space-between"
 						direction={matchesXS ? "column" : "row"}
 						classes={{ root: clsx(classes.row, classes.light) }}
 					>
@@ -184,7 +184,7 @@ export default function Subscription({
 							onClick={handleCart}
 							color="secondary"
 							classes={{ root: classes.cartButton }}
-							disabled={qty === 0}
+							disabled={qty === 0} // disabled for out of stock products
 						>
 							<Typography
 								variant="h1"

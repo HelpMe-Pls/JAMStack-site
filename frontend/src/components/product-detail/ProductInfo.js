@@ -8,9 +8,8 @@ import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 
 import Rating from "../home/Rating"
-import subscription from "../../images/subscription.svg"
 import Favorite from "../ui/favorite"
-// import Subscription from "../ui/subscription"
+import Subscription from "../ui/subscription"
 import Sizes from "../product-list/Sizes"
 import Swatches from "../product-list/Swatches"
 import QtyButton from "../product-list/QtyButton"
@@ -66,6 +65,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	name: {
 		color: "#fff",
+		[theme.breakpoints.down("xs")]: {
+			fontSize: "4rem",
+		},
 	},
 	reviewButton: {
 		textTransform: "none",
@@ -218,10 +220,13 @@ export default function ProductInfo({
 					/>
 				</Grid>
 				<Grid item classes={{ root: classes.subscriptionWrapper }}>
-					<img
-						src={subscription}
-						alt="add item to subscriptions"
-						className={classes.icon}
+					<Subscription
+						stock={stock}
+						variant={variants[selectedVariant]}
+						name={name.split(" ")[0]}
+						selectedVariant={selectedVariant}
+						size={4}
+						noPadding
 					/>
 				</Grid>
 			</Grid>
