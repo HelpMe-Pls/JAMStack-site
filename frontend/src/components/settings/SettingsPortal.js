@@ -11,7 +11,7 @@ import useResizeAware from "react-resize-aware"
 import Settings from "./Settings"
 import OrderHistory from "./OrderHistory"
 import Favorites from "./Favorites"
-// import Subscriptions from "./Subscriptions"
+import Subscriptions from "./Subscriptions"
 import { useUser } from "../../contexts"
 import { setUser } from "../../contexts/actions"
 
@@ -151,7 +151,7 @@ export default function SettingsPortal() {
 		{
 			label: "Subscriptions",
 			icon: subscriptionIcon,
-			// component: Subscriptions,
+			component: Subscriptions,
 		},
 	]
 
@@ -159,7 +159,7 @@ export default function SettingsPortal() {
 		if (selectedSetting !== setting) {
 			setSelectedSetting(setting)
 		} else {
-			setSelectedSetting(null) // second click or at initial render
+			setSelectedSetting(null) // go back to SettingsPortal from a Setting or at initial render
 		}
 	}
 
@@ -189,7 +189,7 @@ export default function SettingsPortal() {
 					height:
 						selectedSetting === button.label
 							? matchesMD && button.large
-								? "120rem"
+								? "120rem" // so that there's enough space for 4 sections to be on top of each other in <Settings/>
 								: "60rem"
 							: buttonHeight, // original height BEFORE navigating into <Settings/>
 

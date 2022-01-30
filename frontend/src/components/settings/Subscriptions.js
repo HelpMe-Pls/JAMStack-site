@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect } from "react"
 import axios from "axios"
 import clsx from "clsx"
 import Chip from "@material-ui/core/Chip"
@@ -13,10 +13,10 @@ import QtyButton from "../product-list/QtyButton"
 import DeleteIcon from "../../images/Delete"
 import pauseIcon from "../../images/pause.svg"
 
-import { UserContext, FeedbackContext } from "../../contexts"
+import { useUser, useFeedback } from "../../contexts"
 import { setSnackbar } from "../../contexts/actions"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	bold: {
 		fontWeight: 600,
 	},
@@ -47,10 +47,11 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+//TODO: implement delete subscriptions feature
 export default function Subscriptions({ setSelectedSetting }) {
 	const classes = useStyles()
-	const { user } = useContext(UserContext)
-	const { dispatchFeedback } = useContext(FeedbackContext)
+	const { user } = useUser()
+	const { dispatchFeedback } = useFeedback()
 	const [subscriptions, setSubscriptions] = useState([])
 
 	useEffect(() => {
@@ -73,6 +74,7 @@ export default function Subscriptions({ setSelectedSetting }) {
 
 	const createData = data =>
 		data.map(
+			// destructuring
 			({
 				shippingInfo,
 				shippingAddress,
@@ -81,7 +83,6 @@ export default function Subscriptions({ setSelectedSetting }) {
 				paymentMethod,
 				name,
 				variant,
-				quantity,
 				frequency,
 				next_delivery,
 				id,
@@ -94,10 +95,10 @@ export default function Subscriptions({ setSelectedSetting }) {
 					paymentMethod,
 				},
 				item: { name, variant },
-				quantity: { quantity, variant, name },
+				quantity: { variant, name },
 				frequency,
 				next_delivery,
-				total: variant.price * 1.075,
+				total: variant.price * 1.069,
 				id,
 			})
 		)
@@ -172,7 +173,7 @@ export default function Subscriptions({ setSelectedSetting }) {
 			renderCell: ({ value }) => (
 				<QtyButton
 					stock={[{ qty: value.variant.qty }]}
-					variant={value.variant}
+					variants={value.variant}
 					selectedVariant={0}
 					name={value.name}
 					white
@@ -197,7 +198,8 @@ export default function Subscriptions({ setSelectedSetting }) {
 			field: "next_delivery",
 			headerName: "Next Order",
 			width: 250,
-			renderCell: ({ value }) => new Date(value).toLocaleDateString(),
+			renderCell: ({ value }) =>
+				new Date(value).toLocaleDateString("en-GB"),
 		},
 		{
 			field: "total",

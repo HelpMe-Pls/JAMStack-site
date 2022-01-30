@@ -18,6 +18,9 @@ const useStyles = makeStyles(theme => ({
 	container: {
 		height: "10rem",
 	},
+	subscriptionChip: {
+		marginTop: "0.5rem",
+	},
 }))
 
 export default function OrderDetailItem({ item }) {
@@ -43,7 +46,7 @@ export default function OrderDetailItem({ item }) {
 			</Grid>
 			<Grid item classes={{ root: classes.itemInfo }}>
 				<Typography variant="body2">
-					{item.name} - ×{item.qty}
+					{item.name} × {item.qty}
 				</Typography>
 				{item.variant.style ? (
 					<Typography variant="body2">
@@ -55,10 +58,22 @@ export default function OrderDetailItem({ item }) {
 						Size: {item.variant.size}
 					</Typography>
 				) : null}
-				<Chip
-					label={`$${item.variant.price}`}
-					classes={{ root: classes.chipRoot }}
-				/>
+				<Grid container direction="column">
+					<Grid item>
+						<Chip
+							label={`$${item.variant.price}`}
+							classes={{ root: classes.chipRoot }}
+						/>
+					</Grid>
+					{item.subscription ? (
+						<Grid item classes={{ root: classes.subscriptionChip }}>
+							<Chip
+								label={`Every ${item.subscription}`}
+								classes={{ root: classes.chipRoot }}
+							/>
+						</Grid>
+					) : null}
+				</Grid>
 			</Grid>
 		</Grid>
 	)
