@@ -198,7 +198,8 @@ export default function Subscriptions({ setSelectedSetting }) {
 			field: "next_delivery",
 			headerName: "Next Order",
 			width: 250,
-			renderCell: ({ value }) => new Date(value).toLocaleDateString(),
+			renderCell: ({ value }) =>
+				new Date(value).toLocaleDateString("en-GB"),
 		},
 		{
 			field: "total",
