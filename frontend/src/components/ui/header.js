@@ -122,7 +122,6 @@ export default function Header({ categories }) {
 		</Tabs>
 	)
 
-	//TODO: add Login to this
 	const drawer = (
 		<SwipeableDrawer
 			open={drawerOpen}

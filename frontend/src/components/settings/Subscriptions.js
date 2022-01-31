@@ -47,7 +47,7 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-//TODO: implement delete subscriptions feature
+//TODO: implement delete subscriptions & frequency change features
 export default function Subscriptions({ setSelectedSetting }) {
 	const classes = useStyles()
 	const { user } = useUser()
