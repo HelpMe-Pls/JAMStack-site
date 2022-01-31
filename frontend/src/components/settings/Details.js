@@ -115,7 +115,7 @@ export default function Details({
 	billingValues,
 	setBillingValues,
 	checkout,
-	noSlots,
+	noSlots, // for <Settings/>
 	selectedStep,
 	stepNumber,
 }) {
@@ -163,12 +163,12 @@ export default function Details({
 		]
 	}
 
-	const handleValues = values => {
+	const handleValues = inp => {
 		if (saveForBilling === slot && !noSlots) {
-			setBillingValues(values)
+			setBillingValues(inp)
 		}
 
-		setValues(values)
+		setValues(inp)
 	}
 
 	useEffect(() => {

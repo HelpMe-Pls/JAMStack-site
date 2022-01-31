@@ -14,6 +14,8 @@ import Rating from "./Rating"
 import { useQuery } from "@apollo/client"
 import { GET_DETAILS } from "../../apollo/queries"
 
+import { Link } from "gatsby"
+
 const useStyles = makeStyles(theme => ({
 	featured: {
 		height: "20rem",
@@ -102,6 +104,8 @@ export default function FeaturedProducts({
 		? "center"
 		: "flex-end"
 
+	const hasStyles = node.variants.some(variant => variant.style !== null)
+
 	const { data } = useQuery(GET_DETAILS, {
 		variables: { id: node.strapiId },
 	})
@@ -177,7 +181,15 @@ export default function FeaturedProducts({
 					/>
 				</Grid>
 				<Grid item classes={{ root: classes.exploreContainer }}>
-					<Button classes={{ root: classes.exploreButton }}>
+					<Button
+						component={Link}
+						to={`/${node.category.name.toLowerCase()}/${node.name
+							.split(" ")[0]
+							.toLowerCase()}${
+							hasStyles ? `?style=${node.variants[1].style}` : ""
+						}`}
+						classes={{ root: classes.exploreButton }}
+					>
 						<Typography variant="h5">Details</Typography>
 						<img
 							src={explore}

@@ -133,7 +133,14 @@ export default function Header({ categories }) {
 			classes={{ paper: classes.drawer }}
 		>
 			<List disablePadding>
-				{routes.map((route, i) => (
+				{[
+					...routes,
+					{
+						name: "My Account",
+						strapiId: "account",
+						link: "/account",
+					},
+				].map((route, i) => (
 					<ListItem
 						selected={activeIndex() === i}
 						component={Link}

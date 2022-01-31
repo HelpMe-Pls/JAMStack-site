@@ -35,8 +35,12 @@ export default function FeaturedProductions() {
 				nodes {
 					name
 					strapiId
+					category {
+						name
+					}
 					variants {
 						price
+						style
 						images {
 							url
 						}

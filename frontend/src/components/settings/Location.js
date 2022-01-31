@@ -84,6 +84,27 @@ export default function Location({
 	const [loading, setLoading] = useState(false)
 	const { dispatchFeedback } = useFeedback()
 
+	const fields = {
+		street: {
+			placeholder: "Street",
+			helperText: "invalid address",
+			startAdornment: <img src={streetAdornment} alt="street" />,
+		},
+		zip: {
+			placeholder: "Zip Code",
+			helperText: "invalid zip code",
+			startAdornment: <img src={zipAdornment} alt="zip code" />,
+		},
+	}
+
+	const handleValues = inp => {
+		if (saveForBilling === slot && !noSlots) {
+			setBillingValues(inp)
+		}
+
+		setValues(inp)
+	}
+
 	const getLocation = () => {
 		setLoading(true)
 
@@ -97,7 +118,11 @@ export default function Location({
 				const { place_name, admin_name1 } =
 					response.data.records[0].fields
 
-				setValues({ ...values, city: place_name, state: admin_name1 }) // spread to set street & zipcode as well
+				handleValues({
+					...values,
+					city: place_name,
+					state: admin_name1,
+				}) // spread to set street & zipcode as well
 			})
 			.catch(error => {
 				setLoading(false)
@@ -113,13 +138,6 @@ export default function Location({
 	}
 
 	useEffect(() => {
-		if (noSlots || user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536")
-			//TODO: try to replace this with !user.jwt
-			return
-		setValues(user.locations[slot])
-	}, [slot])
-
-	useEffect(() => {
 		if (!checkout) {
 			// for Settings: to check if there's ACTUAL changes in the input fields by comparing the current input with the info in localStorage
 			const changed = Object.keys(user.locations[slot]).some(
@@ -130,14 +148,21 @@ export default function Location({
 		}
 
 		if (values.zip.length === 5) {
-			if (values.city) return
+			if (values.city) return // in case the user typed in the zipcode first then street after, we already got the {values.city}, so "return" here to not have the getLocation() re-executed for every character typed in the "street"
 
 			getLocation()
 		} else if (values.zip.length < 5 && values.city) {
 			// to reset the <Chip/> when the user types in a new zipcode
-			setValues({ ...values, city: "", state: "" })
+			handleValues({ ...values, city: "", state: "" })
 		}
 	}, [values])
+
+	useEffect(() => {
+		if (noSlots || user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536")
+			//TODO: try to replace this with !user.jwt
+			return
+		setValues(user.locations[slot])
+	}, [slot])
 
 	useEffect(() => {
 		if (noSlots) {
@@ -157,19 +182,6 @@ export default function Location({
 			setBillingValues(values)
 		}
 	}, [saveForBilling])
-
-	const fields = {
-		street: {
-			placeholder: "Street",
-			helperText: "invalid address",
-			startAdornment: <img src={streetAdornment} alt="street" />,
-		},
-		zip: {
-			placeholder: "Zip Code",
-			helperText: "invalid zip code",
-			startAdornment: <img src={zipAdornment} alt="zip code" />,
-		},
-	}
 
 	return (
 		<Grid
@@ -203,11 +215,7 @@ export default function Location({
 							? billingValues
 							: values
 					}
-					setValues={
-						saveForBilling === slot && !noSlots
-							? setBillingValues
-							: setValues
-					}
+					setValues={handleValues}
 					errors={errors}
 					setErrors={setErrors}
 					isWhite

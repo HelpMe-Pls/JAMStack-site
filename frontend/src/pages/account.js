@@ -12,7 +12,7 @@ export default function Account() {
 	return (
 		<Layout>
 			{user.jwt && user.onboarding ? (
-				<SettingsPortal /> // {user.onboarding} only available AFTER we rendered the <Complete/>
+				<SettingsPortal /> // {user.onboarding} only available AFTER we rendered the <Complete/> or the user is (still) logged in
 			) : (
 				<AuthPortal />
 			)}
