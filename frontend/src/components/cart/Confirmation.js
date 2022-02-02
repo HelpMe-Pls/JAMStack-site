@@ -261,10 +261,7 @@ export default function Confirmation({
 			</Grid>
 		</>
 	)
-	//TODO: add a handler to redirect user to AuthPortal right after they clicked on "place order" button (if they're not logged in), then after they logged in, have that product in their cart
-	// Hint: Already got it in backend\api\order\controllers\order.js
-	// maybe the checkout tab has enough info that we don't need to force the user to log in to make a purchase
-	// the only actual difference between a logged in user and a guest is that the logged in user has the privileges to save a card
+
 	const handleOrder = async () => {
 		setLoading(true)
 		const savedCard = user.jwt && user.paymentMethods[cardSlot].last4 !== ""

@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
 		width: "4rem",
 	},
 	"@global": {
-		//TODO: convert to JSS
 		".MuiDataGrid-root .MuiDataGrid-colCellTitle": {
 			fontWeight: 600,
 		},
@@ -35,22 +34,22 @@ const useStyles = makeStyles(theme => ({
 			backgroundColor: "transparent",
 		},
 		".MuiDataGrid-root .MuiDataGrid-cell": {
-			"white-space": "pre-wrap",
-			"max-height": "100% !important",
-			"line-height": "initial !important",
+			whiteSpace: "pre-wrap",
+			maxHeight: "100% !important",
+			lineHeight: "initial !important",
 			padding: "1rem",
-			"padding-right": "calc(1rem + 26px)", // to take the Title's dropdown button into account
+			paddingRight: "calc(1rem + 26px)", // to take the Title's dropdown button into account
 			display: "flex",
-			"align-items": "center",
+			alignItems: "center",
 			justifyContent: "center",
-			"font-weight": 600,
-			"border-bottom": "2px solid #fff",
+			fontWeight: 600,
+			borderBottom: "2px solid #fff",
 		},
 		".MuiDataGrid-root .MuiDataGrid-row": {
-			"max-height": "100% !important",
+			maxHeight: "100% !important",
 		},
 		".MuiDataGrid-root .MuiDataGrid-footer": {
-			"margin-top": "-8.069rem",
+			marginTop: "-8.069rem",
 		},
 		".MuiTablePagination-caption": {
 			color: "#fff",

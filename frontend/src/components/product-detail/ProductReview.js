@@ -125,16 +125,34 @@ export default function ProductReview({
 				// the response only contains the updated review (SINGULAR)
 				setLoading(null)
 
-				dispatchFeedback(
-					setSnackbar({
-						status: "success",
-						message: `${
-							option === "delete" //TODO: add Edit option and set its message to "Review updated successfully"
-								? "Review Deleted"
-								: "Product Reviewed"
-						} Successfully`,
-					})
-				)
+				switch (option) {
+					case "delete":
+						dispatchFeedback(
+							setSnackbar({
+								status: "success",
+								message: "Review DELETED successfully",
+							})
+						)
+						break
+
+					case "edit":
+						dispatchFeedback(
+							setSnackbar({
+								status: "info",
+								message: "Review UPDATED successfully",
+							})
+						)
+						break
+
+					default:
+						dispatchFeedback(
+							setSnackbar({
+								status: "success",
+								message: "Product Reviewed Successfully",
+							})
+						)
+				}
+
 				let newReviews = [...reviews]
 				const reviewIndex = newReviews.indexOf(foundForEdit)
 
@@ -157,14 +175,36 @@ export default function ProductReview({
 				setLoading(null)
 				console.error(error)
 
-				dispatchFeedback(
-					setSnackbar({
-						status: "error",
-						message: `There was a problem ${
-							option === "delete" ? "removing" : "leaving"
-						} your review. Please try again later.`,
-					})
-				)
+				switch (option) {
+					case "delete":
+						dispatchFeedback(
+							setSnackbar({
+								status: "error",
+								message:
+									"There was a problem deleting your review. Please try again later.",
+							})
+						)
+						break
+
+					case "edit":
+						dispatchFeedback(
+							setSnackbar({
+								status: "error",
+								message:
+									"There was a problem editing your review. Please try again later.",
+							})
+						)
+						break
+
+					default:
+						dispatchFeedback(
+							setSnackbar({
+								status: "error",
+								message:
+									"There was a problem leaving your review. Please try again later.",
+							})
+						)
+				}
 			})
 	}
 
@@ -259,6 +299,17 @@ export default function ProductReview({
 					<Grid item>
 						{loading === "leave-review" ? (
 							<CircularProgress />
+						) : foundForEdit ? (
+							<Button
+								onClick={() => handleReview("edit")}
+								disabled={buttonDisabled}
+								variant="contained"
+								color="primary"
+							>
+								<span className={classes.reviewButtonText}>
+									Edit Review
+								</span>
+							</Button>
 						) : (
 							<Button
 								onClick={handleReview}
@@ -267,7 +318,7 @@ export default function ProductReview({
 								color="primary"
 							>
 								<span className={classes.reviewButtonText}>
-									{foundForEdit ? "Edit" : "Leave"} Review
+									Leave Review
 								</span>
 							</Button>
 						)}

@@ -67,17 +67,21 @@ export default function Favorite({
 			.then(response => {
 				setLoading(false)
 
-				dispatchFeedback(
-					setSnackbar({
-						//TODO: set status: "info" for Deleted
-						status: "success",
-						message: `${
-							existingFavorite ? "Deleted" : "Added"
-						} Product ${
-							existingFavorite ? "From" : "To"
-						} Favorites`,
-					})
-				)
+				if (existingFavorite) {
+					dispatchFeedback(
+						setSnackbar({
+							status: "info",
+							message: "DELETED product from Favorites",
+						})
+					)
+				} else {
+					dispatchFeedback(
+						setSnackbar({
+							status: "success",
+							message: "ADDED product to Favorites",
+						})
+					)
+				}
 
 				let newFavorites = [...user.favorites]
 

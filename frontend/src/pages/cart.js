@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-//TODO: add a handler to redirect user to AuthPortal right after they clicked on "Add to cart" button (if they're not logged in), then after they logged in, have that product in their cart
 export default function Cart() {
 	const classes = useStyles()
 	const { user } = useUser()
@@ -44,7 +43,9 @@ export default function Cart() {
 						align="center"
 						classes={{ root: classes.name }}
 					>
-						{user.username}'s Cart
+						{user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536"
+							? "Your cart"
+							: `${user.username}'s Cart`}
 					</Typography>
 				</Grid>
 				<Grid item container>
