@@ -7,7 +7,7 @@ import { useUser } from "../../contexts"
 
 import ProductReview from "./ProductReview"
 
-import { StyledPagination } from "../../templates/ProductList"
+import { StyledPagination } from "../../templates/StyledPagination"
 
 import { GET_REVIEWS } from "../../apollo/queries"
 

@@ -6,11 +6,11 @@ import IconButton from "@material-ui/core/IconButton"
 import { makeStyles } from "@material-ui/core/styles"
 
 import OrderDetails from "./OrderDetails"
-import SettingsGrid from "./SettingsGrid"
+import SettingsGrid from "../SettingsGrid"
 
-import detailsIcon from "../../images/details.svg"
+import detailsIcon from "../../../images/details.svg"
 
-import { useUser } from "../../contexts"
+import { useUser } from "../../../contexts"
 
 const useStyles = makeStyles(() => ({
 	item: {

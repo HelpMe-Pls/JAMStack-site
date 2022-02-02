@@ -7,15 +7,15 @@ import CircularProgress from "@material-ui/core/CircularProgress"
 import Chip from "@material-ui/core/Chip"
 import { makeStyles } from "@material-ui/core/styles"
 
-import Sizes from "../product-list/Sizes"
-import Swatches from "../product-list/Swatches"
-import QtyButton from "../product-list/QtyButton"
-import SettingsGrid from "./SettingsGrid.js"
+import Sizes from "../../product-list/Sizes"
+import Swatches from "../../product-list/Swatches"
+import QtyButton from "../../product-list/QtyButton"
+import SettingsGrid from "../SettingsGrid"
 
-import Delete from "../../images/Delete"
+import Delete from "../../../images/Delete"
 
-import { useFeedback, useUser } from "../../contexts"
-import { setSnackbar, setUser } from "../../contexts/actions"
+import { useFeedback, useUser } from "../../../contexts"
+import { setSnackbar, setUser } from "../../../contexts/actions"
 
 const useStyles = makeStyles(() => ({
 	container: {

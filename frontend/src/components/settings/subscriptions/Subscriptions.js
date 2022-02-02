@@ -7,14 +7,14 @@ import IconButton from "@material-ui/core/IconButton"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 
-import SettingsGrid from "./SettingsGrid"
-import QtyButton from "../product-list/QtyButton"
+import SettingsGrid from "../SettingsGrid"
+import QtyButton from "../../product-list/QtyButton"
 
-import DeleteIcon from "../../images/Delete"
-import pauseIcon from "../../images/pause.svg"
+import DeleteIcon from "../../../images/Delete"
+import pauseIcon from "../../../images/pause.svg"
 
-import { useUser, useFeedback } from "../../contexts"
-import { setSnackbar } from "../../contexts/actions"
+import { useUser, useFeedback } from "../../../contexts"
+import { setSnackbar } from "../../../contexts/actions"
 
 const useStyles = makeStyles(() => ({
 	bold: {

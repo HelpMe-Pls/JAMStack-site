@@ -6,13 +6,13 @@ import Switch from "@material-ui/core/Switch"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 
-import Fields from "../auth/Fields"
-import Slots from "./Slots"
-import { EmailPassword } from "../auth/Login"
+import Fields from "../../auth/Fields"
+import Slots from "../Slots"
+import { EmailPassword } from "../../auth/Login"
 
-import fingerprint from "../../images/fingerprint.svg"
-import NameAdornment from "../../images/NameAdornment"
-import PhoneAdornment from "../../images/PhoneAdornment"
+import fingerprint from "../../../images/fingerprint.svg"
+import NameAdornment from "../../../images/NameAdornment"
+import PhoneAdornment from "../../../images/PhoneAdornment"
 
 const useStyles = makeStyles(theme => ({
 	phoneAdornment: {

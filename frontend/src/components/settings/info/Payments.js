@@ -11,12 +11,12 @@ import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js"
 
-import Slots from "./Slots"
+import Slots from "../Slots"
 
-import { useFeedback, useUser } from "../../contexts"
-import { setSnackbar, setUser } from "../../contexts/actions"
+import { useFeedback, useUser } from "../../../contexts"
+import { setSnackbar, setUser } from "../../../contexts/actions"
 
-import cardIcon from "../../images/card.svg"
+import cardIcon from "../../../images/card.svg"
 
 const useStyles = makeStyles(theme => ({
 	number: {

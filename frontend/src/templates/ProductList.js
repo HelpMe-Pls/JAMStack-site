@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from "react"
 import Fab from "@material-ui/core/Fab"
-import Pagination from "@material-ui/lab/Pagination"
-import PaginationItem from "@material-ui/lab/PaginationItem"
+
 import Grid from "@material-ui/core/Grid"
-import { makeStyles, styled } from "@material-ui/core/styles"
+import { makeStyles } from "@material-ui/core/styles"
 import { graphql } from "gatsby"
 
 import Layout from "../components/ui/layout"
 import DynamicToolbar from "../components/product-list/DynamicToolbar"
 import ListOfProducts from "../components/product-list/ListOfProducts"
+import { StyledPagination } from "./StyledPagination"
 import {
 	alphabetic,
 	time,
@@ -36,26 +36,6 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 }))
-
-//TODO: rename boilerplate.js to StyledPagination.js and move this there, also fix its imports/exports
-export const StyledPagination = props => {
-	// closure
-	const StyledPaginationItem = styled(PaginationItem)(({ theme }) => ({
-		fontFamily: "Montserrat",
-		fontSize: "2rem",
-		color: theme.palette.primary.main,
-		"&.Mui-selected": {
-			color: "#fff",
-		},
-	}))
-
-	return (
-		<Pagination
-			{...props}
-			renderItem={item => <StyledPaginationItem {...item} />}
-		/>
-	)
-}
 
 export const query = graphql`
 	query GetCategorizedProducts($id: String!) {

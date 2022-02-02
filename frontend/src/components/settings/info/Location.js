@@ -7,15 +7,15 @@ import CircularProgress from "@material-ui/core/CircularProgress"
 import Chip from "@material-ui/core/Chip"
 import { makeStyles } from "@material-ui/core/styles"
 
-import Fields from "../auth/Fields"
-import Slots from "./Slots"
+import Fields from "../../auth/Fields"
+import Slots from "../Slots"
 
-import { useFeedback } from "../../contexts"
-import { setSnackbar } from "../../contexts/actions"
+import { useFeedback } from "../../../contexts"
+import { setSnackbar } from "../../../contexts/actions"
 
-import locationIcon from "../../images/location.svg"
-import streetAdornment from "../../images/street-adornment.svg"
-import zipAdornment from "../../images/zip-adornment.svg"
+import locationIcon from "../../../images/location.svg"
+import streetAdornment from "../../../images/street-adornment.svg"
+import zipAdornment from "../../../images/zip-adornment.svg"
 
 const useStyles = makeStyles(theme => ({
 	icon: {

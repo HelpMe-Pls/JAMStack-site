@@ -7,12 +7,12 @@ import { makeStyles } from "@material-ui/core/styles"
 
 import Confirmation from "./Confirmation"
 
-import { useFeedback } from "../../contexts"
-import { setSnackbar, setUser } from "../../contexts/actions"
+import { useFeedback } from "../../../contexts"
+import { setSnackbar, setUser } from "../../../contexts/actions"
 
-import BackwardsIcon from "../../images/BackwardsOutline"
-import editIcon from "../../images/edit.svg"
-import saveIcon from "../../images/save.svg"
+import BackwardsIcon from "../../../images/BackwardsOutline"
+import editIcon from "../../../images/edit.svg"
+import saveIcon from "../../../images/save.svg"
 
 const useStyles = makeStyles(theme => ({
 	icon: {

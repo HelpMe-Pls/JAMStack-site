@@ -11,8 +11,8 @@ import Typography from "@material-ui/core/Typography"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 
-import Fields from "../auth/Fields"
-import { EmailPassword } from "../auth/Login"
+import Fields from "../../auth/Fields"
+import { EmailPassword } from "../../auth/Login"
 
 const useStyles = makeStyles(theme => ({
 	title: {

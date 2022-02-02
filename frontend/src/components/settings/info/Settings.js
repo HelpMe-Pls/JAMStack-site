@@ -10,9 +10,9 @@ import Payments from "./Payments"
 import Location from "./Location"
 import Edit from "./Edit"
 
-import { useUser } from "../../contexts"
+import { useUser } from "../../../contexts"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	bottomRow: {
 		borderTop: "4px solid #fff",
 	},
