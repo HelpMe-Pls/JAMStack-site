@@ -12,7 +12,7 @@ import detailsIcon from "../../images/details.svg"
 
 import { useUser } from "../../contexts"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	item: {
 		height: "100%",
 		width: "100%",

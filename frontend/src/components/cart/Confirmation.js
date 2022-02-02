@@ -158,7 +158,7 @@ export default function Confirmation({
 	)
 
 	const subtotal = cart.reduce(
-		(total, item) => total + item.variant.price * item.qty,
+		(sum, item) => sum + item.variant.price * item.qty,
 		0
 	)
 
@@ -235,7 +235,7 @@ export default function Confirmation({
 	]
 
 	const total = prices.reduce(
-		(total, item) => total + parseFloat(item.value), // toFixed() returns string
+		(sum, item) => sum + parseFloat(item.value), // toFixed() returns string
 		0
 	)
 

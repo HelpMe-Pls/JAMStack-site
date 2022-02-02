@@ -131,7 +131,6 @@ export default function Login({
 	const [loading, setLoading] = useState(false)
 	const [success, setSuccess] = useState(false) // a flag to start the setTimeOut
 
-	// console.log(user)
 	const handleLogin = () => {
 		setLoading(true)
 
@@ -171,14 +170,13 @@ export default function Login({
 			.post(process.env.GATSBY_STRAPI_URL + "/auth/forgot-password", {
 				email: values.email,
 			})
-			.then(response => {
-				//TODO: try to get rid of {response} and replace it with ()
+			.then(() => {
 				setLoading(false)
 				setSuccess(true)
 				dispatchFeedback(
 					setSnackbar({
 						status: "info",
-						message: "Reset Code Sent, please check your email",
+						message: "Reset Code sent, please check your email",
 					})
 				)
 			})

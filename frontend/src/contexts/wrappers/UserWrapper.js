@@ -30,7 +30,6 @@ export function UserWrapper({ children }) {
 						},
 					})
 					.then(response => {
-						// console.log(response)
 						dispatchUser(
 							setUser({
 								// this time the {data} only contains {user}, not the {jwt},

@@ -39,7 +39,6 @@ export default function Favorite({
 		favorite => favorite.variant === variant
 	)
 
-	//TODO: fix all username to be a shorter version of it
 	const handleFavorite = () => {
 		if (user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536") {
 			dispatchFeedback(

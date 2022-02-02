@@ -61,7 +61,7 @@ export default function Reset({ steps, setSelectedStep, dispatchFeedback }) {
 				password: values.password,
 				passwordConfirmation: values.confirmation,
 			})
-			.then(res => {
+			.then(() => {
 				setLoading(false)
 				setSuccess(true)
 
@@ -95,6 +95,7 @@ export default function Reset({ steps, setSelectedStep, dispatchFeedback }) {
 			window.history.replaceState(null, null, window.location.pathname)
 			document.title = window.location.hostname + window.location.pathname
 
+			// then redirect the user to the Login page
 			const login = steps.find(step => step.label === "Login")
 			setSelectedStep(steps.indexOf(login))
 		}, 1690)

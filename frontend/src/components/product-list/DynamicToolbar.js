@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import FunctionContainer from "./FunctionContainer"
 import DescriptionContainer from "./DescriptionContainer"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	toolbar: {
 		width: "95%",
 		height: "auto",

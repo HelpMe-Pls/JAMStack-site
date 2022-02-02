@@ -259,7 +259,7 @@ export default function Favorites({ setSelectedSetting }) {
 			.delete(process.env.GATSBY_STRAPI_URL + `/favorites/${row}`, {
 				headers: { Authorization: `Bearer ${user.jwt}` },
 			})
-			.then(response => {
+			.then(() => {
 				setLoading(null)
 
 				// remove the favorite item from the list

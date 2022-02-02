@@ -67,7 +67,7 @@ export default function Confirmation({
 				identifier: user.email,
 				password: values.password,
 			})
-			.then(response => {
+			.then(() => {
 				axios
 					.post(
 						process.env.GATSBY_STRAPI_URL +
@@ -77,7 +77,7 @@ export default function Confirmation({
 						},
 						{ headers: { Authorization: `Bearer ${user.jwt}` } }
 					)
-					.then(response => {
+					.then(() => {
 						setLoading(false)
 						setDialogOpen(false)
 						dispatchFeedback(
