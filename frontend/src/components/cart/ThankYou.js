@@ -124,7 +124,7 @@ export default function ThankYou({
 					<Grid item>
 						<Button
 							classes={{ root: classes.detailsButton }}
-							//TODO: link Detail to <OrderDetailItem/> or sth
+							//TODO: link Detail to <OrderHistory/> if the user is logged in & hide this btn if it's Guest
 						>
 							<Typography
 								variant="body2"

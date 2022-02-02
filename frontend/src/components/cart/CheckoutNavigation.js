@@ -173,7 +173,7 @@ export default function CheckoutNavigation({
 					}
 				}
 			})
-			.catch(error => {
+			.catch(() => {
 				setLoading(null)
 				dispatchFeedback(
 					setSnackbar({

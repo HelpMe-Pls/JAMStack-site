@@ -273,7 +273,11 @@ export default function CheckoutPortal({ user }) {
 			),
 		},
 		{
-			title: `Thanks, ${user.username.split(" ")[0]}!`,
+			title: `${
+				user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536"
+					? "Thank You ヾ(*⌒∇⌒*)ﾉ`"
+					: `Thanks, ${user.username.split(" ")[0]}!`
+			}`,
 			component: (
 				<ThankYou
 					order={order}

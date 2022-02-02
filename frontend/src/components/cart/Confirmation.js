@@ -162,7 +162,7 @@ export default function Confirmation({
 		0
 	)
 
-	const tax = (subtotal + shipping?.price) * 0.069
+	const tax = (subtotal + shipping?.price) * 0.096
 
 	const firstFields = [
 		{
@@ -249,7 +249,7 @@ export default function Confirmation({
 				item
 				xs={10}
 				classes={{ root: classes.centerText }}
-				zeroMinWidth // to display ... when the field is too long
+				zeroMinWidth // to display "..." when the field is too long
 			>
 				<Typography
 					noWrap
@@ -342,7 +342,13 @@ export default function Confirmation({
 					setOrder(response.data.order)
 
 					setSelectedStep(selectedStep + 1) // navigates to <ThankYou/>
-					//TODO: dispatchFeedback(to check email for order receipt)
+					dispatchFeedback(
+						setSnackbar({
+							status: "success",
+							message:
+								"We got it. Please check your email for order confirmation",
+						})
+					)
 				})
 
 				// error when saving the order to Strapi (i.e. already charged the customer but have failed to save the order to db)

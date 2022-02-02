@@ -277,7 +277,7 @@ export default function Favorites({ setSelectedSetting }) {
 				dispatchFeedback(
 					setSnackbar({
 						status: "info",
-						message: "Product Removed From Favorites.",
+						message: "Product REMOVED From Favorites.",
 					})
 				)
 			})

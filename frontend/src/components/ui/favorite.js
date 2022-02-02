@@ -71,7 +71,7 @@ export default function Favorite({
 					dispatchFeedback(
 						setSnackbar({
 							status: "info",
-							message: "DELETED product from Favorites",
+							message: "REMOVED product from Favorites",
 						})
 					)
 				} else {
