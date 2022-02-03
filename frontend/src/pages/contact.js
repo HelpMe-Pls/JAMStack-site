@@ -7,7 +7,6 @@ import Button from "@material-ui/core/Button"
 import clsx from "clsx"
 import { makeStyles, useTheme } from "@material-ui/core/styles"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
-//import { Link } from "gatsby"
 
 import address from "../images/address.svg"
 import send from "../images/send.svg"

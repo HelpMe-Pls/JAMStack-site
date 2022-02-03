@@ -1,8 +1,9 @@
 import { createTheme } from "@material-ui/core/styles"
 
-//TODO: try blue-ish theme
-const green = "#99B898"
-const darkGreen = "#708670"
+// const green = "#99B898"
+// const darkGreen = "#708670"
+const blue = "#7FB2F0"
+const darkBlue = "#4E7AC7"
 const tan = "#FECEA8"
 const lightRed = "#FF847C"
 const red = "#E84A5F"
@@ -12,10 +13,10 @@ const grey = "#747474"
 const theme = createTheme({
 	palette: {
 		primary: {
-			main: green,
+			main: blue,
 		},
 		secondary: {
-			main: darkGreen,
+			main: darkBlue,
 		},
 		common: {
 			tan,
@@ -30,7 +31,7 @@ const theme = createTheme({
 			fontFamily: "Philosopher",
 			fontStyle: "italic",
 			fontWeight: 700,
-			color: green,
+			color: darkBlue,
 		},
 		h2: {
 			fontFamily: "Montserrat",
@@ -42,7 +43,7 @@ const theme = createTheme({
 			fontFamily: "Montserrat",
 			fontSize: "2rem",
 			fontWeight: 300,
-			color: green,
+			color: blue,
 		},
 		h4: {
 			fontFamily: "Philosopher",
@@ -72,7 +73,7 @@ const theme = createTheme({
 	overrides: {
 		MuiChip: {
 			root: {
-				backgroundColor: darkGreen,
+				backgroundColor: darkBlue,
 			},
 			label: {
 				fontFamily: "Montserrat",
