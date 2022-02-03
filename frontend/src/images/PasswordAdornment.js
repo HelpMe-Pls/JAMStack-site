@@ -3,7 +3,7 @@ import React from "react"
 function Icon({ color }) {
 	return (
 		<svg xmlns="http://www.w3.org/2000/svg" width="19.093" height="25.059">
-			<g fill={color || "#708670"}>
+			<g fill={color || "#4E7AC7"}>
 				<path
 					d="M2.386 22.673h14.32V10.74H2.386zm7.16-8.353a2.387 2.387 0 11-2.387 2.387 2.394 2.394 0 012.387-2.387z"
 					opacity="0.3"

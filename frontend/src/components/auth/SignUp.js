@@ -128,11 +128,11 @@ export default function SignUp({
 			.catch(error => {
 				setLoading(false)
 				console.error(error)
+				const { message } = error.response.data.message[0].messages[0]
 				dispatchFeedback(
 					setSnackbar({
 						status: "error",
-						message:
-							"Sorry, something went wrong creating your account. Please try again soon.",
+						message,
 					})
 				)
 			})

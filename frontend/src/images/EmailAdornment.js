@@ -9,7 +9,7 @@ export default function Icon({ color }) {
 			viewBox="0 0 22 17"
 		>
 			<g
-				stroke={color || "#708670"} // if there's no custom color, use the #708670
+				stroke={color || "#4E7AC7"}
 				strokeLinecap="round"
 				strokeLinejoin="round"
 				strokeWidth="2"
