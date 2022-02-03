@@ -194,6 +194,25 @@ export default function CheckoutNavigation({
 			alignItems="center"
 			classes={{ root: classes.navbar }}
 		>
+			{steps[selectedStep].hasActions &&
+			user.username !== "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" ? (
+				<Grid item>
+					{loading === "save" ? (
+						<CircularProgress />
+					) : (
+						<IconButton
+							classes={{ root: classes.iconButton }}
+							onClick={() => handleAction("save")}
+						>
+							<img
+								src={save}
+								alt="save"
+								className={classes.icon}
+							/>
+						</IconButton>
+					)}
+				</Grid>
+			) : null}
 			<Grid item classes={{ root: classes.back }}>
 				<Button
 					disableRipple
@@ -229,22 +248,6 @@ export default function CheckoutNavigation({
 			user.username !== "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" ? (
 				<Grid item classes={{ root: classes.actions }}>
 					<Grid container>
-						<Grid item>
-							{loading === "save" ? (
-								<CircularProgress />
-							) : (
-								<IconButton
-									classes={{ root: classes.iconButton }}
-									onClick={() => handleAction("save")}
-								>
-									<img
-										src={save}
-										alt="save"
-										className={classes.icon}
-									/>
-								</IconButton>
-							)}
-						</Grid>
 						<Grid item>
 							{loading === "delete" ? (
 								<CircularProgress />

@@ -49,8 +49,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function ThankYou({
-	selectedShipping,
+	user,
 	order,
+	selectedShipping,
 	selectedStep,
 	stepNumber,
 }) {
@@ -121,19 +122,23 @@ export default function ThankYou({
 							)}
 						</Typography>
 					</Grid>
-					<Grid item>
-						<Button
-							classes={{ root: classes.detailsButton }}
-							//TODO: link Detail to <OrderHistory/> if the user is logged in & hide this btn if it's Guest
-						>
-							<Typography
-								variant="body2"
-								classes={{ root: classes.detailsText }}
+					{user.username ===
+					"zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" ? null : (
+						<Grid item>
+							<Button
+								component={Link}
+								to="/account"
+								classes={{ root: classes.detailsButton }}
 							>
-								Details ⮞
-							</Typography>
-						</Button>
-					</Grid>
+								<Typography
+									variant="body2"
+									classes={{ root: classes.detailsText }}
+								>
+									Details ⮞
+								</Typography>
+							</Button>
+						</Grid>
+					)}
 				</Grid>
 			</Grid>
 			<Grid item classes={{ root: classes.shopWrapper }}>

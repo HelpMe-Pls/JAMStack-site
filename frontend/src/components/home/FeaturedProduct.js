@@ -132,8 +132,6 @@ export default function FeaturedProducts({
 				}
 				classes={{ root: classes.frame }}
 			>
-				{/* //TODO: add extra labour to display specific products, 
-							consider adding tags to the product variants that you want to display, avoid checking for every iteration like the promo's carousel*/}
 				<img
 					src={
 						process.env.GATSBY_STRAPI_URL +

@@ -280,6 +280,7 @@ export default function CheckoutPortal({ user }) {
 			}`,
 			component: (
 				<ThankYou
+					user={user}
 					order={order}
 					selectedStep={selectedStep}
 					selectedShipping={selectedShipping}

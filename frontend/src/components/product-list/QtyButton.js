@@ -132,7 +132,12 @@ export default function QtyButton({
 		}
 	}
 
-	//TODO: if the user clicked this multiple times, increase the qty from second click and on
+	// For "Add to cart" btn: from the second click and on, also increases the qty
+	const handleAddOne = () => {
+		const newQty = qty + 1
+		setQty(newQty)
+	}
+
 	const handleCart = () => {
 		setSuccess(true)
 
@@ -162,11 +167,14 @@ export default function QtyButton({
 		let timer
 
 		if (success) {
-			timer = setTimeout(() => setSuccess(false), 1500)
+			timer = setTimeout(() => {
+				setSuccess(false)
+				handleAddOne()
+			}, 1500)
 		}
 
 		return () => clearTimeout(timer)
-	}, [success])
+	}, [success, handleAddOne])
 
 	return (
 		<Grid item>
@@ -217,7 +225,7 @@ export default function QtyButton({
 				</ButtonGroup>
 				{hideCartButton ? null : (
 					<Button
-						onClick={handleCart}
+						onClick={success ? handleAddOne : handleCart}
 						disabled={
 							stock
 								? stock[selectedVariant] === 0 // disable add to cart for item that is out of stock
