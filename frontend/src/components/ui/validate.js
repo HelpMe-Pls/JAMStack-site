@@ -18,12 +18,12 @@ export default function validate(input) {
 				val
 			),
 		street: val =>
-			/^(\d+) ?([A-Za-z](?= ))? (.*?) ([^ ]+?) ?((?<= )APT)? ?((?<= )\d*)?$/.test(
+			/^(.+) ?([A-Za-z](?= ))? (.*?) ([^ ]+?) ?((?<= )APT)? ?((?<= )\d*)?$/.test(
 				val
-			), //TODO: just set it to true or find some regex for slash (/)
+			),
 
 		zip: val => /^\d{5}(-\d{4})?$/.test(val),
-		// zip: val => /[0-9]{6}/g.test(val),	// to make this work for Viet Nam, you'll have to also update backend\extensions\users-permissions\models\User.js
+		// zip: val => /[0-9]{6}/g.test(val),	// to make this work for Viet Nam, you'll have to also update backend\extensions\users-permissions\models\User.js (city, state --> district/city, province)
 		// unable to find Vietnam's geoname dataset tho...
 
 		city: val => val.length !== 0,
