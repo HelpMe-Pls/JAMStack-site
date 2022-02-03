@@ -46,7 +46,13 @@ const useStyles = makeStyles(theme => ({
 			width: "1.75rem",
 		},
 	},
-	delete: {
+	iconButton: {
+		padding: 13.69,
+		[theme.breakpoints.down("xs")]: {
+			padding: 6,
+		},
+	},
+	deleteIcon: {
 		height: "2rem",
 		width: "2rem",
 		marginTop: "-0.5rem",
@@ -56,15 +62,13 @@ const useStyles = makeStyles(theme => ({
 			paddingTop: "0.069em",
 		},
 	},
-	iconButton: {
-		padding: 13.69,
-		[theme.breakpoints.down("xs")]: {
-			padding: 6,
-		},
-	},
-	actions: {
+	deleteAction: {
 		position: "absolute",
 		right: 0,
+	},
+	saveAction: {
+		position: "absolute",
+		left: 8,
 	},
 	text: {
 		[theme.breakpoints.down("xs")]: {
@@ -185,7 +189,6 @@ export default function CheckoutNavigation({
 				)
 			})
 	}
-	//TODO: set the "Save" button to the left side of the title
 	return (
 		<Grid
 			item
@@ -196,21 +199,23 @@ export default function CheckoutNavigation({
 		>
 			{steps[selectedStep].hasActions &&
 			user.username !== "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" ? (
-				<Grid item>
-					{loading === "save" ? (
-						<CircularProgress />
-					) : (
-						<IconButton
-							classes={{ root: classes.iconButton }}
-							onClick={() => handleAction("save")}
-						>
-							<img
-								src={save}
-								alt="save"
-								className={classes.icon}
-							/>
-						</IconButton>
-					)}
+				<Grid item classes={{ root: classes.saveAction }}>
+					<Grid item>
+						{loading === "save" ? (
+							<CircularProgress />
+						) : (
+							<IconButton
+								classes={{ root: classes.iconButton }}
+								onClick={() => handleAction("save")}
+							>
+								<img
+									src={save}
+									alt="save"
+									className={classes.icon}
+								/>
+							</IconButton>
+						)}
+					</Grid>
 				</Grid>
 			) : null}
 			<Grid item classes={{ root: classes.back }}>
@@ -246,7 +251,7 @@ export default function CheckoutNavigation({
 			</Grid>
 			{steps[selectedStep].hasActions &&
 			user.username !== "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" ? (
-				<Grid item classes={{ root: classes.actions }}>
+				<Grid item classes={{ root: classes.deleteAction }}>
 					<Grid item>
 						{loading === "delete" ? (
 							<CircularProgress />
@@ -255,7 +260,7 @@ export default function CheckoutNavigation({
 								classes={{ root: classes.iconButton }}
 								onClick={() => handleAction("delete")}
 							>
-								<span className={classes.delete}>
+								<span className={classes.deleteIcon}>
 									<Delete color="#fff" />
 								</span>
 							</IconButton>
