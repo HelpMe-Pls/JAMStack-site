@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
 	delete: {
 		height: "2rem",
 		width: "2rem",
-		marginTop: "-0.069rem",
+		marginTop: "-0.5rem",
 		[theme.breakpoints.down("xs")]: {
 			height: "1.5rem",
 			width: "1.5rem",
@@ -247,21 +247,19 @@ export default function CheckoutNavigation({
 			{steps[selectedStep].hasActions &&
 			user.username !== "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" ? (
 				<Grid item classes={{ root: classes.actions }}>
-					<Grid container>
-						<Grid item>
-							{loading === "delete" ? (
-								<CircularProgress />
-							) : (
-								<IconButton
-									classes={{ root: classes.iconButton }}
-									onClick={() => handleAction("delete")}
-								>
-									<span className={classes.delete}>
-										<Delete color="#fff" />
-									</span>
-								</IconButton>
-							)}
-						</Grid>
+					<Grid item>
+						{loading === "delete" ? (
+							<CircularProgress />
+						) : (
+							<IconButton
+								classes={{ root: classes.iconButton }}
+								onClick={() => handleAction("delete")}
+							>
+								<span className={classes.delete}>
+									<Delete color="#fff" />
+								</span>
+							</IconButton>
+						)}
 					</Grid>
 				</Grid>
 			) : null}
