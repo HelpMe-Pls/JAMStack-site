@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import clsx from "clsx"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
@@ -133,10 +133,10 @@ export default function QtyButton({
 	}
 
 	// For "Add to cart" btn: from the second click and on, also increases the qty
-	const handleAddOne = () => {
+	const handleAddOne = useCallback(() => {
 		const newQty = qty + 1
 		setQty(newQty)
-	}
+	}, [qty, setQty])
 
 	const handleCart = () => {
 		setSuccess(true)
@@ -151,7 +151,7 @@ export default function QtyButton({
 		)
 	}
 
-	// if the user adds the maximun amount of a variant (of that product) to the cart, and then switch to another variant, we should update the {qty} to reflect the stock of that newly switched to variant. E.g. red-codeblock-hoodie has 96 in stock, user adds 96, then switches to white-codeblock-hoodie (has 69 in stock), we should update {qty} to 69
+	// if the user adds the maximum amount of a variant (of that product) to the cart, and then switch to another variant, we should update the {qty} to reflect the stock of that newly switched to variant. E.g. red-codeblock-hoodie has 96 in stock, user adds up to 96, then switches to white-codeblock-hoodie (has 69 in stock), we should update {qty} to 69
 	useEffect(() => {
 		if (stock === null || stock === -1) {
 			// for error cases in fetching data
@@ -161,7 +161,7 @@ export default function QtyButton({
 		} else if (qty > stock[selectedVariant].qty) {
 			setQty(stock[selectedVariant].qty)
 		}
-	}, [stock, selectedVariant])
+	}, [stock, selectedVariant, qty, setQty])
 
 	useEffect(() => {
 		let timer

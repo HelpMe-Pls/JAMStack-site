@@ -101,7 +101,7 @@ export default function Reset({ steps, setSelectedStep, dispatchFeedback }) {
 		}, 1690)
 
 		return () => clearTimeout(timer)
-	}, [success])
+	}, [success, steps, setSelectedStep])
 
 	return (
 		<>
