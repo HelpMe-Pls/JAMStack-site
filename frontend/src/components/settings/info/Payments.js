@@ -99,18 +99,19 @@ const useStyles = makeStyles(theme => ({
 
 //TODO: somehow when navigates from the Confirmation tab back to Payments, and switch the cardSLots, and if there were no savedCards, then we're unable to move forward to Confirmation again ?
 export default function Payments({
+	stepNumber,
 	user,
 	slot,
 	setSlot,
-	checkout,
+	card,
+	setCard,
 	saveCard,
 	setSaveCard,
 	setCardError,
 	selectedStep,
-	stepNumber,
-	setCard,
 	hasSubscriptionActive,
 	hasSubscriptionCart,
+	checkout,
 }) {
 	const classes = useStyles({ checkout, selectedStep, stepNumber })
 	const stripe = useStripe()
@@ -123,7 +124,7 @@ export default function Payments({
 	const { dispatchFeedback } = useFeedback()
 	const { dispatchUser } = useUser()
 
-	const card =
+	const isCard =
 		user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" //TODO: try to replace this with !user.jwt
 			? { last4: "", brand: "" }
 			: user.paymentMethods[slot]
@@ -133,7 +134,7 @@ export default function Payments({
 			method => method.last4 !== ""
 		)
 		const subscriptionPayment = user.subscriptions.find(
-			subscription => subscription.paymentMethod.last4 === card.last4
+			subscription => subscription.paymentMethod.last4 === isCard.last4
 		)
 
 		if (
@@ -155,7 +156,7 @@ export default function Payments({
 			.post(
 				process.env.GATSBY_STRAPI_URL + "/orders/removeCard",
 				{
-					card: card.last4,
+					card: isCard.last4,
 				},
 				{
 					headers: { Authorization: `Bearer ${user.jwt}` },
@@ -237,8 +238,8 @@ export default function Payments({
 	useEffect(() => {
 		if (!checkout || !user.jwt) return // for Setting & "guest" users
 
-		if (user.paymentMethods[slot].last4 !== "") {
-			setCard(user.paymentMethods[slot])
+		if (isCard.last4 !== "" || card) {
+			setCard(isCard)
 			setCardError(false)
 		} else {
 			setCard({ brand: "", last4: "" })
@@ -274,7 +275,7 @@ export default function Payments({
 					}),
 				}}
 			>
-				{checkout && !card.last4 ? cardWrapper : null}
+				{checkout && !isCard.last4 ? cardWrapper : null}
 				<Grid item>
 					<Typography
 						align="center"
@@ -282,9 +283,9 @@ export default function Payments({
 						classes={{ root: classes.number }}
 					>
 						{
-							card.last4
-								? `${card.brand.toUpperCase()} **** **** **** ${
-										card.last4
+							isCard.last4
+								? `${isCard.brand.toUpperCase()} **** **** **** ${
+										isCard.last4
 								  }` // exists a saved card
 								: checkout
 								? null // this case we already rendered <cardWrapper/>
@@ -292,7 +293,7 @@ export default function Payments({
 						}
 					</Typography>
 				</Grid>
-				{card.last4 && (
+				{isCard.last4 && (
 					<Grid
 						item
 						classes={{
@@ -326,7 +327,9 @@ export default function Payments({
 				justifyContent="space-between"
 				classes={{ root: classes.slotContainer }}
 			>
-				<Slots slot={slot} setSlot={setSlot} noLabel />
+				{user.username !== "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" && (
+					<Slots slot={slot} setSlot={setSlot} noLabel />
+				)}
 				{checkout &&
 					user.username !== "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" && (
 						<Grid

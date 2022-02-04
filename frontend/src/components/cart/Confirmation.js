@@ -162,7 +162,7 @@ export default function Confirmation({
 		0
 	)
 
-	const tax = (subtotal + shipping?.price) * 0.096
+	const tax = (subtotal + shipping?.price) * 0.069
 
 	const firstFields = [
 		{
@@ -296,7 +296,11 @@ export default function Confirmation({
 		if (result.error) {
 			console.error(result.error.message)
 			dispatchFeedback(
-				setSnackbar({ status: "error", message: result.error.message })
+				setSnackbar({
+					status: "error",
+					message:
+						"Your card number for this purchase is invalid/incompleted. Please try again.",
+				})
 			)
 			setLoading(false)
 		} else if (result.paymentIntent.status === "succeeded") {

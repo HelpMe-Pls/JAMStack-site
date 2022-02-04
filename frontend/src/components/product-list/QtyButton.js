@@ -138,6 +138,7 @@ export default function QtyButton({
 		setQty(newQty)
 	}, [qty, setQty])
 
+	//TODO: only enable "Add to cart" btn after qty changes
 	const handleCart = () => {
 		setSuccess(true)
 

@@ -237,6 +237,7 @@ export default function CheckoutPortal({ user }) {
 					user={user}
 					slot={cardSlot}
 					setSlot={setCardSlot}
+					card={card}
 					setCard={setCard}
 					saveCard={saveCard}
 					setSaveCard={setSaveCard}

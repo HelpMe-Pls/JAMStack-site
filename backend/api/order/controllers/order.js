@@ -66,7 +66,7 @@ module.exports = {
 
 		if (
 			shippingValid === undefined ||
-			((serverTotal + shippingValid.price) * 1.096).toFixed(2) !== total
+			((serverTotal + shippingValid.price) * 1.069).toFixed(2) !== total
 		) {
 			ctx.send({ error: "Invalid Cart" }, 400);
 		} else if (unavailable.length > 0) {
@@ -75,7 +75,7 @@ module.exports = {
 			if (storedIntent) {
 				const update = await stripe.paymentIntents.update(
 					storedIntent,
-					{ amount: total * 100 }, // 1$ === 100cents, so we *100 to get dollar
+					{ amount: Math.round(total * 100) }, // 1$ === 100cents, so we *100 to get dollar
 					{ idempotencyKey }
 				);
 
