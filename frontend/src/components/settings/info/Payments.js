@@ -97,7 +97,6 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-//TODO: somehow when navigates from the Confirmation tab back to Payments, and switch the cardSLots, and if there were no savedCards, then we're unable to move forward to Confirmation again ?
 export default function Payments({
 	stepNumber,
 	user,
