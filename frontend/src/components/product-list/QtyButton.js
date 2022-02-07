@@ -7,8 +7,8 @@ import ButtonGroup from "@material-ui/core/ButtonGroup"
 import Badge from "@material-ui/core/Badge"
 import { makeStyles } from "@material-ui/core/styles"
 
-import { useCart } from "../../contexts"
-import { addToCart, removeFromCart } from "../../contexts/actions"
+import { useCart, useFeedback } from "../../contexts"
+import { addToCart, removeFromCart, setSnackbar } from "../../contexts/actions"
 
 import Cart from "../../images/Cart"
 
@@ -83,14 +83,15 @@ export default function QtyButton({
 	variants,
 	selectedVariant, // actually the index of the variant
 	name, //product's name
-	isCart, // to hide the "Add to cart" button if we're already in the "Cart" page
+	isCart,
 	white,
-	hideCartButton, // for "subscription" button
+	hideCartButton,
 	round,
 	override, // for cart's quantity in "subscription"
 }) {
 	const classes = useStyles({ white, round })
 
+	const { dispatchFeedback } = useFeedback()
 	const { cart, dispatchCart } = useCart()
 	const existingItem = isCart
 		? cart.find(item => item.variant === variants[selectedVariant])
@@ -132,16 +133,37 @@ export default function QtyButton({
 		}
 	}
 
-	// For "Add to cart" btn: from the second click and on, also increases the qty
+	// For "Add to cart" btn: from the SECOND click and on (within 1.5s), also increases the qty
 	const handleAddOne = useCallback(() => {
-		const newQty = qty + 1
-		setQty(newQty)
-	}, [qty, setQty])
+		setQty(qty + 1)
+		dispatchCart(addToCart(variants[selectedVariant], 1, name))
+		if (qty >= stock[selectedVariant].qty) {
+			dispatchFeedback(
+				setSnackbar({
+					status: "info",
+					message:
+						"Sorry, we only have " +
+						`${stock[selectedVariant].qty}` +
+						" products left in stock.",
+				})
+			)
+		}
+	}, [qty])
 
-	//TODO: only enable "Add to cart" btn after qty changes
 	const handleCart = () => {
 		setSuccess(true)
-
+		if (qty >= stock[selectedVariant].qty) {
+			dispatchFeedback(
+				setSnackbar({
+					status: "info",
+					message:
+						"Sorry, we only have " +
+						`${stock[selectedVariant].qty}` +
+						" products left in stock.",
+				})
+			)
+			return
+		}
 		dispatchCart(
 			addToCart(
 				variants[selectedVariant],
@@ -162,15 +184,14 @@ export default function QtyButton({
 		} else if (qty > stock[selectedVariant].qty) {
 			setQty(stock[selectedVariant].qty)
 		}
-	}, [stock, selectedVariant, qty, setQty])
+	}, [stock, selectedVariant, qty])
 
 	useEffect(() => {
 		let timer
-
 		if (success) {
 			timer = setTimeout(() => {
 				setSuccess(false)
-				handleAddOne()
+				setQty(qty)
 			}, 1500)
 		}
 

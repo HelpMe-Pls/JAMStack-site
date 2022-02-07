@@ -299,7 +299,7 @@ export default function Confirmation({
 				setSnackbar({
 					status: "error",
 					message:
-						"Your card number for this purchase is invalid/incompleted. Please try again.",
+						"Your card number for this purchase is invalid/incompleted. Please make sure you have the right card credentials and try again.",
 				})
 			)
 			setLoading(false)

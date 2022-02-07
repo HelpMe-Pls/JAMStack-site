@@ -102,11 +102,19 @@ export default function Subscription({
 	}
 
 	const handleOpen = () => {
-		if (isCart) {
+		if (isCart && user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536") {
+			dispatchFeedback(
+				setSnackbar({
+					status: "error",
+					message: "You must be LOGGED IN to create a subscription.",
+				})
+			)
+			return
+		}
+		if (isCart && user.username !== "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536") {
 			dispatchCart(toggleSubscription(isCart.variant, cartFrequency))
 			return
 		}
-
 		if (user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536") {
 			dispatchFeedback(
 				setSnackbar({

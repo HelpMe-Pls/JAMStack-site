@@ -45,7 +45,7 @@ export default function Favorite({
 				setSnackbar({
 					status: "error",
 					message:
-						"You must be logged in to add an item to favorites.",
+						"You must be LOGGED IN to add this product to favorites.",
 				})
 			)
 			return
