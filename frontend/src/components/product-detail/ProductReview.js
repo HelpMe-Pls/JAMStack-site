@@ -258,6 +258,7 @@ export default function ProductReview({
 					<Rating
 						star={rating > tempRating ? rating : tempRating}
 						size={2.5}
+						color="#F0BD7F"
 					/>
 				</Grid>
 			</Grid>

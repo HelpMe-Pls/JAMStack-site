@@ -155,7 +155,11 @@ export default function QuickView({
 							>
 								<Grid item>
 									<Typography variant="h4">{name}</Typography>
-									<Rating star={rating} />
+									<Rating
+										size={2.5}
+										star={rating}
+										color="#F0BD7F"
+									/>
 								</Grid>
 								<Grid item>
 									<Typography
