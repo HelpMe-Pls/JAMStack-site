@@ -133,10 +133,8 @@ export default function QtyButton({
 		}
 	}
 
-	// For "Add to cart" btn: from the SECOND click and on (within 690ms), also increases the qty. The trade off for this functionality is that if qty changes (from handleChange) while the "tick" is still there, it also re-trigerring the "setTimeOut" useEffect, which causes the "tick" symbol to persist if the user clicks on the "+" or "-" button consecutively within 690ms. Therefore the case where first click is "Add to cart", then change qty (from handleChange), and "Add to cart" again (where the time between those 3 actions are LESS THAN 690ms); then the "Add to cart" on its last click acts as "handleAddOne"
+	// For "Add to cart" btn: from the SECOND click and on (within 690ms), also increases the qty. The trade off for this functionality is that if qty changes (from handleChange) while the "tick" symbol is still there, it also re-trigerring the "setTimeOut" useEffect, which causes the "tick" to persist if the user clicks on the "+" or "-" button consecutively within 690ms. Therefore, the case where first click is "Add to cart", then change qty (from handleChange), and "Add to cart" again (where the time between those 3 actions are LESS THAN 690ms); then the "Add to cart" on its last click acts as "handleAddOne"
 	const handleAddOne = useCallback(() => {
-		setQty(qty + 1)
-		dispatchCart(addToCart(variants[selectedVariant], 1, name))
 		if (qty >= stock[selectedVariant].qty) {
 			dispatchFeedback(
 				setSnackbar({
@@ -148,6 +146,8 @@ export default function QtyButton({
 				})
 			)
 		}
+		setQty(qty + 1)
+		dispatchCart(addToCart(variants[selectedVariant], 1, name))
 	}, [qty])
 
 	const handleCart = () => {
