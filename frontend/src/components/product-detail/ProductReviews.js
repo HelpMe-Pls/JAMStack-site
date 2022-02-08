@@ -38,7 +38,7 @@ export default function ProductReviews({ product, addReview, setAddReview }) {
 		}
 	}, [data])
 
-	const reviewsPerPage = 15
+	const reviewsPerPage = 10
 	const totalPages = Math.ceil(reviews.length / reviewsPerPage)
 
 	return (

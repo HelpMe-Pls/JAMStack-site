@@ -28,8 +28,8 @@ module.exports = {
 
 		let entity;
 
-		// TODO: try const review (no array destructuring and see what happens)
-		const [review] = await strapi.services.review.find({
+		// seems like there's no actual difference between this and const [review] (with array destructuring)
+		const review = await strapi.services.review.find({
 			id, // of the review
 			user: ctx.state.user.id, // to make sure it's the corresponding user who is updating the review
 		});
