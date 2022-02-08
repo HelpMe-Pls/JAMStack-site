@@ -259,7 +259,11 @@ export default function ProductInfo({
 								</Typography>
 							</Grid>
 							<Grid item>
-								<Rating star={rating} />
+								<Rating
+									size={4}
+									star={rating}
+									color="#F0BD7F"
+								/>
 							</Grid>
 							<Grid item>
 								<Button onClick={handleAddReview}>
