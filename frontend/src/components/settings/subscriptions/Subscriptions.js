@@ -4,17 +4,19 @@ import clsx from "clsx"
 import Chip from "@material-ui/core/Chip"
 import Grid from "@material-ui/core/Grid"
 import IconButton from "@material-ui/core/IconButton"
+import CircularProgress from "@material-ui/core/CircularProgress"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 
 import SettingsGrid from "../SettingsGrid"
 import QtyButton from "../../product-list/QtyButton"
 
+import SelectFrequency from "../../ui/select-frequency"
 import DeleteIcon from "../../../images/Delete"
 import pauseIcon from "../../../images/pause.svg"
 
 import { useUser, useFeedback } from "../../../contexts"
-import { setSnackbar } from "../../../contexts/actions"
+import { setUser, setSnackbar } from "../../../contexts/actions"
 
 const useStyles = makeStyles(() => ({
 	bold: {
@@ -50,12 +52,64 @@ const useStyles = makeStyles(() => ({
 //TODO: implement delete subscriptions & frequency change features
 export default function Subscriptions({ setSelectedSetting }) {
 	const classes = useStyles()
-	const { user } = useUser()
+	const { user, dispatchUser } = useUser()
 	const { dispatchFeedback } = useFeedback()
 	const [subscriptions, setSubscriptions] = useState([])
+	const [, setFrequency] = useState("")
+	const [loading, setLoading] = useState(null)
 
+	const handleFrequency = newFrequency => {
+		// {newFrequency} === event.target.value as defined in select-frequency.js
+		setFrequency(newFrequency)
+	}
+
+	const handleDelete = row => {
+		setLoading(row)
+
+		axios
+			.delete(process.env.GATSBY_STRAPI_URL + `/subscriptions/${row}`, {
+				headers: { Authorization: `Bearer ${user.jwt}` },
+			})
+			.then(() => {
+				setLoading(null)
+
+				// remove the favorite item from the list
+				const newProducts = subscriptions.filter(
+					subs => subs.id !== row
+				)
+
+				// remove the favorite item from the user's profile
+				const newSubscriptions = user.subscriptions.filter(
+					subs => subs.id !== row
+				)
+				setSubscriptions(newProducts)
+				dispatchUser(
+					setUser({ ...user, subscriptions: newSubscriptions })
+				)
+
+				dispatchFeedback(
+					setSnackbar({
+						status: "info",
+						message: "Product REMOVED From Favorites.",
+					})
+				)
+			})
+			.catch(error => {
+				setLoading(null)
+				console.error(error)
+
+				dispatchFeedback(
+					setSnackbar({
+						status: "error",
+						message:
+							"There was a problem removing this product from your favorites. Please try again.",
+					})
+				)
+			})
+	}
 	useEffect(() => {
 		axios
+			//FIXME: .get this from its parent then pass "item" including its subscription downto this component ?
 			.get(process.env.GATSBY_STRAPI_URL + "/subscriptions/me", {
 				headers: { Authorization: `Bearer ${user.jwt}` },
 			})
@@ -188,9 +242,15 @@ export default function Subscriptions({ setSelectedSetting }) {
 			width: 250,
 			sortable: false,
 			renderCell: ({ value }) => (
-				<Chip
-					label={value.split("_").join(" ")}
-					classes={{ label: classes.bold }}
+				<SelectFrequency
+					chip={
+						<Chip
+							label={value.split("_").join(" ")}
+							classes={{ label: classes.bold }}
+						/>
+					}
+					value={value}
+					setValue={handleFrequency}
 				/>
 			),
 		},
@@ -216,13 +276,25 @@ export default function Subscriptions({ setSelectedSetting }) {
 			field: "",
 			width: 250,
 			sortable: false,
-			renderCell: () => (
+			disableColumnMenu: true,
+			renderCell: ({ row }) => (
 				<Grid container>
 					<Grid item>
-						<IconButton classes={{ root: classes.iconButton }}>
-							<span className={classes.deleteWrapper}>
-								<DeleteIcon />
-							</span>
+						<IconButton
+							onClick={() => handleDelete(row.id)}
+							disabled={!!loading}
+							classes={{ root: classes.iconButton }}
+						>
+							{loading === row.id ? (
+								<CircularProgress
+									size="2rem"
+									color="secondary"
+								/>
+							) : (
+								<span className={classes.deleteWrapper}>
+									<DeleteIcon />
+								</span>
+							)}
 						</IconButton>
 					</Grid>
 					<Grid item>

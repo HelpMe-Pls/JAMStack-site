@@ -22,4 +22,19 @@ module.exports = {
 
 		ctx.send(subscriptions, 200);
 	},
+
+	async delete(ctx) {
+		const { id } = ctx.params;
+
+		const [subscription] = await strapi.services.subscription.find({
+			id,
+			user: ctx.state.user.id,
+		});
+
+		if (!subscription)
+			return ctx.unauthorized("You can't update this entry.");
+
+		const entity = await strapi.services.subscription.delete({ id });
+		return sanitizeEntity(entity, { model: strapi.models.subscription });
+	},
 };
