@@ -11,7 +11,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import SettingsGrid from "../SettingsGrid"
 import QtyButton from "../../product-list/QtyButton"
 
-import SelectFrequency from "../../ui/select-frequency"
+// import SelectFrequency from "../../ui/select-frequency"
 import DeleteIcon from "../../../images/Delete"
 import pauseIcon from "../../../images/pause.svg"
 
@@ -55,7 +55,7 @@ export default function Subscriptions({ setSelectedSetting }) {
 	const { user, dispatchUser } = useUser()
 	const { dispatchFeedback } = useFeedback()
 	const [subscriptions, setSubscriptions] = useState([])
-	const [freq, setFreq] = useState(subscriptions.frequency) // [subscriptions] is undefined until the useEffect() kicks in, therefore setting "subscriptions.frequency" as the intial state is like a no-op
+	// const [freq, setFreq] = useState(subscriptions.frequency) // [subscriptions] is undefined until the useEffect() kicks in, therefore setting "subscriptions.frequency" as the intial state is like a no-op
 	const [loading, setLoading] = useState(null)
 
 	useEffect(() => {
@@ -77,10 +77,10 @@ export default function Subscriptions({ setSelectedSetting }) {
 			})
 	}, [])
 
-	const handleFrequency = newFrequency => {
-		// {newFrequency} === event.target.value as defined in select-frequency.js
-		setFreq(newFrequency)
-	}
+	// const handleFrequency = newFrequency => {
+	// 	// {newFrequency} === event.target.value as defined in select-frequency.js
+	// 	setFreq(newFrequency)
+	// }
 
 	const handleDelete = row => {
 		setLoading(row)
@@ -243,16 +243,16 @@ export default function Subscriptions({ setSelectedSetting }) {
 			width: 250,
 			sortable: false,
 			renderCell: ({ value }) => (
-				<SelectFrequency
-					chip={
-						<Chip
-							label={value.split("_").join(" ")}
-							classes={{ label: classes.bold }}
-						/>
-					}
-					value={freq}
-					setValue={handleFrequency}
+				// <SelectFrequency
+				// 	chip={
+				<Chip
+					label={value.split("_").join(" ")}
+					classes={{ label: classes.bold }}
 				/>
+				// }
+				// value={freq}
+				// setValue={handleFrequency}
+				// />
 			),
 		},
 		{
