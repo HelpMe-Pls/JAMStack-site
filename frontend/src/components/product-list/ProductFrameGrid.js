@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	title: {
-		backgroundColor: theme.palette.primary.main,
+		backgroundColor: "#8f9ce7",
 		height: "5rem",
 		width: "25rem",
 		display: "flex", // so that we don't have to wrap extra <Grid container> and <Grid item> around the <img> to have it centered

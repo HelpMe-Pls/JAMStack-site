@@ -20,7 +20,7 @@ import { setSnackbar } from "../../contexts/actions"
 
 const useStyles = makeStyles(theme => ({
 	background: {
-		backgroundColor: theme.palette.secondary.main,
+		backgroundColor: "#638edb",
 		height: "45rem",
 		width: "35rem",
 		[theme.breakpoints.down("md")]: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	center: {
-		backgroundColor: theme.palette.primary.main,
+		backgroundColor: "#9ea5cc",
 		height: "35rem",
 		width: "45rem",
 		position: "absolute",
@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
 		height: "calc(100% / 3)",
 	},
 	descriptionContainer: {
-		backgroundColor: theme.palette.secondary.main,
+		backgroundColor: "#E6A2C5",
 		overflowY: "auto",
 		padding: "0.5rem 1rem",
 	},

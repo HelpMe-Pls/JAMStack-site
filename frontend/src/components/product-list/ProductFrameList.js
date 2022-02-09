@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 		height: "28rem",
 	},
 	info: {
-		backgroundColor: theme.palette.primary.main,
+		backgroundColor: "#8f9ce7",
 		height: "100%",
 		width: "100%",
 		padding: "1.69rem",
