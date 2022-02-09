@@ -26,7 +26,7 @@ module.exports = {
 	async delete(ctx) {
 		const { id } = ctx.params;
 
-		const [subscription] = await strapi.services.subscription.find({
+		const subscription = await strapi.services.subscription.find({
 			id,
 			user: ctx.state.user.id,
 		});
