@@ -81,6 +81,7 @@ const useStyles = makeStyles(theme => ({
 		minWidth: 0,
 		paddingLeft: "2.35em",
 		paddingRight: "2rem",
+		transition: "transform 0.4s ease",
 		"&:hover": {
 			//TODO: try out slick effects/anims
 			backgroundColor: "transparent",
