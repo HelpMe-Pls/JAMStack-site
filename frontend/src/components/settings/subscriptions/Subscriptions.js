@@ -49,18 +49,37 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-//TODO: implement delete subscriptions & frequency change features
+//TODO: implement frequency change feature
 export default function Subscriptions({ setSelectedSetting }) {
 	const classes = useStyles()
 	const { user, dispatchUser } = useUser()
 	const { dispatchFeedback } = useFeedback()
 	const [subscriptions, setSubscriptions] = useState([])
-	const [, setFrequency] = useState("")
+	const [freq, setFreq] = useState(subscriptions.frequency) // [subscriptions] is undefined until the useEffect() kicks in, therefore setting "subscriptions.frequency" as the intial state is like a no-op
 	const [loading, setLoading] = useState(null)
+
+	useEffect(() => {
+		axios
+			//FIXME: move this .get to <SettingsPortal/> then pass "subs" including its "frequency" downto this component ? (tried that, didn't work)
+			.get(process.env.GATSBY_STRAPI_URL + "/subscriptions/me", {
+				headers: { Authorization: `Bearer ${user.jwt}` },
+			})
+			.then(response => setSubscriptions(response.data))
+			.catch(error => {
+				console.error(error)
+				dispatchFeedback(
+					setSnackbar({
+						status: "error",
+						message:
+							"There was a problem retrieving your subscriptions. Please try again.",
+					})
+				)
+			})
+	}, [])
 
 	const handleFrequency = newFrequency => {
 		// {newFrequency} === event.target.value as defined in select-frequency.js
-		setFrequency(newFrequency)
+		setFreq(newFrequency)
 	}
 
 	const handleDelete = row => {
@@ -107,24 +126,6 @@ export default function Subscriptions({ setSelectedSetting }) {
 				)
 			})
 	}
-	useEffect(() => {
-		axios
-			//FIXME: .get this from its parent then pass "item" including its subscription downto this component ?
-			.get(process.env.GATSBY_STRAPI_URL + "/subscriptions/me", {
-				headers: { Authorization: `Bearer ${user.jwt}` },
-			})
-			.then(response => setSubscriptions(response.data))
-			.catch(error => {
-				console.error(error)
-				dispatchFeedback(
-					setSnackbar({
-						status: "error",
-						message:
-							"There was a problem retrieving your subscriptions. Please try again.",
-					})
-				)
-			})
-	}, [])
 
 	const createData = data =>
 		data.map(
@@ -249,7 +250,7 @@ export default function Subscriptions({ setSelectedSetting }) {
 							classes={{ label: classes.bold }}
 						/>
 					}
-					value={value}
+					value={freq}
 					setValue={handleFrequency}
 				/>
 			),
