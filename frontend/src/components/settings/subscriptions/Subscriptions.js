@@ -47,15 +47,18 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-//TODO: implement delete subscriptions & frequency change features
+//TODO: implement frequency change feature
 export default function Subscriptions({ setSelectedSetting }) {
 	const classes = useStyles()
 	const { user } = useUser()
 	const { dispatchFeedback } = useFeedback()
 	const [subscriptions, setSubscriptions] = useState([])
+	const [freq, setFreq] = useState(subscriptions.frequency) // [subscriptions] is undefined until the useEffect() kicks in, therefore setting "subscriptions.frequency" as the intial state is like a no-op
+	const [loading, setLoading] = useState(null)
 
 	useEffect(() => {
 		axios
+			//FIXME: move this .get to <SettingsPortal/> then pass "subs" including its "frequency" downto this component ? (tried that, didn't work)
 			.get(process.env.GATSBY_STRAPI_URL + "/subscriptions/me", {
 				headers: { Authorization: `Bearer ${user.jwt}` },
 			})
@@ -71,6 +74,56 @@ export default function Subscriptions({ setSelectedSetting }) {
 				)
 			})
 	}, [])
+
+	const handleFrequency = newFrequency => {
+		// {newFrequency} === event.target.value as defined in select-frequency.js
+		setFreq(newFrequency)
+	}
+
+	const handleDelete = row => {
+		setLoading(row)
+
+		axios
+			.delete(process.env.GATSBY_STRAPI_URL + `/subscriptions/${row}`, {
+				headers: { Authorization: `Bearer ${user.jwt}` },
+			})
+			.then(() => {
+				setLoading(null)
+
+				// remove the favorite item from the list
+				const newProducts = subscriptions.filter(
+					subs => subs.id !== row
+				)
+
+				// remove the favorite item from the user's profile
+				const newSubscriptions = user.subscriptions.filter(
+					subs => subs.id !== row
+				)
+				setSubscriptions(newProducts)
+				dispatchUser(
+					setUser({ ...user, subscriptions: newSubscriptions })
+				)
+
+				dispatchFeedback(
+					setSnackbar({
+						status: "info",
+						message: "Product REMOVED From Favorites.",
+					})
+				)
+			})
+			.catch(error => {
+				setLoading(null)
+				console.error(error)
+
+				dispatchFeedback(
+					setSnackbar({
+						status: "error",
+						message:
+							"There was a problem removing this product from your favorites. Please try again.",
+					})
+				)
+			})
+	}
 
 	const createData = data =>
 		data.map(
@@ -188,9 +241,15 @@ export default function Subscriptions({ setSelectedSetting }) {
 			width: 250,
 			sortable: false,
 			renderCell: ({ value }) => (
-				<Chip
-					label={value.split("_").join(" ")}
-					classes={{ label: classes.bold }}
+				<SelectFrequency
+					chip={
+						<Chip
+							label={value.split("_").join(" ")}
+							classes={{ label: classes.bold }}
+						/>
+					}
+					value={freq}
+					setValue={handleFrequency}
 				/>
 			),
 		},
