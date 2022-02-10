@@ -55,7 +55,6 @@ export default function Edit({
 		if (password !== "********") {
 			setDialogOpen(true)
 		}
-		//const { password, ...newDetails } = details
 
 		if (edit && changesMade) {
 			// clicked on the "Save" icon ({edit}'s value within this function is from the previous setEdit())
@@ -148,7 +147,6 @@ export default function Edit({
 				)}
 			</Grid>
 			<Confirmation
-				//TODO: set this to open only AFTER the user clicked on the password field
 				dialogOpen={dialogOpen}
 				setDialogOpen={setDialogOpen}
 				user={user}
