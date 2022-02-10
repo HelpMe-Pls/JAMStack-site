@@ -158,10 +158,8 @@ export default function Location({
 	}, [values])
 
 	useEffect(() => {
-		if (noSlots || user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536")
-			//TODO: try to replace this with !user.jwt
-			return
-		setValues(user.locations[slot])
+		if (noSlots || !user.jwt) return
+		setValues(user.locations[slot]) // for <Settings/>
 	}, [slot])
 
 	useEffect(() => {

@@ -7,8 +7,7 @@ export default function userReducer(state, action) {
 
 	switch (action.type) {
 		case SET_USER:
-			if (user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536") {
-				//TODO: try to replace this with !user.jwt
+			if (!user.jwt) {
 				// in cases where setUser(defaultUser)
 				// to also clear the previous version of logged in/ signed up user
 				localStorage.removeItem("user")

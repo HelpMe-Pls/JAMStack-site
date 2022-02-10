@@ -124,9 +124,8 @@ export default function Payments({
 	const { dispatchUser } = useUser()
 
 	const isCard =
-		user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" //TODO: try to replace this with !user.jwt
-			? { last4: "", brand: "" }
-			: user.paymentMethods[slot]
+		// user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536"
+		!user.jwt ? { last4: "", brand: "" } : user.paymentMethods[slot]
 
 	const removeCard = () => {
 		const remainingSavedCards = user.paymentMethods.filter(

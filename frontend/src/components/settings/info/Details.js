@@ -115,7 +115,7 @@ export default function Details({
 	billingValues,
 	setBillingValues,
 	checkout,
-	noSlots, // for <Settings/>
+	noSlots, // for "BillingInfo"
 	selectedStep,
 	stepNumber,
 }) {
@@ -193,9 +193,7 @@ export default function Details({
 	}, [saveForBilling]) // the effect also get executed on first render so that's why we need the useRef() i.e. skip initial render execution
 
 	useEffect(() => {
-		if (noSlots || user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536")
-			//TODO: try to replace this with !user.jwt
-			return
+		if (noSlots || !user.jwt) return
 
 		if (checkout) {
 			// no need to save user's password at checkout

@@ -323,10 +323,9 @@ export default function Confirmation({
 						cardSlot,
 					},
 					{
-						headers:
-							user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" //TODO: try to replace this with !user.jwt
-								? undefined
-								: { Authorization: `Bearer ${user.jwt}` },
+						headers: !user.jwt
+							? undefined
+							: { Authorization: `Bearer ${user.jwt}` },
 					}
 				)
 				.then(response => {
