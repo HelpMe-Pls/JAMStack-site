@@ -102,7 +102,7 @@ export default function Subscription({
 	}
 
 	const handleOpen = () => {
-		if (isCart && user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536") {
+		if (isCart && !user.jwt) {
 			dispatchFeedback(
 				setSnackbar({
 					status: "error",
@@ -115,7 +115,7 @@ export default function Subscription({
 			dispatchCart(toggleSubscription(isCart.variant, cartFrequency))
 			return
 		}
-		if (user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536") {
+		if (!user.jwt) {
 			dispatchFeedback(
 				setSnackbar({
 					status: "error",

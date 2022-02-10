@@ -122,8 +122,7 @@ export default function ThankYou({
 							)}
 						</Typography>
 					</Grid>
-					{user.username ===
-					"zhSarlO7JZXN4zAKjyBFW1x9ebt2c536" ? null : (
+					{!user.jwt ? null : (
 						<Grid item>
 							<Button
 								component={Link}

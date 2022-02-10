@@ -275,7 +275,7 @@ export default function CheckoutPortal({ user }) {
 		},
 		{
 			title: `${
-				user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536"
+				!user.jwt
 					? "Thank You ヾ(*⌒∇⌒*)ﾉ`"
 					: `Thanks, ${user.username.split(" ")[0]}!`
 			}`,

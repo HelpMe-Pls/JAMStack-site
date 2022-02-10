@@ -40,7 +40,7 @@ export default function Favorite({
 	)
 
 	const handleFavorite = () => {
-		if (user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536") {
+		if (!user.jwt) {
 			dispatchFeedback(
 				setSnackbar({
 					status: "error",

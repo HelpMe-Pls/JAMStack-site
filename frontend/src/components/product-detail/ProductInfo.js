@@ -155,7 +155,7 @@ export default function ProductInfo({
 	// Setting the display image as the first color (colors[0]) in the swatches when the user switches the size
 
 	const handleAddReview = () => {
-		if (user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536") {
+		if (!user.jwt) {
 			dispatchFeedback(
 				setSnackbar({
 					status: "error",

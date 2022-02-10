@@ -43,9 +43,7 @@ export default function Cart() {
 						align="center"
 						classes={{ root: classes.name }}
 					>
-						{user.username === "zhSarlO7JZXN4zAKjyBFW1x9ebt2c536"
-							? "Your cart"
-							: `${user.username}'s Cart`}
+						{!user.jwt ? "Your cart" : `${user.username}'s Cart`}
 					</Typography>
 				</Grid>
 				<Grid item container>
