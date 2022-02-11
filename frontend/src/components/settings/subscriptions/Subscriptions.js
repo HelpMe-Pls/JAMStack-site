@@ -80,7 +80,7 @@ export default function Subscriptions({ setSelectedSetting }) {
 			})
 	}, [])
 
-	// tried to implement this from your pseudo code but when i click on the <Chip/>, it just flashes up the <SelectFrequency/> for like 2ms (i.e the appearance of the <SelectFrequency/> only lasts for about 2ms, so i'm unable to choose any newFreq)
+	// tried to implement this but when i click on the <Chip/>, it just flashes up the <SelectFrequency/> for like 2ms (i.e the appearance of the <SelectFrequency/> only lasts for about 2ms, so i'm unable to choose any newFreq)
 	const FrequencyWrapper = ({ value, row }) => {
 		const [freq, setFreq] = useState(value)
 		const handleFrequency = newFreq => {
