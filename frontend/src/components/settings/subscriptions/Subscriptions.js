@@ -47,6 +47,12 @@ const useStyles = makeStyles(() => ({
 			backgroundColor: "transparent",
 		},
 	},
+	chipRoot: {
+		marginLeft: "1rem",
+		"&:hover": {
+			cursor: "pointer",
+		},
+	},
 }))
 
 export default function Subscriptions({ setSelectedSetting }) {
@@ -61,10 +67,7 @@ export default function Subscriptions({ setSelectedSetting }) {
 			.get(process.env.GATSBY_STRAPI_URL + "/subscriptions/me", {
 				headers: { Authorization: `Bearer ${user.jwt}` },
 			})
-			.then(response => {
-				console.log(response)
-				setSubscriptions(response.data)
-			})
+			.then(response => setSubscriptions(response.data))
 			.catch(error => {
 				console.error(error)
 				dispatchFeedback(
@@ -77,13 +80,20 @@ export default function Subscriptions({ setSelectedSetting }) {
 			})
 	}, [])
 
-	const FrequencyWrapper = (value, row) => {
+	// tried to implement this from your pseudo code but when i click on the <Chip/>, it just flashes up the <SelectFrequency/> for like 2ms (i.e the appearance of the <SelectFrequency/> only lasts for about 2ms, so i'm unable to choose any newFreq)
+	const FrequencyWrapper = ({ value, row }) => {
 		const [freq, setFreq] = useState(value)
 		const handleFrequency = newFreq => {
 			axios
-				.put(process.env.GATSBY_STRAPI_URL + `/subscriptions/${row}`, {
-					frequency: freq,
-				})
+				.put(
+					process.env.GATSBY_STRAPI_URL + `/subscriptions/${row}`,
+					{
+						frequency: freq,
+					},
+					{
+						headers: { Authorization: `Bearer ${user.jwt}` },
+					}
+				)
 				.then(response => {
 					const newSubscriptions = [...subscriptions]
 					const subscriptionToUpdate = newSubscriptions.find(
@@ -111,7 +121,21 @@ export default function Subscriptions({ setSelectedSetting }) {
 				})
 		}
 
-		return <SelectFrequency value={freq} onChange={handleFrequency} />
+		return (
+			<SelectFrequency
+				chip={
+					<Chip
+						label={freq.split("_").join(" ")}
+						classes={{
+							root: classes.chipRoot,
+							label: classes.bold,
+						}}
+					/>
+				}
+				value={freq}
+				setValue={handleFrequency}
+			/>
+		)
 	}
 
 	const handleDelete = row => {
@@ -276,7 +300,7 @@ export default function Subscriptions({ setSelectedSetting }) {
 			width: 250,
 			sortable: false,
 			renderCell: ({ value }) => (
-				<FrequencyWrapper value={value} row={value.id} />
+				<FrequencyWrapper value={value.frequency} row={value.id} />
 			),
 		},
 		{
