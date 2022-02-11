@@ -118,7 +118,7 @@ export default function ProductReview({
 				headers: option === "delete" ? auth : undefined, // coz DELETE request only need a header (text, product, rating is ignored)
 			},
 			{
-				headers: auth,
+				headers: auth, // DELETE request ignores this 3rd param (somehow)
 			}
 		)
 			.then(response => {

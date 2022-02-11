@@ -11,7 +11,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import SettingsGrid from "../SettingsGrid"
 import QtyButton from "../../product-list/QtyButton"
 
-// import SelectFrequency from "../../ui/select-frequency"
+import SelectFrequency from "../../ui/select-frequency"
 import DeleteIcon from "../../../images/Delete"
 import pauseIcon from "../../../images/pause.svg"
 
@@ -49,22 +49,22 @@ const useStyles = makeStyles(() => ({
 	},
 }))
 
-//TODO: implement frequency change feature
 export default function Subscriptions({ setSelectedSetting }) {
 	const classes = useStyles()
 	const { user, dispatchUser } = useUser()
 	const { dispatchFeedback } = useFeedback()
 	const [subscriptions, setSubscriptions] = useState([])
-	// const [freq, setFreq] = useState(subscriptions.frequency) // [subscriptions] is undefined until the useEffect() kicks in, therefore setting "subscriptions.frequency" as the intial state is like a no-op
 	const [loading, setLoading] = useState(null)
 
 	useEffect(() => {
 		axios
-			//FIXME: move this .get to <SettingsPortal/> then pass "subs" including its "frequency" downto this component ? (tried that, didn't work)
 			.get(process.env.GATSBY_STRAPI_URL + "/subscriptions/me", {
 				headers: { Authorization: `Bearer ${user.jwt}` },
 			})
-			.then(response => setSubscriptions(response.data))
+			.then(response => {
+				console.log(response)
+				setSubscriptions(response.data)
+			})
 			.catch(error => {
 				console.error(error)
 				dispatchFeedback(
@@ -77,10 +77,42 @@ export default function Subscriptions({ setSelectedSetting }) {
 			})
 	}, [])
 
-	// const handleFrequency = newFrequency => {
-	// 	// {newFrequency} === event.target.value as defined in select-frequency.js
-	// 	setFreq(newFrequency)
-	// }
+	const FrequencyWrapper = (value, row) => {
+		const [freq, setFreq] = useState(value)
+		const handleFrequency = newFreq => {
+			axios
+				.put(process.env.GATSBY_STRAPI_URL + `/subscriptions/${row}`, {
+					frequency: freq,
+				})
+				.then(response => {
+					const newSubscriptions = [...subscriptions]
+					const subscriptionToUpdate = newSubscriptions.find(
+						subscription =>
+							subscription.id === response.subscription.id
+					)
+
+					const index =
+						newSubscriptions.findIndex(subscriptionToUpdate)
+					newSubscriptions[index].frequency = newFreq
+
+					setSubscriptions(newSubscriptions)
+					setFreq(newFreq) //this may not be necessary since setting the new subscriptions will feed the new value to the freq default state, so just play around with it and see
+				})
+
+				.catch(error => {
+					console.error(error)
+					dispatchFeedback(
+						setSnackbar({
+							status: "error",
+							message:
+								"There was a problem changing the subscription frequency of this product. Please try again soon.",
+						})
+					)
+				})
+		}
+
+		return <SelectFrequency value={freq} onChange={handleFrequency} />
+	}
 
 	const handleDelete = row => {
 		setLoading(row)
@@ -109,7 +141,8 @@ export default function Subscriptions({ setSelectedSetting }) {
 				dispatchFeedback(
 					setSnackbar({
 						status: "info",
-						message: "Product REMOVED From Favorites.",
+						message:
+							"Product REMOVED From your list of Subscriptions.",
 					})
 				)
 			})
@@ -121,7 +154,7 @@ export default function Subscriptions({ setSelectedSetting }) {
 					setSnackbar({
 						status: "error",
 						message:
-							"There was a problem removing this product from your favorites. Please try again.",
+							"There was a problem removing this product from your subcriptions. Please try again.",
 					})
 				)
 			})
@@ -151,7 +184,7 @@ export default function Subscriptions({ setSelectedSetting }) {
 				},
 				item: { name, variant },
 				quantity: { variant, name },
-				frequency,
+				freq: { frequency, id },
 				next_delivery,
 				total: variant.price * 1.069,
 				id,
@@ -238,21 +271,12 @@ export default function Subscriptions({ setSelectedSetting }) {
 			),
 		},
 		{
-			field: "frequency",
+			field: "freq",
 			headerName: "Frequency",
 			width: 250,
 			sortable: false,
 			renderCell: ({ value }) => (
-				// <SelectFrequency
-				// 	chip={
-				<Chip
-					label={value.split("_").join(" ")}
-					classes={{ label: classes.bold }}
-				/>
-				// }
-				// value={freq}
-				// setValue={handleFrequency}
-				// />
+				<FrequencyWrapper value={value} row={value.id} />
 			),
 		},
 		{
