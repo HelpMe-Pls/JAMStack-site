@@ -699,8 +699,8 @@ module.exports = {
                                 <td data-size="Section Headlines" data-color="Section Headlines" class="Section Headlines"
                                   align="left" valign="middle"
                                   style="font-family:'Poppins',Arial,Helvetica,sans-serif;color:#99B898;font-size:22px;line-height:28px;font-weight:400;letter-spacing:0px;padding:0px;padding-bottom:15px;">
-                                  ${order.paymentMethod?.brand.toUpperCase()} **** **** **** ${
-			order.paymentMethod?.last4
+                                  ${order.paymentMethod.brand.toUpperCase()} **** **** **** ${
+			order.paymentMethod.last4
 		}
                                 </td>
                               </tr>
