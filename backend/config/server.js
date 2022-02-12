@@ -2,6 +2,7 @@ module.exports = ({ env }) => ({
 	host: env("HOST", "0.0.0.0"),
 	port: env.int("PORT", 1337),
 	cron: { enabled: true },
+	url: env("URL", "http://localhost"),
 	// url: env("", "https://acfa-171-250-73-212.ngrok.io"),
 	admin: {
 		auth: {
