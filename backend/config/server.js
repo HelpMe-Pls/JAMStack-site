@@ -3,7 +3,10 @@ module.exports = ({ env }) => ({
 	port: env.int("PORT", 1337),
 	cron: { enabled: true },
 	url: env("URL", "http://localhost:1337"),
+
+	// Testing url for Facebook Auth:
 	// url: env("", "https://acfa-171-250-73-212.ngrok.io"),
+
 	admin: {
 		auth: {
 			secret: env("ADMIN_JWT_SECRET", "46ccbd288693d37d934469e558bf99e5"),
