@@ -92,11 +92,16 @@ export default function Header({ categories }) {
 		{ name: "Contact Us", strapiId: "contact-us", path: "/contact" },
 	]
 	const activeIndex = () => {
+		//[1] to remain the active tab after navigated to ProductDetail
+		const pathname =
+			typeof window !== "undefined"
+				? window.location.pathname.split("/")[1]
+				: null
+
 		const itemPos = routes.indexOf(
 			routes.filter(
 				({ name, path }) =>
-					(path || `/${name.toLowerCase()}`) ===
-					`/${window.location.pathname.split("/")[1]}` //[1] to remain the active tab after navigated to ProductDetail
+					(path || `/${name.toLowerCase()}`) === `/${pathname}`
 			)[0] // [0] to return the actual item (e.x: hats, hoodies, shirts)
 		)
 

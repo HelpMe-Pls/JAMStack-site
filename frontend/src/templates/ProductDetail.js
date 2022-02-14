@@ -32,7 +32,7 @@ export default function ProductDetail({
 		// get the part after "?" in current URL in the address bar
 		typeof window !== "undefined"
 			? new URLSearchParams(window.location.search)
-			: { get: () => null }
+			: { get: () => null } // overriding a default method (.get()) to return null in case its caller is not yet defined
 	const style = params.get("style") // params.get("style"): ?style=Male ==> get "Male"
 
 	const recentlyViewedProducts =
