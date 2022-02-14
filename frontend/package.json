@@ -39,7 +39,7 @@
     },
     "conflictDependencies": {
         "react-lottie": "^1.2.3",
-        "react-spring-3d-carousel": "^1.2.1",
+        "react-spring-3d-carousel": "^1.2.1"
     },
     "keywords": [
         "gatsby"
