@@ -6,7 +6,10 @@ const CartContext = createContext()
 export const useCart = () => useContext(CartContext)
 
 export function CartWrapper({ children }) {
-	const storedCart = JSON.parse(localStorage.getItem("cart"))
+	const storedCart =
+		typeof window !== "undefined"
+			? JSON.parse(localStorage.getItem("cart"))
+			: null
 	const [cart, dispatchCart] = useReducer(cartReducer, storedCart || []) // []: empty cart
 
 	return (

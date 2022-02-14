@@ -84,3 +84,16 @@ exports.createPages = async ({ graphql, actions }) => {
 		})
 	})
 }
+
+// To ignore the "react-spring-3d-carousel" on "build" command to avoid undefined "window" error from it
+exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+	if (stage === "build-html") {
+		actions.setWebpackConfig({
+			module: {
+				rules: [
+					{ test: /react-spring-3d-carousel/, use: loaders.null() },
+				],
+			},
+		})
+	}
+}
