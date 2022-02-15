@@ -11,7 +11,7 @@ export default function Account() {
 	const { user } = useUser()
 	const { isClient, key } = useIsClient()
 
-	if (!isClient) return null
+	if (!isClient) return null // so that there'll be no flickering between the intial "null" rendered and the follwoing "isClient" rendered
 
 	return (
 		<Layout key={key}>

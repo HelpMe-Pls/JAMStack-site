@@ -196,6 +196,7 @@ export default function ProductInfo({
 	}, [imageIndex])
 
 	const stockDisplay = getStockDisplay(stock, selectedVariant)
+	console.log("Stock:", stock)
 
 	return (
 		<Grid
