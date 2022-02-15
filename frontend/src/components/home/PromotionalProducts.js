@@ -194,7 +194,7 @@ export default function PromotionalProducts() {
 		>
 			<Grid item classes={{ root: classes.carouselContainer }}>
 				{typeof window !== "undefined" ? (
-					<Carousel slides={slides} goToSlide={selectedSlide} />
+					<Carousel slides={slideItems} goToSlide={selectedSlide} />
 				) : null}
 			</Grid>
 			<Grid item classes={{ root: classes.descriptionContainer }}>
