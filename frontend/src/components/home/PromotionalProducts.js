@@ -129,28 +129,19 @@ export default function PromotionalProducts() {
 								// extra toiling just to bring the red lightbulb hat to the front.
 								i === 0 ? (
 									<img
-										src={
-											process.env.GATSBY_STRAPI_URL +
-											product.variants[4].images[0].url
-										}
+										src={product.variants[4].images[0].url}
 										alt={`product-${i}`}
 										className={classes.carouselImage}
 									/>
 								) : i === 1 ? (
 									<img
-										src={
-											process.env.GATSBY_STRAPI_URL +
-											product.variants[1].images[0].url
-										}
+										src={product.variants[1].images[0].url}
 										alt={`product-${i}`}
 										className={classes.carouselImage}
 									/>
 								) : i === 2 ? (
 									<img
-										src={
-											process.env.GATSBY_STRAPI_URL +
-											product.variants[0].images[0].url
-										}
+										src={product.variants[0].images[0].url}
 										alt={`product-${i}`}
 										className={classes.carouselImage}
 									/>

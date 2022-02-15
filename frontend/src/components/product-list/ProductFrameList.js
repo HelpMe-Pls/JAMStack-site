@@ -105,7 +105,7 @@ export default function ProductFrameList({
 						}`}
 					>
 						<img
-							src={process.env.GATSBY_STRAPI_URL + image.url}
+							src={image.url}
 							alt={image.name}
 							className={classes.productImage}
 						/>

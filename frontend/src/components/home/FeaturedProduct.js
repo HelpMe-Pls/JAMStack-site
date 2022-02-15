@@ -133,10 +133,7 @@ export default function FeaturedProducts({
 				classes={{ root: classes.frame }}
 			>
 				<img
-					src={
-						process.env.GATSBY_STRAPI_URL +
-						node.variants[3].images[0].url
-					}
+					src={node.variants[3].images[0].url}
 					alt={node.name}
 					className={classes.featured}
 				/>

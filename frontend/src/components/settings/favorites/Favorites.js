@@ -112,7 +112,7 @@ export default function Favorites({ setSelectedSetting }) {
 				<Grid container direction="column">
 					<Grid item>
 						<img
-							src={process.env.GATSBY_STRAPI_URL + value.image}
+							src={value.image}
 							alt={value.name}
 							className={classes.image}
 						/>
