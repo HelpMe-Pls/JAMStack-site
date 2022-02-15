@@ -92,7 +92,6 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
 			module: {
 				rules: [
 					{ test: /react-spring-3d-carousel/, use: loaders.null() },
-					{ test: /react-lottie/, use: loaders.null() },
 				],
 			},
 		})
