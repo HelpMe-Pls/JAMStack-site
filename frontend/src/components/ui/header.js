@@ -15,6 +15,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import { Link } from "gatsby"
 
 import { useCart } from "../../contexts"
+import { useIsClient } from "../../hooks"
 
 import search from "../../images/search.svg"
 import cartIcon from "../../images/cart.svg"
@@ -78,8 +79,10 @@ const useStyles = makeStyles(theme => ({
 
 export default function Header({ categories }) {
 	const classes = useStyles()
-	const { cart } = useCart()
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md")) // matches media breakpoints: https://mui.com/customization/breakpoints/
+
+	const { cart } = useCart()
+	const { isClient, key } = useIsClient()
 	const [drawerOpen, setDrawerOpen] = useState(false)
 
 	const iOS =
@@ -105,11 +108,11 @@ export default function Header({ categories }) {
 			)[0] // [0] to return the actual item (e.x: hats, hoodies, shirts)
 		)
 
-		return itemPos === -1 ? false : itemPos // {false} so that it points to homepage if we click on <VAR_X>
+		return itemPos === -1 ? false : itemPos // {false} so that it points to homepage if we click on "LOCO"
 	}
 	const tabs = ( // using parentheses as an implicit return
 		<Tabs
-			value={activeIndex()} //not using () => activeIndex() to make sure it's executed immediately on every new render
+			value={!isClient ? 0 : activeIndex()} //not using () => activeIndex() to make sure it's executed immediately on every new render
 			classes={{
 				indicator: classes.coloredIndicator,
 				root: classes.tabs,
@@ -146,7 +149,7 @@ export default function Header({ categories }) {
 					},
 				].map((route, i) => (
 					<ListItem
-						selected={activeIndex() === i}
+						selected={!isClient ? false : activeIndex() === i}
 						component={Link}
 						to={route.path || `/${route.name.toLowerCase()}`}
 						divider
@@ -218,6 +221,7 @@ export default function Header({ categories }) {
 							>
 								{action.alt === "cart" ? (
 									<Badge
+										key={key}
 										overlap="circular"
 										badgeContent={cart.length}
 										classes={{ badge: classes.badge }}

@@ -1,10 +1,10 @@
 import React, { useState } from "react"
 import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 
+import { useIsClient } from "../../hooks"
 import ProductFrameGrid from "../product-list/ProductFrameGrid"
 
 const useStyles = makeStyles(theme => ({
@@ -31,6 +31,7 @@ const useStyles = makeStyles(theme => ({
 export default function RecentlyViewed({ products }) {
 	const classes = useStyles()
 	const [firstIndex, setFirstIndex] = useState(0)
+	const { isClient, key } = useIsClient()
 
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
 	const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
@@ -52,6 +53,7 @@ export default function RecentlyViewed({ products }) {
 	return (
 		<Grid
 			item
+			key={key}
 			container
 			justifyContent="center"
 			alignItems="center"
@@ -66,7 +68,7 @@ export default function RecentlyViewed({ products }) {
 				</Button>
 			</Grid>
 			{
-				products
+				products && isClient
 					? products
 							.slice(firstIndex, firstIndex + displayNum)
 							.map(product => {
