@@ -134,6 +134,7 @@ export default function ProductFrameGrid({
 	const imageIndex = colorIndex(product, variant, selectedColor)
 
 	const imgURL =
+		// After uploading the images to AWS s3, they're hosted on Amazon (by the aws-s3 plugin), therefore we'll remove the previously "process.env.GATSBY_STRAPI_URL +" so that Strapi can point to the correct source (AWS S3 bucket) to get the images.
 		imageIndex !== -1
 			? product.variants[imageIndex].images[0].url
 			: variant.images[0].url
