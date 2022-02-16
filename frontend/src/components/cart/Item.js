@@ -6,6 +6,7 @@ import IconButton from "@material-ui/core/IconButton"
 import Chip from "@material-ui/core/Chip"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles, useTheme } from "@material-ui/core/styles"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 import QtyButton from "../product-list/QtyButton"
 
@@ -129,13 +130,15 @@ export default function Item({ item }) {
 		},
 	]
 
+	const img = getImage(item.variant.images[0].localFile)
+
 	return (
 		<Grid item container classes={{ root: classes.itemContainer }}>
 			<Grid item>
-				<img
-					className={classes.productImage}
-					src={item.variant.images[0].url}
+				<GatsbyImage
+					image={img}
 					alt={item.variant.id}
+					className={classes.productImage}
 				/>
 			</Grid>
 			<Grid
