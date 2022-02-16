@@ -278,7 +278,7 @@ const ContactPage = () => {
 			body: encode({
 				"form-name": "contact",
 				name: values.name,
-				number: values.phone,
+				phone: values.phone,
 				email: values.email,
 				message: values.message,
 			}),
