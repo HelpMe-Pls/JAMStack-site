@@ -15,6 +15,7 @@ import { useQuery } from "@apollo/client"
 import { GET_DETAILS } from "../../apollo/queries"
 
 import { Link } from "gatsby"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 const useStyles = makeStyles(theme => ({
 	featured: {
@@ -104,6 +105,7 @@ export default function FeaturedProducts({
 		? "center"
 		: "flex-end"
 
+	const img = getImage(node.variants[3].images[0].localFile)
 	const hasStyles = node.variants.some(variant => variant.style !== null)
 
 	const { data } = useQuery(GET_DETAILS, {
@@ -132,8 +134,8 @@ export default function FeaturedProducts({
 				}
 				classes={{ root: classes.frame }}
 			>
-				<img
-					src={node.variants[3].images[0].url}
+				<GatsbyImage
+					image={img}
 					alt={node.name}
 					className={classes.featured}
 				/>

@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography"
 import Chip from "@material-ui/core/Chip"
 import { makeStyles } from "@material-ui/core/styles"
 import { Link } from "gatsby"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 import Rating from "../home/Rating"
 import Sizes from "./Sizes"
@@ -93,24 +94,27 @@ export default function ProductFrameList({
 				alignItems="center"
 				classes={{ root: classes.frame }}
 			>
-				{images.map(image => (
-					<Grid
-						item
-						key={image.name}
-						component={Link}
-						to={`/${product.category.name.toLowerCase()}/${product.name
-							.split(" ")[0]
-							.toLowerCase()}${
-							hasStyles ? `?style=${variant.style}` : ""
-						}`}
-					>
-						<img
-							src={image.url}
-							alt={image.name}
-							className={classes.productImage}
-						/>
-					</Grid>
-				))}
+				{images.map(image => {
+					const gatsbyData = getImage(image.localFile)
+					return (
+						<Grid
+							item
+							key={image.name}
+							component={Link}
+							to={`/${product.category.name.toLowerCase()}/${product.name
+								.split(" ")[0]
+								.toLowerCase()}${
+								hasStyles ? `?style=${variant.style}` : ""
+							}`}
+						>
+							<GatsbyImage
+								image={gatsbyData}
+								alt={image.name}
+								className={classes.productImage}
+							/>
+						</Grid>
+					)
+				})}
 			</Grid>
 			<Grid
 				item

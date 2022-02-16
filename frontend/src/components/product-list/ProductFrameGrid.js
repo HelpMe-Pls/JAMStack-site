@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { makeStyles } from "@material-ui/core/styles"
 import { navigate } from "gatsby"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 import QuickView from "./QuickView"
 
@@ -136,8 +137,11 @@ export default function ProductFrameGrid({
 	const imgURL =
 		// After uploading the images to AWS s3, they're hosted on Amazon (by the aws-s3 plugin), therefore we'll remove the previously "process.env.GATSBY_STRAPI_URL +" so that Strapi can point to the correct source (AWS S3 bucket) to get the images.
 		imageIndex !== -1
-			? product.variants[imageIndex].images[0].url
-			: variant.images[0].url
+			? product.variants[imageIndex].images[0].localFile
+			: variant.images[0].localFile
+
+	const img = getImage(imgURL)
+
 	const productName = product.name.split(" ")[0]
 
 	return (
@@ -165,8 +169,8 @@ export default function ProductFrameGrid({
 				}
 			>
 				<Grid item classes={{ root: classes.frame }}>
-					<img
-						src={imgURL}
+					<GatsbyImage
+						image={img}
 						alt={product.name}
 						className={classes.product}
 					/>
@@ -184,7 +188,7 @@ export default function ProductFrameGrid({
 				colors={colors}
 				selectedColor={selectedColor}
 				setSelectedColor={setSelectedColor}
-				url={imgURL}
+				img={img}
 				imageIndex={imageIndex}
 				name={productName}
 				variant={variant}

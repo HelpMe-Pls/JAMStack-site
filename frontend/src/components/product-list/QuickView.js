@@ -7,6 +7,7 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogContent from "@material-ui/core/DialogContent"
 import { makeStyles } from "@material-ui/core/styles"
 import { Link } from "gatsby"
+import { GatsbyImage } from "gatsby-plugin-image"
 
 import Rating from "../home/Rating"
 import Sizes from "./Sizes"
@@ -90,7 +91,7 @@ export default function QuickView({
 	setOpen,
 	product,
 	variant,
-	url,
+	img,
 	name,
 	rating,
 	price,
@@ -128,8 +129,8 @@ export default function QuickView({
 							hasStyles ? `?style=${variant.style}` : ""
 						}`}
 					>
-						<img
-							src={url}
+						<GatsbyImage
+							image={img}
 							alt="product quick view"
 							className={classes.productImage}
 						/>

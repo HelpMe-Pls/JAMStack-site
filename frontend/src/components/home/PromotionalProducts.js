@@ -8,6 +8,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery"
 import clsx from "clsx"
 import { Link, useStaticQuery, graphql } from "gatsby"
 import { makeStyles } from "@material-ui/core/styles"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 import promoAdornment from "../../images/promo-adornment.svg"
 import explore from "../../images/explore.svg"
@@ -99,7 +100,11 @@ export default function PromotionalProducts() {
 					}
 					variants {
 						images {
-							url
+							localFile {
+								childImageSharp {
+									gatsbyImageData
+								}
+							}
 						}
 					}
 				}
@@ -108,8 +113,11 @@ export default function PromotionalProducts() {
 	`)
 
 	let slideItems = []
-	data.allStrapiProduct.nodes.map((product, i) =>
-		slideItems.push({
+	data.allStrapiProduct.nodes.map((product, i) => {
+		const img = getImage(
+			product.variants[Math.floor(Math.random() * 5)].images[0].localFile
+		)
+		return slideItems.push({
 			key: i,
 			content: (
 				<Grid container direction="column" alignItems="center">
@@ -125,36 +133,12 @@ export default function PromotionalProducts() {
 								}),
 							}}
 						>
-							{
-								// extra toiling just to bring the red lightbulb hat to the front.
-								i === 0 ? (
-									<img
-										src={product.variants[4].images[0].url}
-										alt={`product-${i}`}
-										className={classes.carouselImage}
-									/>
-								) : i === 1 ? (
-									<img
-										src={product.variants[1].images[0].url}
-										alt={`product-${i}`}
-										className={classes.carouselImage}
-									/>
-								) : i === 2 ? (
-									<img
-										src={product.variants[0].images[0].url}
-										alt={`product-${i}`}
-										className={classes.carouselImage}
-									/>
-								) : null
-							}
-							{/* <img
-								src={
-									process.env.GATSBY_STRAPI_URL +
-									product.variants[i + 2].images[0].url
-								}
+							<GatsbyImage
+								image={img}
 								alt={`product-${i}`}
+								objectFit="contain"
 								className={classes.carouselImage}
-							/> */}
+							/>
 						</IconButton>
 					</Grid>
 					<Grid item>
@@ -173,7 +157,7 @@ export default function PromotionalProducts() {
 			description: product.description,
 			url: `/${product.category.name.toLowerCase()}`,
 		})
-	)
+	})
 
 	return (
 		<Grid
