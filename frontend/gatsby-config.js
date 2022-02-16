@@ -87,7 +87,7 @@ module.exports = {
 				background_color: "#7FB2F0",
 				theme_color: "#7FB2F0",
 				display: "minimal-ui",
-				icon: "src/images/gatsby-icon.png", // This path is relative to the root of the site.
+				icon: "src/images/logo192.png", // This path is relative to the root of the site.
 			},
 		},
 		"gatsby-plugin-offline", // PWAs stuff and reduce bandwidth usage for AWS-S3 by caching image requests
