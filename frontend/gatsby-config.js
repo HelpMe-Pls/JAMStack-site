@@ -2,9 +2,24 @@ require("dotenv").config()
 
 module.exports = {
 	siteMetadata: {
-		title: "My super blog",
-		description: "Gatsby blog with Strapi",
-		author: "Strapi team",
+		title: `LOCO`,
+		description: `The premier developer clothing line. For developers, by developers. High quality, custom-designed shirts, hats, and hoodies. Just a project to put in my CV though.`,
+		author: `Khoi Le`,
+		keywords: [
+			"clothing",
+			"developer",
+			"programmer",
+			"coding",
+			"code",
+			"websites",
+			"web developer",
+			"hats",
+			"shirts",
+			"hoodies",
+		],
+		siteUrl: "https://thirsty-northcutt-ed4fb3.netlify.app",
+		twitterUsername: "@RandomG37891697",
+		defaultImage: "",
 	},
 	plugins: [
 		"gatsby-plugin-react-helmet",

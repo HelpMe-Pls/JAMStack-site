@@ -3,6 +3,8 @@ import React from "react"
 import { useUser } from "../contexts"
 import { useIsClient } from "../hooks"
 
+import SEO from "../components/ui/seo"
+
 import Layout from "../components/ui/layout"
 import AuthPortal from "../components/auth/AuthPortal"
 import SettingsPortal from "../components/settings/SettingsPortal"
@@ -15,6 +17,10 @@ export default function Account() {
 
 	return (
 		<Layout key={key}>
+			<SEO
+				title="Account"
+				description="Login/Sign Up for an account to LOCO or manage your existing account."
+			/>
 			{user.jwt && user.onboarding ? (
 				<SettingsPortal /> // {user.onboarding} only available AFTER we rendered the <Complete/> or the user is (still) logged in
 			) : (
