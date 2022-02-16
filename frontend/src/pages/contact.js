@@ -16,6 +16,7 @@ import Email from "../images/EmailAdornment.js"
 import Phone from "../images/PhoneAdornment.js"
 
 import Layout from "../components/ui/layout"
+import SEO from "../components/ui/seo"
 import validate from "../components/ui/validate"
 
 import { useFeedback } from "../contexts"
@@ -308,6 +309,10 @@ const ContactPage = () => {
 
 	return (
 		<Layout>
+			<SEO
+				title="Contact Us"
+				description="Send us a message and learn more about the high quality clothing standards at LOCO."
+			/>
 			<Grid
 				container
 				justifyContent="space-around"

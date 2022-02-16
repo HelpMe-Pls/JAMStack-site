@@ -5,6 +5,7 @@ import { gql } from "@apollo/client"
 export const GET_DETAILS = gql`
 	query getDetails($id: ID!) {
 		product(id: $id) {
+			id # To clear overriding cache warnings
 			rating
 			variants {
 				qty
@@ -15,6 +16,7 @@ export const GET_DETAILS = gql`
 export const GET_REVIEWS = gql`
 	query getReviews($id: ID!) {
 		product(id: $id) {
+			id # To clear overriding cache warnings
 			reviews {
 				id
 				text

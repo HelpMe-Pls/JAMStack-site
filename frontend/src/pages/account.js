@@ -3,9 +3,8 @@ import React from "react"
 import { useUser } from "../contexts"
 import { useIsClient } from "../hooks"
 
-import SEO from "../components/ui/seo"
-
 import Layout from "../components/ui/layout"
+import SEO from "../components/ui/seo"
 import AuthPortal from "../components/auth/AuthPortal"
 import SettingsPortal from "../components/settings/SettingsPortal"
 

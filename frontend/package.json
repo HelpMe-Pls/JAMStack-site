@@ -1,14 +1,14 @@
 {
     "name": "jamstack-site",
     "private": true,
-    "description": "A simple starter to get up and developing quickly with Gatsby",
-    "version": "0.1.0",
+    "description": "LOCO's frontend dependencies.",
+    "version": "1.0.0",
     "author": "Le Tan Khoi <khoile5399@gmail.com>",
     "dependencies": {
         "@apollo/client": "^3.2.9",
         "@emotion/react": "^11.7.0",
         "@material-ui/core": "^4.12.3",
-        "@material-ui/data-grid": "^4.0.0-alpha.21",
+        "@material-ui/data-grid": "4.0.0-alpha.21",
         "@material-ui/lab": "^4.0.0-alpha.60",
         "@stripe/react-stripe-js": "^1.7.0",
         "@stripe/stripe-js": "^1.22.0",
@@ -54,9 +54,9 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+        "url": "https://github.com/HelpMe-Pls/JAMStack-site"
     },
     "bugs": {
-        "url": "https://github.com/gatsbyjs/gatsby/issues"
+        "url": "https://github.com/HelpMe-Pls/JAMStack-site/issues"
     }
 }
