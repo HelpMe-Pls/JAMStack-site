@@ -24,6 +24,17 @@ module.exports = {
 	plugins: [
 		"gatsby-plugin-react-helmet",
 		"gatsby-plugin-material-ui",
+		`gatsby-plugin-sitemap`,
+		`gatsby-plugin-image`,
+		{
+			resolve: `gatsby-plugin-robots-txt`,
+			options: {
+				host: "https://thirsty-northcutt-ed4fb3.netlify.app",
+				sitemap:
+					"https://thirsty-northcutt-ed4fb3.netlify.app/sitemap.xml",
+				policy: [{ userAgent: "*", allow: "/" }],
+			},
+		},
 		{
 			resolve: "gatsby-plugin-web-font-loader",
 			options: {
@@ -58,18 +69,18 @@ module.exports = {
 		},
 		"gatsby-transformer-sharp",
 		"gatsby-plugin-sharp",
-		// {
-		// 	resolve: `gatsby-plugin-manifest`,
-		// 	options: {
-		// 		name: "gatsby-starter-default",
-		// 		short_name: "starter",
-		// 		start_url: "/",
-		// 		background_color: "#663399",
-		// 		theme_color: "#663399",
-		// 		display: "minimal-ui",
-		// 		icon: "src/images/gatsby-icon.png", // This path is relative to the root of the site.
-		// 	},
-		// },
-		"gatsby-plugin-offline",
+		{
+			resolve: `gatsby-plugin-manifest`,
+			options: {
+				name: "LOCO-store",
+				short_name: "LOCO",
+				start_url: "/",
+				background_color: "#7FB2F0",
+				theme_color: "#7FB2F0",
+				display: "minimal-ui",
+				icon: "src/images/gatsby-icon.png", // This path is relative to the root of the site.
+			},
+		},
+		"gatsby-plugin-offline", // PWAs stuff and reduce bandwidth usage for AWS-S3 by caching image requests
 	],
 }
