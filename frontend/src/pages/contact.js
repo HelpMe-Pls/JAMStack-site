@@ -18,6 +18,9 @@ import Phone from "../images/PhoneAdornment.js"
 import Layout from "../components/ui/layout"
 import validate from "../components/ui/validate"
 
+import { useFeedback } from "../contexts"
+import { setSnackbar } from "../contexts/actions"
+
 const useStyles = makeStyles(theme => ({
 	mainContainer: {
 		height: "40rem",
@@ -171,12 +174,21 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
+const encode = data =>
+	Object.keys(data)
+		.map(
+			key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
+		)
+		.join("&")
+
 const ContactPage = () => {
 	const classes = useStyles()
 	const theme = useTheme()
 
 	const matchesMD = useMediaQuery(thm => thm.breakpoints.down("md"))
 	const matchesXS = useMediaQuery(thm => thm.breakpoints.down("xs"))
+
+	const { dispatchFeedback } = useFeedback()
 
 	const [values, setValues] = useState({
 		name: "",
@@ -259,6 +271,41 @@ const ContactPage = () => {
 		Object.keys(errors).some(error => errors[error] === true) ||
 		Object.keys(errors).length < 4 // to disable the "send message" button if there's any empty input
 
+	const handleSubmit = e => {
+		fetch("/", {
+			method: "POST",
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			body: encode({
+				"form-name": "contact",
+				name: values.name,
+				number: values.phone,
+				email: values.email,
+				message: values.message,
+			}),
+		})
+			.then(() => {
+				setValues({ name: "", phone: "", email: "", message: "" })
+				dispatchFeedback(
+					setSnackbar({
+						status: "success",
+						message: "Message sent successfully.",
+					})
+				)
+			})
+			.catch(error => {
+				console.error(error)
+				dispatchFeedback(
+					setSnackbar({
+						status: "error",
+						message:
+							"There was a problem sending your message. Please try again.",
+					})
+				)
+			})
+
+		e.preventDefault() // so that it won't refresh the page after clicking "Send message"
+	}
+
 	return (
 		<Layout>
 			<Grid
@@ -269,7 +316,14 @@ const ContactPage = () => {
 				classes={{ root: classes.mainContainer }}
 			>
 				{/* Contact form */}
-				<Grid item classes={{ root: classes.formWrapper }}>
+				<Grid
+					item
+					component="form"
+					name="contact"
+					method="POST"
+					data-netlify="true"
+					classes={{ root: classes.formWrapper }}
+				>
 					<Grid
 						container
 						direction="column"
@@ -310,6 +364,7 @@ const ContactPage = () => {
 											}}
 										>
 											<TextField
+												name={field}
 												value={values[field]}
 												onChange={e => {
 													const valid =
@@ -390,6 +445,8 @@ const ContactPage = () => {
 						</Grid>
 						<Grid
 							item
+							type="submit"
+							onClick={handleSubmit}
 							component={Button}
 							disabled={disabled}
 							classes={{
