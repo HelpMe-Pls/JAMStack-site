@@ -14,7 +14,8 @@ import Badge from "@material-ui/core/Badge"
 import { makeStyles } from "@material-ui/core/styles"
 import { Link } from "gatsby"
 
-import { useCart } from "../../contexts"
+import { useCart, useFeedback } from "../../contexts"
+import { setSnackbar } from "../../contexts/actions"
 import { useIsClient } from "../../hooks"
 
 import search from "../../images/search.svg"
@@ -82,6 +83,7 @@ export default function Header({ categories }) {
 	const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md")) // matches media breakpoints: https://mui.com/customization/breakpoints/
 
 	const { cart } = useCart()
+	const { dispatchFeedback } = useFeedback()
 	const { isClient, key } = useIsClient()
 	const [drawerOpen, setDrawerOpen] = useState(false)
 
@@ -171,7 +173,13 @@ export default function Header({ categories }) {
 			icon: search,
 			alt: "search",
 			visible: true,
-			onClicked: () => console.log("search"),
+			onClicked: () =>
+				dispatchFeedback(
+					setSnackbar({
+						status: "info",
+						message: "This feature is not yet implemented.",
+					})
+				),
 		},
 		{ icon: cartIcon, alt: "cart", visible: true, path: "/cart" },
 		{
