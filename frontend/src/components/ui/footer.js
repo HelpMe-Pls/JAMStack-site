@@ -82,8 +82,14 @@ export default function Footer() {
 			{ label: "My Account", path: "/account" },
 		],
 		Information: [
-			{ label: "Privacy Policy", path: "/privacy-policy" },
-			{ label: "Terms and Conditions", path: "/terms-conditions" },
+			{
+				label: "Privacy Policy",
+				href: "https://github.com/HelpMe-Pls",
+			},
+			{
+				label: "Terms and Conditions",
+				href: "https://github.com/HelpMe-Pls/JAMStack-site",
+			},
 		],
 	}
 
