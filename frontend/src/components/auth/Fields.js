@@ -26,7 +26,6 @@ const useStyles = makeStyles(theme => ({
 	},
 }))
 
-//TODO: lecture 211 @12:00
 export default function Fields({
 	fields,
 	errors,

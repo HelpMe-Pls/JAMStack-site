@@ -18,7 +18,7 @@ export default function ProductDetail({
 	pageContext: { name, id, description, product, variants },
 }) {
 	const [selectedVariant, setSelectedVariant] = useState(0)
-	const [selectedImage, setSelectedImage] = useState(0) //TODO: lecture 178 @8:36
+	const [selectedImage, setSelectedImage] = useState(0)
 	// hint: set initial state to null then useEffect() to setSelectedImage accordingly ?
 	// watch how the QuickView got the right image and try to replicate that
 
