@@ -145,7 +145,7 @@ export default function Header({ categories }) {
 					{
 						name: "My Account",
 						strapiId: "account",
-						link: "/account",
+						path: "/account",
 					},
 				].map((route, i) => (
 					<ListItem
