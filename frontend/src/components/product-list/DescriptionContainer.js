@@ -73,9 +73,6 @@ const useStyles = makeStyles(theme => ({
 			marginTop: "3rem",
 		},
 		[theme.breakpoints.down("sm")]: {
-			position: "relative",
-			display: "flex",
-			alignSelf: "center",
 			marginRight: "1.5rem",
 		},
 	},
