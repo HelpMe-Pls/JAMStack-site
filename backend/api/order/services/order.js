@@ -396,7 +396,7 @@ module.exports = {
                                         <tr>
                                           <td class="imgAuto"
                                             style="font-family:'Poppins', sans-serif;margin-top: 0px;margin-bottom: 0px;text-align: left;padding-left: 8px;padding-right: 8px;">
-                                            <img src="localhos:1337${
+                                            <img src="localhost:1337${
 												item.variant.images[0].url
 											}" width="90" style="width: 90px;" alt="${
 										item.variant.id
