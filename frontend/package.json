@@ -60,6 +60,5 @@
     },
     "bugs": {
         "url": "https://github.com/HelpMe-Pls/JAMStack-site/issues"
-    },
-    "packageManager": "yarn@3.1.1"
+    }
 }

@@ -1,6 +1,7 @@
-# Foobar
+# Introduction
 
-Foobar is a Python library for dealing with word pluralization.
+This project would not have been possible without the guidance of [Zachary Reece](https://www.udemy.com/user/zacharyreece/) and his dedicated support throughout the process.
+The project is intended to demonstrate what I've learnt about React, Gatsby, Material UI and serves as a component for my resume.
 
 ## Installation
 
