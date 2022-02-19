@@ -9,6 +9,9 @@ You can have have a look and play around with the UI by visiting the [live demo]
 
 I do want to deploy the project with all of its functionality, but that requires maintaining the [AWS EC2 instance](https://aws.amazon.com/ec2/) to keep the backend running, whose usage exceeds the [Free Tier's limit](https://aws.amazon.com/ec2/pricing/?loc=ft#Free_tier) so... long story short, I'll have to pay for service to keep it working, which, you know, as a fresh graduate, it's out of my financial capability. 
 
+## Caveats
+The project has responsive design, however, for devices with 320px width it may look a bit off in some sections.
+
 ## Installation
 
 If you want to try out the fully functional version of the project, you'll have to run it locally and make sure to have the same environment as I do to get it working properly. Please download and install these 2 softwares if you don't have them already:
@@ -25,7 +28,11 @@ Then open up your terminal with Admin privilege and run:
 7. Proceed with the instructions from the [backend](https://github.com/HelpMe-Pls/JAMStack-site/blob/master/backend/README.md) and [frontend](https://github.com/HelpMe-Pls/JAMStack-site/blob/master/frontend/README.md) folders *respectively*.
 
 ## What I've learnt
-- 
+- General:
+- Gatsby:
+- Material UI:
+- React:
+- JavaScript:
 
 ## Known bugs
 - Recently viewed products
@@ -34,7 +41,7 @@ Then open up your terminal with Admin privilege and run:
 ## Planned development
 - Fix known bugs
 - Further refractor code for readability
-- Add functionality to "Search for products" and "Pause subscription" 
+- Add functionality to "Search for products", "Pause subscription" and "Promo code" 
 - Extend this project with a desktop app version of it (using [ElectronJS](https://www.electronjs.org/))
 - Find other free alternatives to AWS EC2 for deploying the backend.
 
