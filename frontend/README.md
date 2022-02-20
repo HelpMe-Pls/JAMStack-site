@@ -67,6 +67,10 @@ _check your "spam" email to see the invoice_
 ![User_10](/frontend/src/images/instructions/User_10.png?raw=true "User_10")
 
 ## Caveats
-
+- Login with Facebook is temporarily unavailable (as Facebook requires a secured **https** connection from the backend, which requires hosting your backend locally with **ngrok** or with an actual **paid** domain - for which as I mentioned, is out of my financial capability. So if you want to try that out please [contact me](https://www.facebook.com/messages/t/100005341874318) and I'll show you how to set up the ngrok testing tunnel)
+- The **Filter** option for Shirt's Style looks a bit off center in some mobile devices. Well, it *isn't* actually misaligned if you look closely into the checkbox options. I tried to fix that wasn't able to. If you can help me with that, PRs are welcome.
+- For the **Zip code** section, only those Zip code from the US is available (in the format of 5 numbers, e.g. 62525). I tried to find a public API for VN's Zipcode but I couldn't find any (the implementation is is `frontend\src\components\settings\info\Location.js` at *line 113*). If you happen to find one please open a PR.
+- I tried to make the **Add to cart** button also have the functionality of the **+** button when you click **Add to cart** consecutively under 690ms, which *may* make it hard to track your quantity in some cases.
+- After placing your order, there will be a pop up suggesting you to check your email. The order confirmation may land in "Spam" emails, so please check that also. However, the product's image won't be displayed. I don't know how to fix that (the code for that is in `backend\api\order\services\order.js` at *line 399*), so, again, PRs are welcome.
 
   
