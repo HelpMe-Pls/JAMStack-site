@@ -1,4 +1,3 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/482a010b-fb91-40fa-bbbc-aa9d75ac9adc/deploy-status)](https://app.netlify.com/sites/locostore/deploys)
 # Introduction
 
 This project would not have been possible without the dedicated guidance of [Zachary Reece](https://www.udemy.com/user/zacharyreece/) and his  support throughout the process.
