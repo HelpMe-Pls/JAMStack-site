@@ -27,7 +27,7 @@ Then open up your terminal with Admin privilege and run:
 6. `cd JAMStack-site`
 7. Proceed with the instructions from the [backend](https://github.com/HelpMe-Pls/JAMStack-site/blob/master/backend/README.md) and [frontend](https://github.com/HelpMe-Pls/JAMStack-site/blob/master/frontend/README.md) folders *respectively*.
 
-## What I've learnt
+# What I've learnt
 - General:
   - [CDN](https://www.cloudflare.com/learning/cdn/what-is-a-cdn/) (Content Delivery Network)
   - [CMS](https://blog.sjstudios.io/en/post/traditional-cms-vs-headless-cms-when-to-choose-which/) (Content Management System)
@@ -86,10 +86,7 @@ Then open up your terminal with Admin privilege and run:
 - Extend this project with a desktop app version of it (using [ElectronJS](https://www.electronjs.org/) or [Tauri](https://tauri.studio/))
 - Find other free alternatives to AWS EC2 for deploying the backend.
 
-## Contributing
+# Contributing
 Pull requests are welcome. For suggesting changes, please open an issue first to discuss what you would like to change/improve.
 
 Please make sure to [contact me](https://www.facebook.com/messages/t/100005341874318) if you need further support.
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
