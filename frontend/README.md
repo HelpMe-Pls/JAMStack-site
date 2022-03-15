@@ -4,7 +4,7 @@ If you prefer using [Yarn](https://yarnpkg.com/), I suggest `v1.22.17`. The late
 2. `npm i` or `yarn`
 3. [Contact me](https://www.facebook.com/messages/t/100005341874318) if you get this far, I'll send you the `.env` file to run the project.
 4. `npm run dev` or `yarn dev`
-    The project should be accessible at `localhost:8000`. Now you can try out all of its functionality 
+    The project should be accessible at `localhost:8000`. Now you can try out all of its functionalities 
 
 ## Usage
 #### As a guest (unregistered user):
