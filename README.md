@@ -75,7 +75,6 @@ Then open up your terminal with Admin privilege and run:
 
 
 ## Known bugs
-- Navigating forward in **Recently viewed** products when there're under 4 items
 - Unable to change subscription frequency in the list of subscriptions from User's profile
 
 ## Planned development
