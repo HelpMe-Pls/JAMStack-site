@@ -63,8 +63,8 @@ Then open up your terminal with Admin privilege and run:
   - [Hooks](https://reactjs.org/docs/hooks-intro.html)
   - [Context](https://kentcdodds.com/blog/how-to-use-react-context-effectively)
   - [Lifting the State up](https://reactjs.org/docs/lifting-state-up.html)
-  - [Rendering an iterator as a component](frontend\src\components\cart\CheckoutPortal.js)
-  - [Overriding State](frontend\src\components\product-list\QtyButton.js)
+  - [React.cloneElement](https://github.com/HelpMe-Pls/JAMStack-site/blob/master/frontend/src/components/cart/CheckoutPortal.js)
+  - [Overriding State](https://github.com/HelpMe-Pls/JAMStack-site/blob/master/frontend/src/components/product-list/QtyButton.js)
   
 
 - Deployment:
