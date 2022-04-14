@@ -5,7 +5,7 @@ The project is intended to demonstrate what I've learnt about [React](https://re
 
 ## Usage
 
-You can have have a look and play around with the UI by visiting the [live demo](https://locostore.netlify.app/). When the page loads for the **first** time (especially if you open it in the Incognito window), the layout *maybe* broken (I honestly don't know why, and if you happen to know the cause of that issue, I'd love to know how to fix it). In that case, refresh the page *~~(a few times)~~* and it'll work.
+You can have have a look and play around with the UI by visiting the [live demo](https://locostore.netlify.app/). When the page loads for the **first** time (especially if you open it in the Incognito window), the layout *maybe* broken (I honestly don't know why this bug *only* shows up for the **deployed** version. So, if you happen to know the cause of that issue, I'd love to know how to fix it). In that case, refresh the page *~~(a few times)~~* and it'll work.
 
 I do want to deploy the project with all of its functionality, but that requires maintaining the [AWS EC2 instance](https://aws.amazon.com/ec2/) to keep the backend running, whose usage exceeds the [Free Tier's limit](https://aws.amazon.com/ec2/pricing/?loc=ft#Free_tier) so... long story short, I'll have to pay for service to keep it working, which, you know, as a fresh graduate, it's out of my financial capability. 
 
