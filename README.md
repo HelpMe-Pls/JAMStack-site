@@ -1,6 +1,6 @@
 # Introduction
 
-This project would not have been possible without the dedicated guidance of [Zachary Reece](https://www.udemy.com/user/zacharyreece/) and his  support throughout the process.
+This project would not have been possible without the dedicated guidance of [Zachary Reece](https://www.udemy.com/user/zacharyreece/) and his support throughout the process.
 The project is intended to demonstrate what I've learnt about [React](https://reactjs.org/), [Gatsby](https://www.gatsbyjs.com/), [Material UI](https://mui.com/) and serves as a component for my résumé.
 
 ## Usage
