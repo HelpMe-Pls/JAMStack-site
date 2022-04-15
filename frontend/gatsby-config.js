@@ -17,7 +17,7 @@ module.exports = {
 			"shirts",
 			"hoodies",
 		],
-		siteUrl: "https://thirsty-northcutt-ed4fb3.netlify.app",
+		siteUrl: "https://locostore.netlify.app",
 		twitterUsername: "@RandomG37891697",
 		defaultImage: "",
 	},
@@ -30,8 +30,7 @@ module.exports = {
 			resolve: `gatsby-plugin-robots-txt`,
 			options: {
 				host: "https://locostore.netlify.app",
-				sitemap:
-					"https://locostore.netlify.app/sitemap.xml",
+				sitemap: "https://locostore.netlify.app/sitemap.xml",
 				policy: [{ userAgent: "*", allow: "/" }],
 			},
 		},
