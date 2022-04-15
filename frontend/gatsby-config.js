@@ -29,9 +29,9 @@ module.exports = {
 		{
 			resolve: `gatsby-plugin-robots-txt`,
 			options: {
-				host: "https://thirsty-northcutt-ed4fb3.netlify.app",
+				host: "https://locostore.netlify.app",
 				sitemap:
-					"https://thirsty-northcutt-ed4fb3.netlify.app/sitemap.xml",
+					"https://locostore.netlify.app/sitemap.xml",
 				policy: [{ userAgent: "*", allow: "/" }],
 			},
 		},
