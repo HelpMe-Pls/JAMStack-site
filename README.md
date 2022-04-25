@@ -82,7 +82,7 @@ Then open up your terminal with Admin privilege and run:
 - Fix known bugs
 - Add functionality to "Search for products", "Pause subscription" and "Promo code" 
 - Integrate [TDD](https://en.wikipedia.org/wiki/Test-driven_development) 
-- Further refractor code for readability and maintainability
+- Further refractor code for readability, reusability and maintainability
 - Find other free alternatives to AWS EC2 for deploying the backend
 - Create a Docker image for this project.
 
