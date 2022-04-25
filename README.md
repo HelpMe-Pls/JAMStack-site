@@ -80,11 +80,12 @@ Then open up your terminal with Admin privilege and run:
 
 ## Planned development
 - Fix known bugs
-- Further refractor code for readability
 - Add functionality to "Search for products", "Pause subscription" and "Promo code" 
 - Integrate [TDD](https://en.wikipedia.org/wiki/Test-driven_development) 
-- Extend this project with a desktop app version of it (using [ElectronJS](https://www.electronjs.org/) or [Tauri](https://tauri.studio/))
-- Find other free alternatives to AWS EC2 for deploying the backend.
+- Further refractor code for readability and maintainability
+- Find other free alternatives to AWS EC2 for deploying the backend
+- Create a Docker image for this project.
+
 
 # Contributing
 Pull requests are welcome. For suggesting changes, please open an issue first to discuss what you would like to change/improve.
