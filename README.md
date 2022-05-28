@@ -11,6 +11,7 @@ I do want to deploy the project with all of its functionality, but that requires
 
 ## Caveats
 The project has responsive design, however, for devices with 320px width it may look a bit off in some sections.
+I don't have a designer's eyes, so the color layout may look mildly infuriating to your taste.
 
 ## Installation
 
