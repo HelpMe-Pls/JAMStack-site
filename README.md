@@ -77,7 +77,7 @@ Then open up your terminal with Admin privilege and run:
 
 
 ## Known bugs
-- Unable to change subscription frequency in the list of subscriptions from User's profile
+- Unable to change subscription frequency in the list of subscriptions from User's profile.
 - **Only** for the *deployed version*: broken layout when the page loads for the **first** time. This issue can be reproduce by open the page in a new incognito window of your browser. 
 
 ## Planned development
