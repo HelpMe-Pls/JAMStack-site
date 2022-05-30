@@ -90,6 +90,6 @@ Then open up your terminal with **Admin privilege** and run:
 
 
 # Contributing
-Pull requests are welcome. For suggesting changes, please open an issue first to discuss what you would like to change/improve.
+Pull requests are most welcome. For suggesting changes, please open an issue first to discuss what you would like to change/improve.
 
 Please make sure to [contact me](https://www.facebook.com/messages/t/100005341874318) if you need further support.
