@@ -20,7 +20,7 @@ If you want to try out the fully functional version of the project, you'll have 
 1.  **nvm-setup.zip** from its [latest release](https://github.com/coreybutler/nvm-windows/releases)
 2.  [Git](https://git-scm.com/downloads)
 
-Then open up your terminal with Admin privilege and run:
+Then open up your terminal with **Admin privilege** and run:
 1. `nvm install 14.15.0` 
 2. `nvm use 14.15.0` 
 3. `node -v` (the output should be `v14.15.0`)
